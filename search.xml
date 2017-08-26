@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[mongodb 集群基础]]></title>
+    <url>%2F2017%2F08%2F10%2Fmongodb%E9%9B%86%E7%BE%A4%E5%9F%BA%E7%A1%80%2F</url>
+    <content type="text"><![CDATA[1. MongoDB介绍 MongoDB 是一个可扩展的高性能,开源,模式自由,面向文档的数据库。 它使用 C++编写。MongoDB 包含一下特点: 面向集合的存储:适合存储对象及JSON形式的数据。 动态查询:Mongo 支持丰富的查询方式,查询指令使用 JSON 形式的标记,可轻易查询文档中内嵌的对象及数组。 完整的索引支持:包括文档内嵌对象及数组。Mongo 的查询优化器会分析查询表达式,并生成一个高效的查询计划。 查询监视:Mongo包含一个监控工具用于分析数据库操作性能。 复制及自动故障转移:Mongo 数据库支持服务器之间的数据复制,支持主-从模式及服务器之间的相互复制。复制的主要目的是提供冗余及自动故障转移。 高效的传统存储方式:支持二进制数据及大型对象(如:照片或图片)。 自动分片以支持云级别的伸缩性:自动分片功能支持水平的数据库集群,可动态添加额外的机器。 2.Replica Set集群当中包含了多份数据，保证主节点挂掉了，备节点能继续提供数据服务，提供的前提就是数据需要和主节点一致。 Mongodb(M)表示主节点，Mongodb(S)表示备节点，Mongodb(A)表示仲裁节点。主备节点存储数据，仲裁节点不存储数据。客户端同时连接主节点与备节点，不连接仲裁节点。 默认设置下，主节点提供所有增删查改服务，备节点不提供任何服务。但是可以通过设置使备节点提供查询服务，这样就可以减少主节点的压力，当客户端进行数据查询时，请求自动转到备节点上。这个设置叫做Read Preference Modes，同时Java客户端提供了简单的配置方式，可以不必直接对数据库进行操作。 仲裁节点是一种特殊的节点，它本身并不存储数据，主要的作用是决定哪一个备节点在主节点挂掉之后提升为主节点，所以客户端不需要连接此节点。这里虽然只有一个备节点，但是仍然需要一个仲裁节点来提升备节点级别。我开始也不相信必须要有仲裁节点，但是自己也试过没仲裁节点的话，主节点挂了备节点还是备节点，所以咱们还是需要它的。 3.Sharding 和Replica Set类似，都需要一个仲裁节点，但是Sharding还需要配置节点和路由节点。 集群搭建方式首选Replica Set，只有真的是大数据，Sharding才能显现威力，毕竟备节点同步数据是需要时间的。Sharding可以将多片数据集中到路由节点上进行一些对比，然后将数据返回给客户端，但是效率还是比较低的说。 我自己有测试过，不过具体的机器配置已经不记得了。Replica Set的ips在数据达到1400w条时基本能达到1000左右，而Sharding在300w时已经下降到500ips了，两者的单位数据大小大概是10kb。大家在应用的时候还是多多做下性能测试，毕竟不像Redis有benchmark。 Mongodb现在用的还是比较多的，但是个人觉得配置太多了。我看官网都看了好多天，才把集群搭建的配置和注意要点弄明白。而且用过的人应该知道mongodb吃内存的问题，解决办法只能通过ulimit来控制内存使用量，但是如果控制不好的话，mongodb会挂掉 PS: 后面继续补充。]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>MongoDB</tag>
+        <tag>Cluster</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[spring boot starter for Jersey-Swagger]]></title>
     <url>%2F2017%2F07%2F10%2FJersey-Swagger%2F</url>
     <content type="text"><![CDATA[幂等性Methods can also have the property of &quot;idempotence&quot; in that (aside from error or expiration issues) the side-effects of N &gt; 0 identical requests is the same as for a single request. 安全操作与幂指相等特性（Safety /Idempotence）HTTP 的 GET、HEAD 请求本质上应该是安全的调用，即：GET、HEAD 调用不会有任何的副作用，不会造成服务器端状态的改变。对于服务器来说，客户端对某一 URI 做 n 次的 GET、HAED 调用，其状态与没有做调用是一样的，不会发生任何的改变。 HTTP 的 PUT、DELTE 调用，具有幂指相等特性 , 即：客户端对某一 URI 做 n 次的 PUT、DELTE 调用，其效果与做一次的调用是一样的。HTTP 的 GET、HEAD 方法也具有幂指相等特性。HTTP 这些标准方法在原则上保证你的分布式系统具有这些特性，以帮助构建更加健壮的分布式系统。 当然作为设计的基础，几个必须的原则还是要遵守的： 当标准合理的时候遵守标准。 API应该对程序员友好，并且在浏览器地址栏容易输入。 API应该简单，直观，容易使用的同时优雅。 API应该具有足够的灵活性来支持上层ui。 API设计权衡上述几个原则。 HTTPhttp请求由三部分组成，分别是：请求行、消息报头、请求正文. http 1.1/2 http://www.blogjava.net/yongboy/archive/2015/03/23/423751.html HTTP/1.1，HTTP客户端无法重试非幂等请求，尤其在错误发生的时候，由于无法检测错误性质这会对重试带来不利的影响。 HTTP/2不允许使用连接特定头部字段 新增的5个头部 推送机制的一些特性需求 RST_STREAM等帧标志位的使用]]></content>
