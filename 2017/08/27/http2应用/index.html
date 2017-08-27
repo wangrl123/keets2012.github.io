@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="REST,HTTP," />
+  <meta name="keywords" content="HTTP2,Java," />
 
 
 
@@ -100,17 +100,19 @@
 
 
 
-<meta name="description" content="幂等性Methods can also have the property of &amp;quot;idempotence&amp;quot; in that (aside from error or expiration issues) the side-effects of N &amp;gt; 0 identical requests is the same as for a single request.  安">
-<meta name="keywords" content="REST,HTTP">
+<meta name="description" content="1. 背景介绍1.1 需要解决的问题本文来源于项目需要，项目所使用微服务框架为Spring Cloud，微服务之间的调用基于HTTP 1.X协议，上一篇文章 HTTPS vs HTTP 1.1 vs HTTP 2，介绍了http2 和http1.1的相关知识，也列出了http1.1局限性，链路不能复用、数据不加密、头信息过多等等。为此，笔者在想能不能将feign client的调用基于http2协">
+<meta name="keywords" content="HTTP2,Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="REST与HTTP">
-<meta property="og:url" content="http://hacloud.club/2017/07/10/REST与HTTP/index.html">
+<meta property="og:title" content="HTTP 2实际应用">
+<meta property="og:url" content="http://hacloud.club/2017/08/27/http2应用/index.html">
 <meta property="og:site_name" content="Keets&#39;s Blog">
-<meta property="og:description" content="幂等性Methods can also have the property of &amp;quot;idempotence&amp;quot; in that (aside from error or expiration issues) the side-effects of N &amp;gt; 0 identical requests is the same as for a single request.  安">
-<meta property="og:updated_time" content="2017-07-10T08:45:53.000Z">
+<meta property="og:description" content="1. 背景介绍1.1 需要解决的问题本文来源于项目需要，项目所使用微服务框架为Spring Cloud，微服务之间的调用基于HTTP 1.X协议，上一篇文章 HTTPS vs HTTP 1.1 vs HTTP 2，介绍了http2 和http1.1的相关知识，也列出了http1.1局限性，链路不能复用、数据不加密、头信息过多等等。为此，笔者在想能不能将feign client的调用基于http2协">
+<meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/browser%20for%20http2.png">
+<meta property="og:updated_time" content="2017-08-27T15:26:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="REST与HTTP">
-<meta name="twitter:description" content="幂等性Methods can also have the property of &amp;quot;idempotence&amp;quot; in that (aside from error or expiration issues) the side-effects of N &amp;gt; 0 identical requests is the same as for a single request.  安">
+<meta name="twitter:title" content="HTTP 2实际应用">
+<meta name="twitter:description" content="1. 背景介绍1.1 需要解决的问题本文来源于项目需要，项目所使用微服务框架为Spring Cloud，微服务之间的调用基于HTTP 1.X协议，上一篇文章 HTTPS vs HTTP 1.1 vs HTTP 2，介绍了http2 和http1.1的相关知识，也列出了http1.1局限性，链路不能复用、数据不加密、头信息过多等等。为此，笔者在想能不能将feign client的调用基于http2协">
+<meta name="twitter:image" content="http://ovci9bs39.bkt.clouddn.com/browser%20for%20http2.png">
 
 
 
@@ -138,13 +140,13 @@
 
 
 
-  <link rel="canonical" href="http://hacloud.club/2017/07/10/REST与HTTP/"/>
+  <link rel="canonical" href="http://hacloud.club/2017/08/27/http2应用/"/>
 
 
 
 
 
-  <title>REST与HTTP | Keets's Blog</title>
+  <title>HTTP 2实际应用 | Keets's Blog</title>
   
 
 
@@ -328,7 +330,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://hacloud.club/2017/07/10/REST与HTTP/">
+    <link itemprop="mainEntityOfPage" href="http://hacloud.club/2017/08/27/http2应用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="keets">
@@ -345,7 +347,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">REST与HTTP</h1>
+          <h1 class="post-title" itemprop="name headline">HTTP 2实际应用</h1>
         
 
         <div class="post-meta">
@@ -357,8 +359,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-10T16:06:59+08:00">
-                2017-07-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-27T00:00:00+08:00">
+                2017-08-27
               </time>
             
 
@@ -398,9 +400,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/07/10/REST与HTTP/#comments" itemprop="discussionUrl">
+                <a href="/2017/08/27/http2应用/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/10/REST与HTTP/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2017/08/27/http2应用/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -430,33 +432,48 @@
       
 
       
-        <h2 id="幂等性"><a href="#幂等性" class="headerlink" title="幂等性"></a>幂等性</h2><pre><code>Methods can also have the property of &quot;idempotence&quot; in that (aside from error or expiration issues) the side-effects of N &gt; 0 identical requests is the same as for a single request.
-</code></pre><ul>
-<li>安全操作与幂指相等特性（Safety /Idempotence）<br>HTTP 的 GET、HEAD 请求本质上应该是安全的调用，即：GET、HEAD 调用不会有任何的副作用，不会造成服务器端状态的改变。对于服务器来说，客户端对某一 URI 做 n 次的 GET、HAED 调用，其状态与没有做调用是一样的，不会发生任何的改变。</li>
-<li><p>HTTP 的 PUT、DELTE 调用，具有幂指相等特性 , 即：客户端对某一 URI 做 n 次的 PUT、DELTE 调用，其效果与做一次的调用是一样的。HTTP 的 GET、HEAD 方法也具有幂指相等特性。<br>HTTP 这些标准方法在原则上保证你的分布式系统具有这些特性，以帮助构建更加健壮的分布式系统。</p>
-</li>
-<li><p>当然作为设计的基础，几个必须的原则还是要遵守的：</p>
+        <h2 id="1-背景介绍"><a href="#1-背景介绍" class="headerlink" title="1. 背景介绍"></a>1. 背景介绍</h2><h3 id="1-1-需要解决的问题"><a href="#1-1-需要解决的问题" class="headerlink" title="1.1 需要解决的问题"></a>1.1 需要解决的问题</h3><p>本文来源于项目需要，项目所使用微服务框架为Spring Cloud，微服务之间的调用基于HTTP 1.X协议，上一篇文章 <a href="http://hacloud.club/2017/08/26/HTTP2/">HTTPS vs HTTP 1.1 vs HTTP 2</a>，介绍了http2 和http1.1的相关知识，也列出了http1.1局限性，链路不能复用、数据不加密、头信息过多等等。为此，笔者在想能不能将feign client的调用基于http2协议，做了如下调研。</p>
+<p>HTTP/2 源自 SPDY/2。SPDY 系列协议由谷歌开发，于 2009 年公开。它的设计目标是降低 50% 的页面加载时间。当下很多著名的互联网公司，例如百度、淘宝、UPYUN 都在自己的网站或 APP 中采用了 SPDY 系列协议（当前最新版本是 SPDY/3.1），因为它对性能的提升是显而易见的。主流的浏览器（谷歌、火狐、Opera）也都早已经支持 SPDY，它已经成为了工业标准，HTTP Working-Group 最终决定以 SPDY/2 为基础，开发 HTTP/2。<br>2013年8月，进行首次测试，诞生的时间很晚，笔者搜索了网上关于http2实践的相关信息，发现并不多。</p>
+<h3 id="1-2-关于项目介绍"><a href="#1-2-关于项目介绍" class="headerlink" title="1.2 关于项目介绍"></a>1.2 关于项目介绍</h3><p>Spring Cloud是笔者项目采用的微服务框架，具体介绍见<a href="http://hacloud.club/2017/07/18/spring-cloud/">Spring Cloud</a>。Spring Cloud是基于Spring Boot开发的组合框架，Spring Boot内置的容器是Tomcat，笔者的项目一般都会exclude Tomcat的引用，使用的是Jetty容器。所以搜索的主题词就变成了 jetty http2。</p>
+<h2 id="2-调研结果"><a href="#2-调研结果" class="headerlink" title="2. 调研结果"></a>2. 调研结果</h2><p>大部分的人习惯于将Tomcat运行在8080端口，再用Apache server在前面提供https。这样做是因为简单且验证过的方法。使用http2 ，你将被迫使用https，这样就不用部署Apache (or nginx)。</p>
+<h3 id="2-1-服务端"><a href="#2-1-服务端" class="headerlink" title="2.1 服务端"></a>2.1 服务端</h3><blockquote>
+<p>Currently Jetty and undertow are the only servers in Spring Boot that support HTTP/2.<br>Jetty has booked some progress and this repository shows an excellent example. In my opinion it’s still too much custom code, but they’re getting there.<br>The next candidate is undertow. It seems almost too easy, but it works. Because we use AJP in our current configuration it even means this HTTP/2 solution has less lines of code!</p>
+</blockquote>
+<p>当前Spring Boot只有Jetty 和 undertow支持HTTP/2。 <a href="https://github.com/bclozel/http2-experiments/" target="_blank" rel="external">样例repo</a>是一个很好的example。<br>总得分为三步：</p>
 <ol>
-<li>当标准合理的时候遵守标准。</li>
-<li>API应该对程序员友好，并且在浏览器地址栏容易输入。</li>
-<li>API应该简单，直观，容易使用的同时优雅。</li>
-<li>API应该具有足够的灵活性来支持上层ui。</li>
-<li>API设计权衡上述几个原则。</li>
-</ol>
-<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><p>http请求由三部分组成，分别是：请求行、消息报头、请求正文.</p>
-</li>
-<li><p>http 1.1/2</p>
-<p><a href="http://www.blogjava.net/yongboy/archive/2015/03/23/423751.html" target="_blank" rel="external">http://www.blogjava.net/yongboy/archive/2015/03/23/423751.html</a></p>
-</li>
-<li><p>HTTP/1.1，HTTP客户端无法重试非幂等请求，尤其在错误发生的时候，由于无法检测错误性质这会对重试带来不利的影响。</p>
-<ol>
-<li>HTTP/2不允许使用连接特定头部字段</li>
-<li>新增的5个头部</li>
-<li>推送机制的一些特性需求</li>
-<li>RST_STREAM等帧标志位的使用</li>
-</ol>
-</li>
+<li>update dependencies<ul>
+<li>org.springframework.boot:spring-boot-starter-undertow</li>
+<li>org.mortbay.jetty.alpn:alpn-boot:8.1.8.v20160420</li>
 </ul>
+</li>
+<li><p>create a servlet container bean</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@Bean   </div><div class="line">UndertowEmbeddedServletContainerFactory embeddedServletContainerFactory() &#123;      </div><div class="line">   		UndertowEmbeddedServletContainerFactory factory = new    	UndertowEmbeddedServletContainerFactory();   </div><div class="line">   	factory.addBuilderCustomizers(   </div><div class="line">           	builder -&gt; builder.setServerOption(UndertowOptions.ENABLE_HTTP2,    	true));   </div><div class="line">   	return factory;   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>start your server with alpn<br>为了启动服务，需要带上 -Xbootclasspath 参数来包括alpn 。因为alpn 有可能在jdk中没有。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-Xbootclasspath/p:/home/harrie/.m2/repository/org/mortbay/jetty/alpn/alpn-boot/8.1.8.v20160420/alpn-boot-8.1.8.v20160420.jar</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="2-2-客户端"><a href="#2-2-客户端" class="headerlink" title="2.2 客户端"></a>2.2 客户端</h3><blockquote>
+<p>Currently Java HTTP/2 clients are scarce. According to this wiki Netty and OkHttp are the only two implementations supported by Spring. To switch HTTP-client in RestTemplate you have to call the constructor with a different ClientHttpRequestFactory (either Netty4ClientHttpRequestFactory or OkHttpClientHttpRequestFactory). </p>
+</blockquote>
+<p>当前Java的http2的客户端也很少，Spring只有Netty and OkHttp支持。这边我们选用了OkHttp，因为OkHttp本来就有在feign client中内置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;org.springframework&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;spring-web&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;4.3.0.RC1&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div><div class="line"> </div><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;org.springframework&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;spring-core&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;4.3.0.RC1&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div><div class="line"> </div><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;com.squareup.okhttp3&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;okhttp&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;3.2.0&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure>
+<h3 id="2-3-浏览器对于HTTP-2的支持"><a href="#2-3-浏览器对于HTTP-2的支持" class="headerlink" title="2.3 浏览器对于HTTP/2的支持"></a>2.3 浏览器对于HTTP/2的支持</h3><p>通过<a href="http://caniuse.com/#search=http2" target="_blank" rel="external">浏览器支持http2</a>查看。</p>
+<p><img src="http://ovci9bs39.bkt.clouddn.com/browser%20for%20http2.png" alt="HTTP/2的支持" title="http2 support"></p>
+<h3 id="2-4-okhttp"><a href="#2-4-okhttp" class="headerlink" title="2.4 okhttp"></a>2.4 okhttp</h3><p>目前, Http/1.1在全世界大范围的使用中, 直接废弃跳到http/2肯定不现实. 不是每个用户的浏览器都支持http/2的, 也不是每个服务器都打算支持http/2的, 如果我们直接发送http/2格式的协议, 服务器又不支持, 那不是挂掉了! 总不能维护一个全世界的网站列表, 表示哪些支持http/2, 哪些不支持?<br>为了解决这个问题, 从稍高层次上来说, 就是为了更方便地部署新协议, HTTP/1.1 引入了 Upgrade 机制. 这个机制在 RFC7230 的「6.7 Upgrade」这一节中有详细描述.<br>简单说来, 就是先问下你支持http/2么? 如果你支持, 那么接下来我就用http/2和你聊天. 如果你不支持, 那么我还是用原来的http/1.1和你聊天.</p>
+<ol>
+<li>客户端在请求头部中指定Connection和Upgrade两个字段发起 HTTP/1.1 协议升级. HTTP/2 的协议名称是 h2c, 代表 HTTP/2 ClearText.</li>
+<li>如果服务端不同意升级或者不支持 Upgrade 所列出的协议，直接忽略即可（当成 HTTP/1.1 请求，以 HTTP/1.1 响应）.</li>
+<li>如果服务端同意升级，那么需要这样响应</li>
+</ol>
+<blockquote>
+<p>HTTP/1.1 101 Switching Protocols<br>Connection: Upgrade<br>Upgrade: h2c<br>[ HTTP/2 connection … ]</p>
+</blockquote>
+<p>HTTP Upgrade 响应的状态码是 101，并且响应正文可以使用新协议定义的数据格式。</p>
+<p>这样就可以完成从http/1.1升级到http/2了. 同样也可以从http/1.1升级到WebSocket.<br>OkHttp使用了请求协议的协商升级, 无论是1.1还是2, 都先只以1.1来发送, 并在发送的信息头里包含协议升级字段. 接下来就看服务器是否支持协议升级了. OkHttp使用的协议升级字段是ALPN, 如果有兴趣, 可以更深入的查阅相关资料.</p>
+<h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h2><p>总体看来，现在Spring boot 是可以支持HTTP/2 server和client。现有项目的api接口面向移动端和web端，web浏览器对于http2的支持在上文已经说明。</p>
+<hr>
+<p>参考资料：<br><a href="http://www.jianshu.com/p/ca8a982a116b" target="_blank" rel="external">OkHttp使用完全教程</a><br><a href="https://vanwilgenburg.wordpress.com/2016/04/01/spring-boot-http2/" target="_blank" rel="external">Spring Boot with HTTP/2 – Start a server and make REST calls as a client</a><br><a href="http://blog.csdn.net/zhangzq86/article/details/64907340" target="_blank" rel="external">HTTPS 与 HTTP2 协议分析</a></p>
 
       
     </div>
@@ -510,7 +527,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://hacloud.club/2017/07/10/REST与HTTP/" title="REST与HTTP">http://hacloud.club/2017/07/10/REST与HTTP/</a>
+      <a href="http://hacloud.club/2017/08/27/http2应用/" title="HTTP 2实际应用">http://hacloud.club/2017/08/27/http2应用/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -526,9 +543,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/REST/" rel="tag"># REST</a>
+            <a href="/tags/HTTP2/" rel="tag"># HTTP2</a>
           
-            <a href="/tags/HTTP/" rel="tag"># HTTP</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
         </div>
       
@@ -541,8 +558,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/10/Jersey-Swagger/" rel="next" title="spring boot starter for Jersey-Swagger">
-                <i class="fa fa-chevron-left"></i> spring boot starter for Jersey-Swagger
+              <a href="/2017/08/26/HTTP2/" rel="next" title="HTTPS vs HTTP 1.1 vs HTTP 2">
+                <i class="fa fa-chevron-left"></i> HTTPS vs HTTP 1.1 vs HTTP 2
               </a>
             
           </div>
@@ -550,10 +567,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/18/spring-cloud/" rel="prev" title="Spring Cloud 入门">
-                Spring Cloud 入门 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -752,7 +765,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#幂等性"><span class="nav-number">1.</span> <span class="nav-text">幂等性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP"><span class="nav-number">2.</span> <span class="nav-text">HTTP</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-背景介绍"><span class="nav-number">1.</span> <span class="nav-text">1. 背景介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-需要解决的问题"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 需要解决的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-关于项目介绍"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 关于项目介绍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-调研结果"><span class="nav-number">2.</span> <span class="nav-text">2. 调研结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-服务端"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 服务端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-客户端"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-浏览器对于HTTP-2的支持"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 浏览器对于HTTP/2的支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-okhttp"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 okhttp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-总结"><span class="nav-number">3.</span> <span class="nav-text">3. 总结</span></a></li></ol></div>
             
 
           </div>
@@ -929,9 +942,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://hacloud.club/2017/07/10/REST与HTTP/';
-          this.page.identifier = '2017/07/10/REST与HTTP/';
-          this.page.title = 'REST与HTTP';
+          this.page.url = 'http://hacloud.club/2017/08/27/http2应用/';
+          this.page.identifier = '2017/08/27/http2应用/';
+          this.page.title = 'HTTP 2实际应用';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://keets-blog.disqus.com/embed.js';
