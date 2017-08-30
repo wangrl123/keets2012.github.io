@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Restful Layer of SpringMVC vs Jersey]]></title>
+    <url>%2F2017%2F08%2F30%2FJerseyvsspringmvc%2F</url>
+    <content type="text"><![CDATA[笔者项目实现前后端剥离，服务端对外提供restful接口。REST逐渐成为影响Web框架、Web协议与Web应用设计的重要概念。现在有越来越多的公司希望能以简单而又贴合Web架构本身的方式公开Web API，因此REST变得越来越重要也就不足为奇了。使用Ajax进行通信的富浏览器端也在朝这个目标不断迈进。这个架构原则提升了万维网的可伸缩性，无论何种应用都能从该原则中受益无穷。SpringMVC和Jersey都可以为你提供restful风格的接口。本文将介绍SpringMVC中的REST特性并与Jersey进行对比。 1. REST基础概念 在REST中的一切都被认为是一种资源。 每个资源由URI标识。 使用统一的接口。处理资源使用POST，GET，PUT，DELETE操作类似创建，读取，更新和删除（CRUD）操作。 无状态。每个请求是一个独立的请求。从客户端到服务器的每个请求都必须包含所有必要的信息，以便于理解。 通信都是通过展现。例如XML，JSON。 2. Jersey与SpringMVCJAX-RS（JSR 311）指的是Java API for RESTful Web Services，Roy Fielding也参与了JAX-RS的制订，他在自己的博士论文中定义了REST。对于那些想要构建RESTful Web Services的开发者来说，JAX-RS给出了不同于JAX-WS（JSR-224）的另一种解决方案。目前共有4种JAX-RS实现，所有这些实现都支持Spring，Jersey则是JAX-RS的参考实现。 有必要指出JAX-RS的目标是Web Services开发（这与HTML Web应用不同）而Spring MVC的目标则是Web应用开发。Spring 3为Web应用与Web Services增加了广泛的REST支持，但本文则关注于与Web Services开发相关的特性。我觉得这种方式更有助于在JAX-RS的上下文中讨论Spring MVC。 要说明的第二点是我们将要讨论的REST特性是Spring Framework的一部分，也是现有的Spring MVC编程模型的延续，因此，并没有所谓的“Spring REST framework”这种概念，有的只是Spring和Spring MVC。这意味着如果你有一个Spring应用的话，你既可以使用Spring MVC创建HTML Web层，也可以创建RESTful Web Services层。]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>REST</tag>
+        <tag>Jersey</tag>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[mac下快速进入当前目录iterm2]]></title>
     <url>%2F2017%2F08%2F28%2Fmac%E5%BF%AB%E6%8D%B7%E9%94%AE%2F</url>
     <content type="text"><![CDATA[win环境下，有直接在文件浏览的地址上，直接输入cmd，即可打开cmd命令框。笔者在macOS下，也想实现这样的功能，网上查了一下，可以成功实践。 1. 添加服务1git clone https://github.com/peterldowns/iterm2-finder-tools.git 进入 iterm2-finder-tools文件夹，运行iTerm.workflow。安装服务栏。 2. 使用服务在工作文件夹上右键，弹出窗口中找到服务一栏，将鼠标放置其上，在弹出窗口中找到 Open iTerm一栏，单击即可。 3. 添加快捷键服务-&gt;偏好设置-&gt;快捷键 笔者设置了control+command+L。大家可以根据自己的喜好进行设置快捷键。 参考： Mac在Finder中当前目录下打开iTerm2]]></content>
