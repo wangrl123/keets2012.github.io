@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[spring-boot-starter-swagger for jersey]]></title>
+    <url>%2F2017%2F09%2F02%2Fspring-boot-starter-swaggerforjersey%2F</url>
+    <content type="text"><![CDATA[pring Boot的自动化配置特性来实现快速的将swagger2引入spring boot应用来生成jersey的API文档，简化原生使用swagger2的整合代码。 小欢迎使用和Star支持，如使用过程中碰到问题，可以提出Issue，我会尽力完善该Starter 版本基础 Spring Boot：1.5.x swagger-jersey2-jaxrs：2.7.x Jersey 2 如何使用在该项目的帮助下，我们的Spring Boot可以轻松的引入swagger2，主需要做下面两个步骤： 在pom.xml中引入依赖： 12345&lt;dependency&gt; &lt;groupId&gt;cn.keets&lt;/groupId&gt; &lt;artifactId&gt;jersey-starter-swagger&lt;/artifactId&gt; &lt;version&gt;1.0.0.RELEASE&lt;/version&gt;&lt;/dependency&gt; 在应用主类中增加@EnableSwagger2Doc注解 123456789@EnableSwagger2Doc@SpringBootApplicationpublic class Bootstrap &#123; public static void main(String[] args) &#123; SpringApplication.run(Bootstrap.class, args); &#125;&#125; JerseyConfig 中增加1234@PostConstructpublic void init() &#123; this.register(ApiListingResource.class, SwaggerSerializers.class);&#125; 默认情况下就能产生所有当前jersey加载的请求映射文档。 参数配置更细致的配置内容参考如下： 配置示例1234567891011swagger: enabled: true title: spring-boot-starter-swagger config-id: demo-mvc version: v2 license: Apache License, Version 2.0 licenseUrl: https://www.apache.org/licenses/LICENSE-2.0.html termsOfServiceUrl: http://git.oschina.net/keets/jersey-starter-swagger contact: keets base-path: /** resource-package: cn.keets.demo 配置说明默认配置12345678910- swagger.enabled=是否开启 // todo 实现线上关闭功能- swagger.title=标题- swagger.description=描述- swagger.version=版本- swagger.license=许可证- swagger.licenseUrl=许可证URL- swagger.termsOfServiceUrl=服务条款URL- swagger.contact=维护人- swagger.resource-package=swagger扫描的基础包，默认：全扫描- swagger.base-path=需要处理的基础URL规则，默认：/** swagger ui未包含在项目中，大家可以自己部署静态文件，通过静态文件解析json 如下图所示： 项目git地址：http://git.oschina.net/keets/jersey-starter-swaggerdemo git地址：http://git.oschina.net/keets/spring-boot-samples/tree/master/demo-jersey-starter 参考：spring-boot-starter-swagger 1.3.0.RELEASE：新增对JSR-303的支持和host的配置]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>starter</tag>
+        <tag>spring-boot</tag>
+        <tag>swagger</tag>
+        <tag>jersey</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Restful Layer of SpringMVC vs Jersey]]></title>
     <url>%2F2017%2F08%2F30%2FJerseyvsspringmvc%2F</url>
     <content type="text"><![CDATA[笔者项目实现前后端剥离，服务端对外提供restful接口。REST逐渐成为影响Web框架、Web协议与Web应用设计的重要概念。现在有越来越多的公司希望能以简单而又贴合Web架构本身的方式公开Web API，因此REST变得越来越重要也就不足为奇了。使用Ajax进行通信的富浏览器端也在朝这个目标不断迈进。这个架构原则提升了万维网的可伸缩性，无论何种应用都能从该原则中受益无穷。SpringMVC和Jersey都可以为你提供restful风格的接口。本文将介绍SpringMVC中的REST特性并与Jersey进行对比。 1. REST基础概念 在REST中的一切都被认为是一种资源。 每个资源由URI标识。 使用统一的接口。处理资源使用POST，GET，PUT，DELETE操作类似创建，读取，更新和删除（CRUD）操作。 无状态。每个请求是一个独立的请求。从客户端到服务器的每个请求都必须包含所有必要的信息，以便于理解。 通信都是通过展现。例如XML，JSON。 2. Jersey与SpringMVCJAX-RS（JSR 311）指的是Java API for RESTful Web Services，Roy Fielding也参与了JAX-RS的制订，他在自己的博士论文中定义了REST。对于那些想要构建RESTful Web Services的开发者来说，JAX-RS给出了不同于JAX-WS（JSR-224）的另一种解决方案。目前共有4种JAX-RS实现，所有这些实现都支持Spring，Jersey则是JAX-RS的参考实现。 有必要指出JAX-RS的目标是Web Services开发（这与HTML Web应用不同）而Spring MVC的目标则是Web应用开发。Spring 3为Web应用与Web Services增加了广泛的REST支持，但本文则关注于与Web Services开发相关的特性。我觉得这种方式更有助于在JAX-RS的上下文中讨论Spring MVC。 要说明的第二点是我们将要讨论的REST特性是Spring Framework的一部分，也是现有的Spring MVC编程模型的延续，因此，并没有所谓的“Spring REST framework”这种概念，有的只是Spring和Spring MVC。这意味着如果你有一个Spring应用的话，你既可以使用Spring MVC创建HTML Web层，也可以创建RESTful Web Services层。]]></content>
