@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Spring Cloud," />
+  <meta name="keywords" content="Thread,java," />
 
 
 
@@ -100,19 +100,17 @@
 
 
 
-<meta name="description" content="1. 微服务架构微服务架构（Micro-Service Archeticture）是当下流行的架构风格，旨在通过将功能模块分解到各个独立的子系统中以实现解耦，它并没有一成不变的规定，而是需要根据业务来做设计[李贞昊,2017]。微服务架构中，每个微服务模块只是对简单、独立、明确的任务进行处理，通过REST API返回处理结果给外部。在微服务推广实践角度来看，微服务将整个系统进行拆分，拆分成更小的粒">
-<meta name="keywords" content="Spring Cloud">
+<meta name="description" content="ThreadLocal主要是提供线程内部的局部变量，在每个线程内随时随地可取，隔离其他线程。    1. ThreadLocal接口1.1 ThreadLocal类接口很简单，只有4个方法，我们先来了解一下： void set(Object value)设置当前线程的线程局部变量的值。 public Object get()该方法返回当前线程所对应的线程局部变量。 public void remo">
+<meta name="keywords" content="Thread,java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring Cloud 入门">
-<meta property="og:url" content="http://hacloud.club/2017/07/18/spring-cloud/index.html">
+<meta property="og:title" content="深入ThreadLocal">
+<meta property="og:url" content="http://hacloud.club/2017/09/04/ThreadLocal/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="1. 微服务架构微服务架构（Micro-Service Archeticture）是当下流行的架构风格，旨在通过将功能模块分解到各个独立的子系统中以实现解耦，它并没有一成不变的规定，而是需要根据业务来做设计[李贞昊,2017]。微服务架构中，每个微服务模块只是对简单、独立、明确的任务进行处理，通过REST API返回处理结果给外部。在微服务推广实践角度来看，微服务将整个系统进行拆分，拆分成更小的粒">
-<meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/cloud%20structure.png">
-<meta property="og:updated_time" content="2017-09-04T03:27:54.000Z">
+<meta property="og:description" content="ThreadLocal主要是提供线程内部的局部变量，在每个线程内随时随地可取，隔离其他线程。    1. ThreadLocal接口1.1 ThreadLocal类接口很简单，只有4个方法，我们先来了解一下： void set(Object value)设置当前线程的线程局部变量的值。 public Object get()该方法返回当前线程所对应的线程局部变量。 public void remo">
+<meta property="og:updated_time" content="2017-09-04T13:50:17.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring Cloud 入门">
-<meta name="twitter:description" content="1. 微服务架构微服务架构（Micro-Service Archeticture）是当下流行的架构风格，旨在通过将功能模块分解到各个独立的子系统中以实现解耦，它并没有一成不变的规定，而是需要根据业务来做设计[李贞昊,2017]。微服务架构中，每个微服务模块只是对简单、独立、明确的任务进行处理，通过REST API返回处理结果给外部。在微服务推广实践角度来看，微服务将整个系统进行拆分，拆分成更小的粒">
-<meta name="twitter:image" content="http://ovci9bs39.bkt.clouddn.com/cloud%20structure.png">
+<meta name="twitter:title" content="深入ThreadLocal">
+<meta name="twitter:description" content="ThreadLocal主要是提供线程内部的局部变量，在每个线程内随时随地可取，隔离其他线程。    1. ThreadLocal接口1.1 ThreadLocal类接口很简单，只有4个方法，我们先来了解一下： void set(Object value)设置当前线程的线程局部变量的值。 public Object get()该方法返回当前线程所对应的线程局部变量。 public void remo">
 
 
 
@@ -140,13 +138,13 @@
 
 
 
-  <link rel="canonical" href="http://hacloud.club/2017/07/18/spring-cloud/"/>
+  <link rel="canonical" href="http://hacloud.club/2017/09/04/ThreadLocal/"/>
 
 
 
 
 
-  <title>Spring Cloud 入门 | Aoho's Blog</title>
+  <title>深入ThreadLocal | Aoho's Blog</title>
   
 
 
@@ -330,7 +328,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://hacloud.club/2017/07/18/spring-cloud/">
+    <link itemprop="mainEntityOfPage" href="http://hacloud.club/2017/09/04/ThreadLocal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="keets">
@@ -347,7 +345,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spring Cloud 入门</h1>
+          <h1 class="post-title" itemprop="name headline">深入ThreadLocal</h1>
         
 
         <div class="post-meta">
@@ -359,8 +357,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-18T16:21:19+08:00">
-                2017-07-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-04T00:00:00+08:00">
+                2017-09-04
               </time>
             
 
@@ -400,9 +398,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/07/18/spring-cloud/#comments" itemprop="discussionUrl">
+                <a href="/2017/09/04/ThreadLocal/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/18/spring-cloud/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2017/09/04/ThreadLocal/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -432,19 +430,48 @@
       
 
       
-        <h2 id="1-微服务架构"><a href="#1-微服务架构" class="headerlink" title="1. 微服务架构"></a>1. 微服务架构</h2><p>微服务架构（Micro-Service Archeticture）是当下流行的架构风格，旨在通过将功能模块分解到各个独立的子系统中以实现解耦，它并没有一成不变的规定，而是需要根据业务来做设计[李贞昊,2017]。微服务架构中，每个微服务模块只是对简单、独立、明确的任务进行处理，通过REST API返回处理结果给外部。在微服务推广实践角度来看，微服务将整个系统进行拆分，拆分成更小的粒度，保持这些服务独立运行，应用容器化技术将微服务独立运行在容器中。过去设计架构时，是在内存中以参数或对象的方式实现粒度细化。微服务使用各个子服务控制模块的思想代替总线。不同的业务要求，服务控制模块至少包含服务的发布、注册、路由、代理功能。   </p>
-<h2 id="2-vs-单体应用架构"><a href="#2-vs-单体应用架构" class="headerlink" title="2. vs 单体应用架构"></a>2. vs 单体应用架构</h2><p>微服务架构模式相比于单体应用架构，有很多优势。</p>
-<ul>
-<li>首先，巨大的单体式应用拆分为多个微服务，降低了复杂性。在具有之前单体应用功能的同时，单体应用被拆分为多个可管理的微服务。每个微服务都具有定义清楚的边界，使用远程过程调用（RPC）或者消息驱动API。拆分后的微服务模块，粒度小，很容易开发和维护。微服务架构模式降低了单体式编码的难度，并且功能提供了模块化的解决方案。</li>
-<li>第二，微服务架构下，专门开发团队负责开发一个子服务。每个开发团队可以自主选择技术栈，提供API接口。当然，许多公司将技术栈统一，只提供特定选择的技术。然后，这种自由使得开发团队不需要被迫使用特定的那些技术，他们可以自由地选择适合该微服务的技术。甚至于，重构之前的代码也变得很便捷。</li>
-<li>第三，每个微服务都是独立的部署。开发团队不再需要协调其它服务部署对本服务的影响。这样的特性大大加快了部署速度。微服务架构模式使得持续化部署成为可能。</li>
-<li>最后，微服务架构模式使得每个微服务应用都可以被独立扩展。单体架构应用也可以横向扩展，即整个应用完整的复制到不同的节点。当应用的不同组件在扩展需求上存在差异时，微服务架构便体现出其优越性。通过在不同的基础设施之间实现扩展，这些服务能够有效地降低风险[陈春霞, 2016]。</li>
+        <p>ThreadLocal主要是提供线程内部的局部变量，在<code>每个</code>线程内随时随地可取，隔离其他线程。   </p>
+<h2 id="1-ThreadLocal接口"><a href="#1-ThreadLocal接口" class="headerlink" title="1. ThreadLocal接口"></a>1. ThreadLocal接口</h2><h3 id="1-1-ThreadLocal类接口很简单，只有4个方法，我们先来了解一下："><a href="#1-1-ThreadLocal类接口很简单，只有4个方法，我们先来了解一下：" class="headerlink" title="1.1 ThreadLocal类接口很简单，只有4个方法，我们先来了解一下："></a>1.1 ThreadLocal类接口很简单，只有4个方法，我们先来了解一下：</h3><ul>
+<li><code>void set(Object value)</code>设置当前线程的线程局部变量的值。</li>
+<li><code>public Object get()</code>该方法返回当前线程所对应的线程局部变量。</li>
+<li><code>public void remove()</code>将当前线程局部变量的值删除，目的是为了减少内存的占用，该方法是JDK 5.0新增的方法。需要指出的是，当线程结束后，对应该线程的局部变量将自动被垃圾回收，所以显式调用该方法清除线程的局部变量并不是必须的操作，但它可以加快内存回收的速度。</li>
+<li><code>protected Object initialValue()</code>返回该线程局部变量的初始值，该方法是一个protected的方法，显然是为了让子类覆盖而设计的。这个方法是一个延迟调用方法，在线程第1次调用get()或set(Object)时才执行，并且仅执行1次。ThreadLocal中的缺省实现直接返回一个null。</li>
 </ul>
-<h2 id="3-Spring-Cloud开源框架"><a href="#3-Spring-Cloud开源框架" class="headerlink" title="3. Spring Cloud开源框架"></a>3. Spring Cloud开源框架</h2><p>Spring Cloud是一个基于Spring Boot实现的云应用开发工具，它为基于JVM的云应用开发中的服务发现与注册、熔断机制、路由、全局锁、中心配置管理、控制总线、决策竞选、分布式会话和集群状态管理等操作提供了一种简单的开发方式[翟永超,2016]。Spring Cloud整体架构图如图1.1所示。<br><img src="http://ovci9bs39.bkt.clouddn.com/cloud%20structure.png" alt="cloud structure" title="图1.1 Spring Cloud整体架构图">  </p>
-<p>Spring Cloud整体架构中如下几个基础服务模块：微服务配置管理、API网关服务、服务发现与注册和消息总线模块。   </p>
-<p>spring-cloud-config，微服务配置管理，即为上图的config service服务模块，为服务端提供了分布式环境的中央配置支持。配置服务器为各应用的所有环境提供了一个中心化的外部配置。它完成了对服务端Spring-Env和配置源抽象的映射，所以config服务不仅适用于Spring框架构建的应用，也可以使用在其他语言的应用程序。作为一个应用，可以通过部署管道来进行测试或者投入生产，分别为这些环境创建配置，并且在需要迁移环境的时候获取对应的配置来运行。   </p>
-<p>API网关，本系统使用netflix的zuul框架，作为系统的统一入口，具有负载均衡、服务路由、服务过滤等功能。   </p>
-<p>服务发现与注册有多种开源组件支持，比如zookeeper、etcd、netflix公司的Eureka，以及本系统使用的Consul。服务发现是一个服务将其地址信息在中心注册节点进行注册的过程。该服务一般会将它的主机IP地址以及端口号进行注册，具体还会包括认证信息、使用协议、版本号等信息，以及关于应用服务环境的细节信息。一个应用服务或者组件通过服务发现可以掌握其运行环境以及其它应用服务或组件的信息。用户配置一个服务发现工具之后，就可以将实际容器与运行配置分离开。</p>
+<p>在同步机制中，通过对象的锁机制保证同一时间只有一个线程访问变量。这时该变量是多个线程共享的，使用同步机制要求程序慎密地分析什么时候对变量进行读写，什么时候需要锁定某个对象，什么时候释放对象锁等繁杂的问题，程序设计和编写难度相对较大。   </p>
+<p>而ThreadLocal则从另一个角度来解决多线程的并发访问。ThreadLocal会为每一个线程提供一个独立的变量副本，从而隔离了多个线程对数据的访问冲突。因为每一个线程都拥有自己的变量副本，从而也就没有必要对该变量进行同步了。ThreadLocal提供了线程安全的共享对象，在编写多线程代码时，可以把不安全的变量封装进ThreadLocal。<br>如果想在get之前不需要调用set就能正常访问的话，必须重写initialValue()方法。最常见的ThreadLocal使用场景为 用来解决 数据库连接、Session管理等。</p>
+<h3 id="1-2-使用ThreadLocal"><a href="#1-2-使用ThreadLocal" class="headerlink" title="1.2 使用ThreadLocal"></a>1.2 使用ThreadLocal</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadTest</span> </span>&#123;</div><div class="line">    ThreadLocal&lt;Long&gt; longLocal = <span class="keyword">new</span> ThreadLocal&lt;Long&gt;()&#123;</div><div class="line">        <span class="function"><span class="keyword">protected</span> Long <span class="title">initialValue</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> Thread.currentThread().getId();</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">    ThreadLocal&lt;String&gt; stringLocal = <span class="keyword">new</span> ThreadLocal&lt;String&gt;()&#123;;</div><div class="line">        <span class="function"><span class="keyword">protected</span> String <span class="title">initialValue</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> Thread.currentThread().getName();</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">()</span> </span>&#123;</div><div class="line">        longLocal.set(Thread.currentThread().getId());</div><div class="line">        stringLocal.set(Thread.currentThread().getName());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getLong</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> longLocal.get();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getString</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> stringLocal.get();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">        <span class="keyword">final</span> ThreadTest test = <span class="keyword">new</span> ThreadTest();</div><div class="line"></div><div class="line"></div><div class="line">        <span class="comment">//test.set();</span></div><div class="line">        System.out.println(<span class="string">"main.getLong: "</span> + test.getLong());</div><div class="line">        System.out.println(<span class="string">"main.getString: "</span> + test.getString());</div><div class="line"></div><div class="line"></div><div class="line">        Thread thread1 = <span class="keyword">new</span> Thread() &#123;</div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                <span class="comment">//test.set();</span></div><div class="line">                System.out.println(<span class="string">"Thread.getLong: "</span> + test.getLong());</div><div class="line">                System.out.println(<span class="string">"Thread.getString: "</span> + test.getString());</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line">        thread1.start();</div><div class="line">        thread1.join();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上demo覆写了initialValue()方法，或者调用set方法，否则会报空指针异常。在main线程中和thread1线程中，longLocal保存的副本值和stringLocal保存的副本值都不一样。</p>
+<h2 id="2-ThreadLocalMap"><a href="#2-ThreadLocalMap" class="headerlink" title="2. ThreadLocalMap"></a>2. ThreadLocalMap</h2><p>ThreadLocalMap的Entry继承了WeakReference，并且使用ThreadLocal作为键值。<br>　　1. 实际的通过ThreadLocal创建的副本是存储在每个线程自己的threadLocals中的；<br>　　2. 为何threadLocals的类型ThreadLocalMap的键值为ThreadLocal对象，因为每个线程中可有多个threadLocal变量，就像上面代码中的longLocal和stringLocal；<br>　　3. 在进行get之前，必须先set，否则会报空指针异常；
+　</p>
+<h3 id="2-1-方法分析"><a href="#2-1-方法分析" class="headerlink" title="2.1 方法分析"></a>2.1 方法分析</h3><p>1). JDK8的ThreadLocal的get方法的源码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Returns the value in the current thread's copy of this</div><div class="line"> * thread-local variable.  If the variable has no value for the</div><div class="line"> * current thread, it is first initialized to the value returned</div><div class="line"> * by an invocation of the &#123;<span class="doctag">@link</span> #initialValue&#125; method.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> the current thread's value of this thread-local</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</div><div class="line">    Thread t = Thread.currentThread();</div><div class="line">    ThreadLocalMap map = getMap(t);</div><div class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</div><div class="line">        ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</div><div class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">            T result = (T)e.value;</div><div class="line">            <span class="keyword">return</span> result;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> setInitialValue();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>2). getMap </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Get the map associated with a ThreadLocal. Overridden in</div><div class="line"> * InheritableThreadLocal.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span>  t the current thread</div><div class="line"> * <span class="doctag">@return</span> the map</div><div class="line"> */</div><div class="line"><span class="function">ThreadLocalMap <span class="title">getMap</span><span class="params">(Thread t)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> t.threadLocals;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>3). setInitialValue</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Variant of set() to establish initialValue. Used instead</div><div class="line"> * of set() in case user has overridden the set() method.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> the initial value</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> T <span class="title">setInitialValue</span><span class="params">()</span> </span>&#123;</div><div class="line">    T value = initialValue();</div><div class="line">    Thread t = Thread.currentThread();</div><div class="line">    ThreadLocalMap map = getMap(t);</div><div class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</div><div class="line">        map.set(<span class="keyword">this</span>, value);</div><div class="line">    <span class="keyword">else</span></div><div class="line">        createMap(t, value);</div><div class="line">    <span class="keyword">return</span> value;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>get方法的流程是这样的：</p>
+<ul>
+<li>1.首先获取当前线程</li>
+<li>2.根据当前线程获取一个Map</li>
+<li>3.如果获取的Map不为空，则在Map中以ThreadLocal的引用作为key来在Map中获取对应的value e，否则转到5</li>
+<li>4.如果e不为null，则返回e.value，否则转到5</li>
+<li>5.Map为空或者e为空，则通过initialValue函数获取初始值value，然后用ThreadLocal的引用和value作为firstKey和firstValue创建一个新的Map</li>
+</ul>
+<p>每个Thread维护一个ThreadLocalMap映射表，这个映射表的key是ThreadLocal实例本身，value是真正需要存储的Object。</p>
+<h2 id="3-WeakReference"><a href="#3-WeakReference" class="headerlink" title="3. WeakReference"></a>3. WeakReference</h2><p>关于内存泄露：</p>
+<blockquote>
+<p>ThreadLocalMap使用ThreadLocal的弱引用作为key，如果一个ThreadLocal没有外部强引用引用他，那么系统gc的时候，这个ThreadLocal势必会被回收，这样一来，ThreadLocalMap中就会出现key为null的Entry，就没有办法访问这些key为null的Entry的value，如果当前线程再迟迟不结束的话，这些key为null的Entry的value就会一直存在一条强引用链：<br><code>ThreadLocal Ref -&gt; Thread -&gt; ThreaLocalMap -&gt; Entry -&gt; value</code></p>
+</blockquote>
+<p>主要看下getEntryAfterMiss函数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> Entry <span class="title">getEntryAfterMiss</span><span class="params">(ThreadLocal&lt;?&gt; key, <span class="keyword">int</span> i, Entry e)</span> </span>&#123;</div><div class="line">            Entry[] tab = table;</div><div class="line">            <span class="keyword">int</span> len = tab.length;</div><div class="line"></div><div class="line">            <span class="keyword">while</span> (e != <span class="keyword">null</span>) &#123;</div><div class="line">                ThreadLocal&lt;?&gt; k = e.get();</div><div class="line">                <span class="keyword">if</span> (k == key)</div><div class="line">                    <span class="keyword">return</span> e;</div><div class="line">                <span class="keyword">if</span> (k == <span class="keyword">null</span>)</div><div class="line">                    expungeStaleEntry(i);</div><div class="line">                <span class="keyword">else</span></div><div class="line">                    i = nextIndex(i, len);</div><div class="line">                e = tab[i];</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<p>ThreadLocalMap的getEntry函数的流程：</p>
+<ol>
+<li>首先从ThreadLocal的直接索引位置(通过ThreadLocal.threadLocalHashCode &amp; (len-1)运算得到)获取Entry e，如果e不为null并且key相同则返回e；</li>
+<li>如果e为null或者key不一致则向下一个位置查询，如果下一个位置的key和当前需要查询的key相等，则返回对应的Entry，否则，如果key值为null，则擦除该位置的Entry，否则继续向下一个位置查询</li>
+</ol>
+<p><strong>在这个过程中遇到的key为null的Entry都会被擦除，那么Entry内的value也就没有强引用链，自然会被回收。仔细研究代码可以发现，set操作也有类似的思想，将key为null的这些Entry都删除，防止内存泄露。 但是光这样还是不够的，上面的设计思路依赖一个前提条件：要调用ThreadLocalMap的genEntry函数或者set函数。这当然是不可能任何情况都成立的，所以很多情况下需要使用者手动调用ThreadLocal的remove函数，手动删除不再需要的ThreadLocal，防止内存泄露。所以JDK建议将ThreadLocal变量定义成private static的，这样的话ThreadLocal的生命周期就更长，由于一直存在ThreadLocal的强引用，所以ThreadLocal也就不会被回收，也就能保证任何时候都能根据ThreadLocal的弱引用访问到Entry的value值，然后remove它，防止内存泄露。</strong></p>
+<hr>
+<p>参考：<br><a href="https://www.zhihu.com/question/23089780" target="_blank" rel="external">ThreadLocal和synchronized的区别</a><br><a href="http://www.cnblogs.com/dolphin0520/p/3920407.html" target="_blank" rel="external">Java并发编程：深入剖析ThreadLocal</a></p>
 
       
     </div>
@@ -498,7 +525,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://hacloud.club/2017/07/18/spring-cloud/" title="Spring Cloud 入门">http://hacloud.club/2017/07/18/spring-cloud/</a>
+      <a href="http://hacloud.club/2017/09/04/ThreadLocal/" title="深入ThreadLocal">http://hacloud.club/2017/09/04/ThreadLocal/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -514,7 +541,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Spring-Cloud/" rel="tag"># Spring Cloud</a>
+            <a href="/tags/Thread/" rel="tag"># Thread</a>
+          
+            <a href="/tags/java/" rel="tag"># java</a>
           
         </div>
       
@@ -527,8 +556,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/10/REST与HTTP/" rel="next" title="REST与HTTP">
-                <i class="fa fa-chevron-left"></i> REST与HTTP
+              <a href="/2017/09/02/spring-boot-starter-swaggerforjersey/" rel="next" title="spring-boot-starter-swagger for jersey">
+                <i class="fa fa-chevron-left"></i> spring-boot-starter-swagger for jersey
               </a>
             
           </div>
@@ -536,10 +565,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/10/mongodb集群基础/" rel="prev" title="mongodb 集群基础">
-                mongodb 集群基础 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -738,7 +763,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-微服务架构"><span class="nav-number">1.</span> <span class="nav-text">1. 微服务架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-vs-单体应用架构"><span class="nav-number">2.</span> <span class="nav-text">2. vs 单体应用架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Spring-Cloud开源框架"><span class="nav-number">3.</span> <span class="nav-text">3. Spring Cloud开源框架</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-ThreadLocal接口"><span class="nav-number">1.</span> <span class="nav-text">1. ThreadLocal接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-ThreadLocal类接口很简单，只有4个方法，我们先来了解一下："><span class="nav-number">1.1.</span> <span class="nav-text">1.1 ThreadLocal类接口很简单，只有4个方法，我们先来了解一下：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-使用ThreadLocal"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 使用ThreadLocal</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-ThreadLocalMap"><span class="nav-number">2.</span> <span class="nav-text">2. ThreadLocalMap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-方法分析"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 方法分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-WeakReference"><span class="nav-number">3.</span> <span class="nav-text">3. WeakReference</span></a></li></ol></div>
             
 
           </div>
@@ -915,9 +940,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://hacloud.club/2017/07/18/spring-cloud/';
-          this.page.identifier = '2017/07/18/spring-cloud/';
-          this.page.title = 'Spring Cloud 入门';
+          this.page.url = 'http://hacloud.club/2017/09/04/ThreadLocal/';
+          this.page.identifier = '2017/09/04/ThreadLocal/';
+          this.page.title = '深入ThreadLocal';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://keets-blog.disqus.com/embed.js';
