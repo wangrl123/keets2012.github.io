@@ -28,7 +28,7 @@ Spring Boot的自动化配置特性来实现快速的将swagger2引入spring boo
 
 ```xml
 <dependency>
-	<groupId>cn.keets</groupId>
+	<groupId>club.hacloud</groupId>
 	<artifactId>jersey-starter-swagger</artifactId>
 	<version>1.0.0.RELEASE</version>
 </dependency>
