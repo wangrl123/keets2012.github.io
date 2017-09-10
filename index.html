@@ -463,7 +463,7 @@
 <blockquote>
 <p>采用一主两从的方式，同时分机房部署，Master和Slave之间采用半同步方式同步数据。同时使用DBProxy做主从切换。当然这种方案在一些情况会退化成异步模式，甚至在非常极端情况下仍然会造成数据不一致的情况，但是出现的概率非常小。</p>
 </blockquote>
-<p><img src="https://tech.meituan.com/img/leaf/image6.png" alt="主从" title="主从方式"></p>
+<p><img src="http://ovci9bs39.bkt.clouddn.com/master-slave.png" alt="主从" title="主从方式"></p>
 <h2 id="3-snowflake方案"><a href="#3-snowflake方案" class="headerlink" title="3. snowflake方案"></a>3. snowflake方案</h2><h3 id="3-1-介绍"><a href="#3-1-介绍" class="headerlink" title="3.1 介绍"></a>3.1 介绍</h3><p>考虑到上述方案的缺陷，笔者调查了其他的生成方案，snowflake就是其中一种方案。<br>趋势递增和不够随机的问题，在snowflake完全可以解决，Snowflake ID有64bits长，由以下三部分组成：<br><img src="http://ovci9bs39.bkt.clouddn.com/snowflake-64bit.jpg" alt="snowflake" title="snowflake"></p>
 <ol>
 <li>第一位为0，不用。</li>
@@ -1936,7 +1936,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://hacloud.club/2017/07/10/REST与HTTP/">
+    <link itemprop="mainEntityOfPage" href="http://hacloud.club/2017/07/10/Jersey-Swagger/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="keets">
@@ -1955,7 +1955,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/10/REST与HTTP/" itemprop="url">REST与HTTP</a></h1>
+                <a class="post-title-link" href="/2017/07/10/Jersey-Swagger/" itemprop="url">spring boot starter for Jersey-Swagger</a></h1>
         
 
         <div class="post-meta">
@@ -2008,9 +2008,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/07/10/REST与HTTP/#comments" itemprop="discussionUrl">
+                <a href="/2017/07/10/Jersey-Swagger/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/10/REST与HTTP/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2017/07/10/Jersey-Swagger/" itemprop="commentCount"></span>
                 </a>
               </span>
             
