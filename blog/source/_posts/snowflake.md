@@ -53,7 +53,7 @@ uuid全球唯一，本地生成，没有网络消耗，产生的性能绝对可�
 >采用一主两从的方式，同时分机房部署，Master和Slave之间采用半同步方式同步数据。同时使用DBProxy做主从切换。当然这种方案在一些情况会退化成异步模式，甚至在非常极端情况下仍然会造成数据不一致的情况，但是出现的概率非常小。
 
 ![主从][ms]
-[ms]:https://tech.meituan.com/img/leaf/image6.png "主从方式"
+[ms]:http://ovci9bs39.bkt.clouddn.com/master-slave.png "主从方式"
 
 ## 3. snowflake方案
 ### 3.1 介绍
