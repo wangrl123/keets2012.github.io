@@ -7,4 +7,4 @@ layout: page-about
 ---
 深入研究常用的MQ中间件，对Kafka、Rabbitmq、NSQ中间件较为了解。最近致力于微服务架构，以Spring Cloud为基础，参与中型软件系统设计与实现。
 ---
-个人邮箱：aoho002@gmail.com 欢迎交流与讨论。
+个人邮箱：aoho002#gmail.com 欢迎交流与讨论。

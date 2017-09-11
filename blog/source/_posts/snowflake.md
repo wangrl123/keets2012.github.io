@@ -84,6 +84,14 @@ snowflake方案，id服务端生成，不依赖DB，既能保证性能，且生�
 具体的协议算法，可以参考[Gossip](https://www.consul.io/docs/internals/gossip.html)。   
 每次server实例启动时，实例化id生成bean的时候，会首先校验当前时间与consul集群中该worker对应的lastTimestamp大小，如果当前时间偏小，则抛出异常，服务启动失败并报警。
 
+笔者项目暂时未分data center，所以machine-id部分都是以服务实例的workid代替。workid可以从配置中心获取，也可以本地配置。请求id生成流程图如下：
+
+![flow][fl]
+[fl]:http://ovci9bs39.bkt.clouddn.com/id%20generator.jpg "工作流程图"
+
+服务实例启动的流程图见上文，此处不画出了。这边需要强调的是，服务注册与发现组件consul。部署时每个服务实例都会注册到一个consul agent（一般是本机），consul agent连接到consul集群，通过gossip协议进行广播信息，所以如果连接的consul agent进程不幸挂掉（大多为系统宕机），在进程重启后，还是能迅速获取到集群中存储的该workid的lastTimestamp，针对该workid，如果系统时间回拨小于lastTimestamp，Generator启动时会报警。而对于大于lastTimestamp的情况，可能系统时钟还是相对回拨，我们姑且可以认为对全局id没有影响。
+
+
 实例化时，进行校验：
 
 ```java
@@ -166,6 +174,9 @@ validateTimestamp:
         return ((timestamp - idMeta.START_TIME) << idMeta.TIMESTAMP_LEFT_SHIFT_BITS) | (workerId << idMeta.ID_SHIFT_BITS) | sequence;
     }
 ```
+
+## 4. 总结
+这篇文章和大家分享了笔者项目中全局id生成服务的演进过程。当前的方案可以满足笔者当前项目的需求，至于分data-center（同一个机房优先调用），需要结合rpc调用进一步做处理，所以这块后续可以继续完善。欢迎大家提出建议。
 
 ----
 参考：   
