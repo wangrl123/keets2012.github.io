@@ -1,5 +1,5 @@
 ---
-title: spring-boot-starter-swagger for jersey
+title: 自制Jersey-Swagger的spring-boot-starter
 date: 2017-9-2 
 categories: Note
 tags:
