@@ -109,8 +109,9 @@
 <meta property="og:description" content="1. 背景分布式系统或者微服务架构基本都采用了分库分表的设计，全局唯一id生成的需求变得很迫切。传统的单体应用，使用单库，数据库中自增id可以很方便实现。分库之后，首先需要分库键，分库键必然不能重复，所以传统的做法并不能满足需求。概括下来，那业务系统对ID号的要求有哪些呢？  1.全局唯一性：不能出现重复的ID号，既然是唯一标识，这是最基本的要求。2.趋势递增：在MySQL InnoDB引擎中使用">
 <meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/master-slave.png">
 <meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/snowflake-64bit.jpg">
+<meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/data-center.png">
 <meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/id%20generator.jpg">
-<meta property="og:updated_time" content="2017-09-11T14:23:57.000Z">
+<meta property="og:updated_time" content="2017-09-14T14:27:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="snowflake升级版全局id生成">
 <meta name="twitter:description" content="1. 背景分布式系统或者微服务架构基本都采用了分库分表的设计，全局唯一id生成的需求变得很迫切。传统的单体应用，使用单库，数据库中自增id可以很方便实现。分库之后，首先需要分库键，分库键必然不能重复，所以传统的做法并不能满足需求。概括下来，那业务系统对ID号的要求有哪些呢？  1.全局唯一性：不能出现重复的ID号，既然是唯一标识，这是最基本的要求。2.趋势递增：在MySQL InnoDB引擎中使用">
@@ -469,7 +470,8 @@
 <p>采用一主两从的方式，同时分机房部署，Master和Slave之间采用半同步方式同步数据。同时使用DBProxy做主从切换。当然这种方案在一些情况会退化成异步模式，甚至在非常极端情况下仍然会造成数据不一致的情况，但是出现的概率非常小。</p>
 </blockquote>
 <p><img src="http://ovci9bs39.bkt.clouddn.com/master-slave.png" alt="主从" title="主从方式"></p>
-<h2 id="3-snowflake方案"><a href="#3-snowflake方案" class="headerlink" title="3. snowflake方案"></a>3. snowflake方案</h2><h3 id="3-1-介绍"><a href="#3-1-介绍" class="headerlink" title="3.1 介绍"></a>3.1 介绍</h3><p>考虑到上述方案的缺陷，笔者调查了其他的生成方案，snowflake就是其中一种方案。<br>趋势递增和不够随机的问题，在snowflake完全可以解决，Snowflake ID有64bits长，由以下三部分组成：<br><img src="http://ovci9bs39.bkt.clouddn.com/snowflake-64bit.jpg" alt="snowflake" title="snowflake"></p>
+<h2 id="3-snowflake方案"><a href="#3-snowflake方案" class="headerlink" title="3. snowflake方案"></a>3. snowflake方案</h2><h3 id="3-1-介绍"><a href="#3-1-介绍" class="headerlink" title="3.1 介绍"></a>3.1 介绍</h3><p>考虑到上述方案的缺陷，笔者调查了其他的生成方案，snowflake就是其中一种方案。<br>趋势递增和不够随机的问题，在snowflake完全可以解决，Snowflake ID有64bits长，由以下三部分组成：</p>
+<p><img src="http://ovci9bs39.bkt.clouddn.com/snowflake-64bit.jpg" alt="snowflake" title="snowflake"></p>
 <ol>
 <li>第一位为0，不用。</li>
 <li><p>timestamp—41bits,精确到ms，那就意味着其可以表示长达(2^41-1)/(1000360024*365)=139.5年，另外使用者可以自己定义一个开始纪元（epoch)，然后用(当前时间-开始纪元）算出time，这表示在time这个部分在140年的时间里是不会重复的，官方文档在这里写成了41bits，应该是写错了。另外，这里用time还有一个很重要的原因，就是可以直接更具time进行排序，对于twitter这种更新频繁的应用，时间排序就显得尤为重要了。</p>
@@ -490,7 +492,10 @@
 <p>Consul uses a gossip protocol to manage membership and broadcast messages to the cluster. All of this is provided through the use of the Serf library.</p>
 </blockquote>
 <p>具体的协议算法，可以参考<a href="https://www.consul.io/docs/internals/gossip.html" target="_blank" rel="external">Gossip</a>。<br>每次server实例启动时，实例化id生成bean的时候，会首先校验当前时间与consul集群中该worker对应的lastTimestamp大小，如果当前时间偏小，则抛出异常，服务启动失败并报警。</p>
-<p>笔者项目暂时未分data center，所以machine-id部分都是以服务实例的workid代替。workid可以从配置中心获取，也可以本地配置。请求id生成流程图如下：</p>
+<p>笔者项目暂时未分data center，所以machine-id部分都是以服务实例的workid代替。workid可以从配置中心获取，也可以本地配置。<br>简化的系统架构部署图如下：</p>
+<p><img src="http://ovci9bs39.bkt.clouddn.com/data-center.png" alt="部署图" title="服务部署图"></p>
+<p>consul集群这边作为提供naming service和kv存储的组件，每个服务部署后注册到consul集群，至于consul集群相关的信息，以及consul成员的一致性相关，后面单独一篇文章详细介绍。</p>
+<p>请求id生成流程图如下：</p>
 <p><img src="http://ovci9bs39.bkt.clouddn.com/id%20generator.jpg" alt="flow" title="工作流程图"></p>
 <p>服务实例启动的流程图见上文，此处不画出了。这边需要强调的是，服务注册与发现组件consul。部署时每个服务实例都会注册到一个consul agent（一般是本机），consul agent连接到consul集群，通过gossip协议进行广播信息，所以如果连接的consul agent进程不幸挂掉（大多为系统宕机），在进程重启后，还是能迅速获取到集群中存储的该workid的lastTimestamp，针对该workid，如果系统时间回拨小于lastTimestamp，Generator启动时会报警。而对于大于lastTimestamp的情况，可能系统时钟还是相对回拨，我们姑且可以认为对全局id没有影响。</p>
 <p>实例化时，进行校验：</p>
@@ -730,7 +735,7 @@
             
             
             <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
+              <a href="/archive/index.html">
                 <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">分类</span>
               </a>
