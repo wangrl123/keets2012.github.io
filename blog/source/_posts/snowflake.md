@@ -59,7 +59,9 @@ uuid全球唯一，本地生成，没有网络消耗，产生的性能绝对可�
 ### 3.1 介绍
 考虑到上述方案的缺陷，笔者调查了其他的生成方案，snowflake就是其中一种方案。   
 趋势递增和不够随机的问题，在snowflake完全可以解决，Snowflake ID有64bits长，由以下三部分组成：
+
 ![snowflake][sw]
+
 [sw]:http://ovci9bs39.bkt.clouddn.com/snowflake-64bit.jpg "snowflake"
 
 1. 第一位为0，不用。
@@ -84,9 +86,19 @@ snowflake方案，id服务端生成，不依赖DB，既能保证性能，且生�
 具体的协议算法，可以参考[Gossip](https://www.consul.io/docs/internals/gossip.html)。   
 每次server实例启动时，实例化id生成bean的时候，会首先校验当前时间与consul集群中该worker对应的lastTimestamp大小，如果当前时间偏小，则抛出异常，服务启动失败并报警。
 
-笔者项目暂时未分data center，所以machine-id部分都是以服务实例的workid代替。workid可以从配置中心获取，也可以本地配置。请求id生成流程图如下：
+笔者项目暂时未分data center，所以machine-id部分都是以服务实例的workid代替。workid可以从配置中心获取，也可以本地配置。   
+简化的系统架构部署图如下：
+
+![部署图][rp]
+
+[rp]:http://ovci9bs39.bkt.clouddn.com/data-center.png "服务部署图"
+
+consul集群这边作为提供naming service和kv存储的组件，每个服务部署后注册到consul集群，至于consul集群相关的信息，以及consul成员的一致性相关，后面单独一篇文章详细介绍。
+
+请求id生成流程图如下：
 
 ![flow][fl]
+
 [fl]:http://ovci9bs39.bkt.clouddn.com/id%20generator.jpg "工作流程图"
 
 服务实例启动的流程图见上文，此处不画出了。这边需要强调的是，服务注册与发现组件consul。部署时每个服务实例都会注册到一个consul agent（一般是本机），consul agent连接到consul集群，通过gossip协议进行广播信息，所以如果连接的consul agent进程不幸挂掉（大多为系统宕机），在进程重启后，还是能迅速获取到集群中存储的该workid的lastTimestamp，针对该workid，如果系统时间回拨小于lastTimestamp，Generator启动时会报警。而对于大于lastTimestamp的情况，可能系统时钟还是相对回拨，我们姑且可以认为对全局id没有影响。
@@ -184,5 +196,3 @@ validateTimestamp:
 1. [www.consul.io](https://www.consul.io/docs)
 2. [leaf](https://tech.meituan.com/MT_Leaf.html)
 3. [Twitter的分布式自增ID算法snowflake (Java版)](http://www.cnblogs.com/relucent/p/4955340.html)
-
-
