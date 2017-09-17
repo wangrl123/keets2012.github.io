@@ -1,0 +1,197 @@
+---
+title: consul配置与实战
+date: 2017-09-16 
+categories: Note
+tags:
+- consul
+- cluster
+---
+上一篇提到，项目用的分布式服务发现与注册组件是consul，这篇文章主要来讲下consul组件在项目中的应用以及相关介绍。本文以官方文档为主要参考[consul文档](https://www.consul.io/docs/internals/)。
+## 1. consul介绍
+consul是一个服务管理软件，主要功能如下：
+
+1. 支持多数据中心下，分布式高可用的，服务发现和配置共享。
+2. consul支持健康检查，允许存储键值对。
+3. 一致性协议采用`Raft`算法,用来保证服务的高可用。
+4. 成员管理和消息广播采用`GOSSIP`协议，支持ACL访问控制。
+
+### 1.1 服务注册与发现
+服务注册是一个服务将其位置信息在“中心注册节点”注册的过程。该服务一般会将它的主机IP地址以及端口号进行注册，有时也会有服务访问的认证信息，使用协议，版本号，以及关于环境的一些细节信息。   
+而服务发现可以让一个应用或者组件发现其运行环境以及其它应用或组件的信息。用户配置一个服务发现工具就可以将实际容器跟运行配置分离开。常见配置信息包括：ip、端口号、名称等。   
+
+在传统情况下，当出现服务存在于多个主机节点上时，都会使用静态配置的方法来实现服务信息的注册。
+而当在一个复杂的系统里，需要较强的可扩展性时，服务被频繁替换时，为避免服务中断，动态的服务注册和发现就很重要。
+服务注册与发现的组件有很多，如Zookeeper、Etcd等。既可用于服务间的协调，同时又可用于服务的注册。
+
+### 1.2 Consensus Protocol - Raft
+ Consul使用Consensus协议Raft提供一致性（Consistency）。本文只是简单介绍在consul中的一致性，后面专门一篇写raft。
+    
+ ![raft算法][raft]
+ 
+ [raft]:http://ovci9bs39.bkt.clouddn.com/raft%E7%AE%97%E6%B3%95.png "raft算法"
+ 
+ 首先，Raft是一种基于Paxos的Consensus算法。相比于Paxos，Raft设计采用了较少的状态，并且是一种更简单、更易于理解的算法。   
+只有Server节点参与Raft，且是peer set的一员。所有的Client节点只是转发请求到Server。这种设计的考虑是，当更多的成员加入到peer set中时，quorum的规模也会增加。可能会导致性能问题是等待quorum个节点log entry。   
+ 启动Consul时，单个consul节点需要以bootstrap模式运行，该模式运行自我选举为leader。一旦Leader被选出来，其他Server可以添加Peer set中，保持一致性和安全性。最终一些Server添加到集群，bootstrap模式需要禁用。   
+ 因为所有Server都是Peer set中的成员，它们都知道谁是Leader。当一个RPC请求到达某个非Leader Server节点，请求就会被转发到Leader。如果RPC是一种query类型，这意味着它是只读的，Leader会基于FSM当前生成相应的结果，如果RPC是一种transaction类型，即修改状态，Leader产生一个新的日志条目，并基于Raft算法进行管理。一旦日志条目应用于有限状态机，transaction完成。   
+ 由于Raft的replication性质，性能对网络延迟是非常敏感的。为此，每个数据中心选择独立的Leader和维护一个不关联的peer set。数据按照数据中心进行划分，所以每个Leader只负责在相应数据中心的数据。当接收到一个远程数据中心的请求时，请求会被转发到相应的Leader。这种设计在不牺牲一致性的情况实现较低延迟交易和更高的可用性。   
+虽然所有日志副本的写入都是基于Raft，读取更灵活。但为了支持开发人员可能需要的各种权衡，Consul支持3种不同的一致性模式。
+
+- Default，Raft采用Leader租赁模式，提供了一个时间窗口，在该时间段内，Leader角色是稳定的。
+- consistent，无条件一致性
+- stale，这种模式允许在任何Server节点执行读取操作，无论它是不是Leader。
+
+### 1.3 Group Membership Protocol - Gossip
+Consul使用gossip协议管理成员关系、广播消息到整个集群。详情可参考[Serf library](https://www.serf.io/)。   
+ Consul利用两个不同的gossip pool。局域网(LAN Pool)和广域网(WAN Pool)。   
+ 每个Consul数据中心都有一个包含所有成员（Server和Client）的LAN gossip pool。LAN Pool有如下几个目的：
+ 
+ - 首先，成员关系允许Client自动发现Server节点，减少所需的配置量。
+ - 其次，分布式故障检测允许的故障检测的工作在某几个Server几点执行，而不是集中整个集群所有节点上。
+ - 最后，gossip允许可靠和快速的事件广播，如Leader选举。
+
+WAN Pool是全局唯一的，无论属于哪一个数据中心，所有Server应该加入到WAN Pool。由WAN Pool提供会员信息让Server可节电执行跨数据中心的请求。集成中故障检测允许Consul妥善处理整个数据中心失去连接，或在远程数据中心只是单个的Server节点。   
+所有这些功能都是通过利用Serf提供。从用户角度来看，它是作为一个嵌入式库提供这些功能。但其被Consul屏蔽，用户无需关心。作为开发人员可以去了解这个库是如何利用。
+
+### 1.4 Session会话
+上一篇文章[snowflake升级版全局id生成](http://hacloud.club/2017/09/09/snowflake/)中使用到了consul的KV存储。   
+Consul提供session会话机制，可以用于构建分布式锁。session可以绑定到节点、健康检查、KV数据，目的是提供细粒度锁。   
+KV存储和会话的集成是使用会话的主要场景。必须在使用之前创建一个会话，然后使用它的ID。KV API支持acquire和release操作，acquire操作类似CAS操作，只有当锁空闲时才会返回成功。当成功时，某个normal标识会更新，也会递增LockIndex，当然也会更新session的信息。
+如果在acquire操作时，与session相关的锁已经持有，那么LockIndex就不会递增，但是key值会更新，这就允许锁的当前持有者无需重新获得锁就可以更新key的内容。   
+ 一旦获得锁，所需要经release操作来释放（使用相同的session）。Release操作也类似于CAS操作。如果给定的session无效，那么请求会失败。需要特别注意的是，无需经过session的创建者，lock也是可以被释放的。这种设计是允许操作者干预来终止会话，在需要的时候。如上所述，会话无效也将导致所有被持有的锁被释放或删除。当锁被释放时，LockIndex不会变化，但是session会被清空，并且ModifyIndex递增。这些语义允许元组（Key，LockIndex，Session）作为一个独特的“序列”。这个序列可以被传递和用于验证请求是否属于当前的锁持有者。因为每次acquire 都会导致LockIndex递增，即使同一会话中重新获取锁，该序列能够检测到陈旧的请求。同样，如果会话失效，相应的LockIndex将为空。   
+要清楚的是，这种锁系统是纯粹的咨询。并不是强制Client必须获取锁再能执行操作作。任何客户端都可以在未获得锁的情况下读取、写入和删除Key操作。它不是Consul用于保护系统的方法。
+
+## 2. consul架构
+上面介绍了consul的技术内幕。现在来讲讲consul的架构。
+
+![consul][consul]
+ 
+ [consul]:http://ovci9bs39.bkt.clouddn.com/consul.png "consul"
+
+拆解开这个体系，从每一个组件开始了解。首先，可以看到有两个数据中心，分别标记为“one”和“two”。Consul是支持多数据中心一流，并且是常用业务场景。   
+   
+每个数据中心都是由Server和client组成。建议有3~5台Server，基于故障处理和性能的平衡之策。如果增加越多的机器，则Consensus会越来越慢。对client没有限制，可以很容易地扩展到成千上万或数万。   
+同一个数据中心的所有节点都要加入Gossip协议。这意味着gossip pool包含给定数据中心的所有节点。有以下目的：首先，没有必要为client配置服务器地址参数；发现是自动完成的。第二，节点故障检测的工作不是放置在服务器上，而是分布式的。这使故障检测比心跳机制更可扩展性。第三，可用来作为消息层通知重要的事件，如leader选举。  
+  
+每个数据中心的服务器都是属于一个Raft peer。这意味着，他们一起工作，选出一个的Leader，Leader server是有额外的职责。负责处理所有的查询和事务。事务也必须通过Consensus协议复制到所有的伙伴。由于这一要求，当非Leader Server接收到一个RPC请求，会转发到集群的leader。   
+
+Server节点也是作为WAN gossip pool的一部分。这个pool是与LAN gossip pool是不同的，它为具有更高延迟的网络响应做了优化，并且可能包括其他consul集群的server节点。设计WANpool的目的是让数据中心能够以low-touch的方式发现彼此。将一个新的数据中心加入现有的WAN Gossip是很容易的。因为池中的所有Server都是可控制的，这也使跨数据中心的要求。当一个Serfer接收到不同的数据中心的要求时，它把这个请求转发给相应数据中心的任一Server。然后，接收到请求的Server可能会转发给Leader。   
+多个数据中心之间是低耦合，但由于故障检测、连接缓存复用、跨数据中心要求快速和可靠的响应。
+
+## 3. consul部署
+### 3.1 docker安装
+`docker`安装很简单，笔者这边是基于docker-compose的配置文件，只需要本地安装好docker和docker-compose，docker-compose.yml如下：   
+
+```yaml
+version: '3'
+services:
+  consul:
+    image: consul
+    ports:
+     - "8500:8500"
+     - "8600:8600"
+     - "8300:8300"
+```
+拉取consul得最新image，进行端口映射，暴露对外的端口8500，8300.
+
+### 3.2 软件安装
+
+1. 从官网下载罪行的consul安装包，https://www.consul.io/downloads.html。
+2. 解压consul_0.6.4_darwin_amd64.zip。
+3. 将解压后的二进制文件consul拷贝到/usr/local/bin下。
+4. 写配置文件。
+服务注册的配置文件如下:
+
+```ymal
+{
+  "service": {
+    "name": "redis",
+    "tags": ["master"],
+    "address": "1192.168.1.100",
+    "port": 8000,
+    "enableTagOverride": false,
+    "check": {  
+    	"id": "redis",  
+   	 	"name": "redis on port 8000",  
+    	"tcp": "localhost:8000",  
+    	"interval": "10s",  
+    	"timeout": "1s"  
+  }
+  }
+}
+```
+如上配置注册了Redis的8000端口，并带有tcp的health check。
+
+节点的配置文件：
+
+```yaml
+{
+  "datacenter": "east-cn",
+  "data_dir": "/opt/consul",
+  "log_level": "INFO",
+  "node_name": "redis",
+  "server": true,
+  "addresses": {
+    "https": "192.168.1.100"
+  },
+  "ports": {
+    "https": 0
+  },
+  "ui": true,
+  "retry-join": [
+]
+}
+```
+当加载配置选项时，consul是按照词典顺序从所有配置文件或目录中加载。比如，`a.json`会先于`e.json`处理。后面设定的配置选项会合并到前面的配置集合中，如果存在重复的配置选项则会覆盖。当然，在某些情况下，比如事件处理程序，后面处理程序会追加到现有的配置选项中，形成事件处理程序列表。
+
+### 3.3 启动
+具体启动文档见[configuration](https://www.consul.io/docs/agent/options.html#configuration_files)。   
+如:
+
+```bash
+consul agent -server -config-dir /etc/consul.d -bind=192.168.1.100
+    -config-dir /etc/consul.d
+``` 
+
+- config-dir
+需要加载的配置文件目录，consul将加载目录下所有后缀为“.json”的文件，加载顺序为字母顺序，文件中配置选项合并方式如config-file。该参数可以多次配置。目录中的子目录是不会加载的。
+
+- data-dir
+此目录是为Agent存放state数据的。是所有Agent需要的，该目录应该存放在持久存储中（reboot不会丢失），对于server角色的Agent是很关键的,需要记录集群状态。并且该目录是支持文件锁。
+
+- server
+设置Agent是server模式还是client模式。Consul agent有两种运行模式：Server和Client。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上 的应用服务无关。Consule Server模式agent节点用于采用raft算法维护Consul集群的状态，官方建议每个Consul Cluster至少有3个或以上的运行在Server mode的Agent，Client节点不限。
+
+其他常用的还有：
+
+- client
+将绑定到client接口的地址，可以是HTTP、DNS、RPC服务器。默认为“127.0.0.1”，只允许回路连接。RPC地址会被其他的consul命令使用，比如consul members，查询agent列表
+
+- node
+节点在集群的名字，在集群中必须是唯一的。默认为节点的Hostname。
+
+- bootstrap
+设置服务是否为“bootstrap”模式。如果数据中心只有1个server agent，那么需要设置该参数。从技术上来讲，处于bootstrap模式的服务器是可以选择自己作为Raft Leader的。在consul集群中，只有一个节点可以配置该参数，如果有多个参数配置该参数，那么难以保证一致性。
+
+- bind
+用于集群内部通信的IP地址，与集群中其他节点互连可通。默认为“0.0.0.0”，consul将使用第一个有效的私有IPv4地址。如果指定“[::]”，consul将使用第一个有效的公共IPv6地址。使用TCP和UDP通信。注意防火墙，避免无法通信。
+
+### 3.4 结果
+在开启了`"ui": true`server主机上，如http://192.168.1.100:8500/ui查看注册中心的服务。   
+demo ui如下：
+
+![consului][ui]
+ 
+[ui]:http://ovci9bs39.bkt.clouddn.com/demoui.png "consul demo UI"
+
+## 4. 总结
+本文介绍了consul的一些内幕及consul配置相关，并对项目中的一些实际配置进行展示。希望能够帮助大家对consul相关的知识有所了解，并对于入门配置consul和实际应用有所知道。个人认为，consul原理还是简单易懂的，集群的配置也不复杂，安利大家使用。后面会再写一篇介绍Spring cloud中集成和使用consul组件作为注册与发现中心。
+
+
+---
+### 参考文献
+
+[consul文档](https://www.consul.io/docs/internals/)   
+[consul中文翻译](http://blog.csdn.net/younger_china/article/details/52243700)
+
+
