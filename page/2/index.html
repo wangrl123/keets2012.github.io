@@ -103,7 +103,7 @@
 <meta name="description" content="聚沙成塔！">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Aoho&#39;s Blog">
-<meta property="og:url" content="http://hacloud.club/tags/id/index.html">
+<meta property="og:url" content="http://hacloud.club/page/2/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
 <meta property="og:description" content="聚沙成塔！">
 <meta name="twitter:card" content="summary">
@@ -136,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://hacloud.club/tags/id/"/>
+  <link rel="canonical" href="http://hacloud.club/page/2/"/>
 
 
 
 
 
-  <title>标签: id | Aoho's Blog</title>
+  <title>Aoho's Blog</title>
   
 
 
@@ -168,7 +168,9 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left 
+   page-home 
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -315,45 +317,185 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h1>id<small>标签</small>
-      </h1>
-    </div>
-
+  <section id="posts" class="posts-expand">
     
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
 
-      <h2 class="post-title">
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://hacloud.club/2017/07/10/REST与HTTP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="keets">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aoho's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2017/09/09/snowflake/" itemprop="url">
-              
-                <span itemprop="name">snowflake升级版全局id生成</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/10/REST与HTTP/" itemprop="url">浅析REST与HTTP</a></h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-09-09T00:00:00+08:00"
-              content="2017-09-09" >
-          09-09
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-10T16:06:59+08:00">
+                2017-07-10
+              </time>
+            
 
-    </header>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/10/REST与HTTP/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/10/REST与HTTP/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="幂等性"><a href="#幂等性" class="headerlink" title="幂等性"></a>幂等性</h2><pre><code>Methods can also have the property of &quot;idempotence&quot; in that (aside from error or expiration issues) the side-effects of N &gt; 0 identical requests is the same as for a single request.
+</code></pre><ul>
+<li>安全操作与幂指相等特性（Safety /Idempotence）<br>HTTP 的 GET、HEAD 请求本质上应该是安全的调用，即：GET、HEAD 调用不会有任何的副作用，不会造成服务器端状态的改变。对于服务器来说，客户端对某一 URI 做 n 次的 GET、HAED 调用，其状态与没有做调用是一样的，不会发生任何的改变。</li>
+<li><p>HTTP 的 PUT、DELTE 调用，具有幂指相等特性 , 即：客户端对某一 URI 做 n 次的 PUT、DELTE 调用，其效果与做一次的调用是一样的。HTTP 的 GET、HEAD 方法也具有幂指相等特性。<br>HTTP 这些标准方法在原则上保证你的分布式系统具有这些特性，以帮助构建更加健壮的分布式系统。</p>
+</li>
+<li><p>当然作为设计的基础，几个必须的原则还是要遵守的：</p>
+<ol>
+<li>当标准合理的时候遵守标准。</li>
+<li>API应该对程序员友好，并且在浏览器地址栏容易输入。</li>
+<li>API应该简单，直观，容易使用的同时优雅。</li>
+<li>API应该具有足够的灵活性来支持上层ui。</li>
+<li>API设计权衡上述几个原则。</li>
+</ol>
+<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><p>http请求由三部分组成，分别是：请求行、消息报头、请求正文.</p>
+</li>
+<li><p>http 1.1/2</p>
+<p><a href="http://www.blogjava.net/yongboy/archive/2015/03/23/423751.html" target="_blank" rel="external">http://www.blogjava.net/yongboy/archive/2015/03/23/423751.html</a></p>
+</li>
+<li><p>HTTP/1.1，HTTP客户端无法重试非幂等请求，尤其在错误发生的时候，由于无法检测错误性质这会对重试带来不利的影响。</p>
+<ol>
+<li>HTTP/2不允许使用连接特定头部字段</li>
+<li>新增的5个头部</li>
+<li>推送机制的一些特性需求</li>
+<li>RST_STREAM等帧标志位的使用</li>
+</ol>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </article>
 
 
     
-  </div>
+  </section>
 
   
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
