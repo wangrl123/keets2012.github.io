@@ -111,7 +111,7 @@
 <meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/terms-raft.jpg">
 <meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/voterequest.png">
 <meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/log-replication.png">
-<meta property="og:updated_time" content="2017-09-27T14:42:56.000Z">
+<meta property="og:updated_time" content="2017-09-27T14:46:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="由Consul谈到Raft">
 <meta name="twitter:description" content="在前一篇文章consul配置与实战中，介绍了consul的一些内幕及consul配置相关，并对项目中的一些实际配置进行展示。这篇文章重点介绍consul中所涉及到的一致性算法raft。 1. 背景分布式系统的一致性是相当重要的，即为CAP理论中的C(Consistency)。一致性又可以分为强一致性和最终一致性。这篇文章重点讨论强一致性算法raft。    Lamport发表Paxos一致性算法从">
@@ -470,7 +470,7 @@
 <li>Log Matching<br>如果两个节点上的日志项拥有相同的Index和Term，那么这两个节点[0, Index]范围内的Log完全一致。</li>
 <li>State Machine Safety<br>一旦某个server将某个日志项应用于本地状态机，以后所有server对于该偏移都将应用相同日志项。</li>
 </ul>
-<h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h2><p>本文主要讲解了Raft算法的基本概念，以及算法中涉及到的leader选举，日志同步，安全性。Raft是以易理解性作为其涉及的一个目标，对于一个学习的新手来说，确实比Paxos易于理解很多。虽然 Raft 的论文比 Paxos 简单版论文容易读，论文依然有很多地方需要深刻体会与理解，笔者也还是搞了好几天。</p>
+<h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h2><p>本文主要讲解了Raft算法的基本概念，以及算法中涉及到的leader选举，日志同步，安全性。Raft是以易理解性作为其设计的一个目标，对于一个学习的新手来说，确实比Paxos易于理解很多。虽然 Raft 的论文比 Paxos 简单版论文容易读，论文依然有很多地方需要深刻体会与理解，笔者也还是搞了好几天。</p>
 <hr>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
 <li><a href="http://thesecretlivesofdata.com/raft/" target="_blank" rel="external">Raft Animate Demo</a>   </li>
