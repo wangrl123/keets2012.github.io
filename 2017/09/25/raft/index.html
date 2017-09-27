@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="consul,Cluster,Consensus," />
 
 
 
@@ -100,15 +100,22 @@
 
 
 
-<meta name="description" content="聚沙成塔！">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Aoho&#39;s Blog">
-<meta property="og:url" content="http://hacloud.club/tags/jersey/index.html">
+<meta name="description" content="在前一篇文章consul配置与实战中，介绍了consul的一些内幕及consul配置相关，并对项目中的一些实际配置进行展示。这篇文章重点介绍consul中所涉及到的一致性算法raft。 1. 背景分布式系统的一致性是相当重要的，即为CAP理论中的C(Consistency)。一致性又可以分为强一致性和最终一致性。这篇文章重点讨论强一致性算法raft。    Lamport发表Paxos一致性算法从">
+<meta name="keywords" content="consul,Cluster,Consensus">
+<meta property="og:type" content="article">
+<meta property="og:title" content="由Consul谈到Raft">
+<meta property="og:url" content="http://hacloud.club/2017/09/25/raft/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="聚沙成塔！">
+<meta property="og:description" content="在前一篇文章consul配置与实战中，介绍了consul的一些内幕及consul配置相关，并对项目中的一些实际配置进行展示。这篇文章重点介绍consul中所涉及到的一致性算法raft。 1. 背景分布式系统的一致性是相当重要的，即为CAP理论中的C(Consistency)。一致性又可以分为强一致性和最终一致性。这篇文章重点讨论强一致性算法raft。    Lamport发表Paxos一致性算法从">
+<meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/Raft%E8%BD%AC%E6%8D%A2%E5%9B%BE%E7%8A%B6%E6%80%81.jpg">
+<meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/terms-raft.jpg">
+<meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/voterequest.png">
+<meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/log-replication.png">
+<meta property="og:updated_time" content="2017-09-27T14:39:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Aoho&#39;s Blog">
-<meta name="twitter:description" content="聚沙成塔！">
+<meta name="twitter:title" content="由Consul谈到Raft">
+<meta name="twitter:description" content="在前一篇文章consul配置与实战中，介绍了consul的一些内幕及consul配置相关，并对项目中的一些实际配置进行展示。这篇文章重点介绍consul中所涉及到的一致性算法raft。 1. 背景分布式系统的一致性是相当重要的，即为CAP理论中的C(Consistency)。一致性又可以分为强一致性和最终一致性。这篇文章重点讨论强一致性算法raft。    Lamport发表Paxos一致性算法从">
+<meta name="twitter:image" content="http://ovci9bs39.bkt.clouddn.com/Raft%E8%BD%AC%E6%8D%A2%E5%9B%BE%E7%8A%B6%E6%80%81.jpg">
 
 
 
@@ -136,13 +143,13 @@
 
 
 
-  <link rel="canonical" href="http://hacloud.club/tags/jersey/"/>
+  <link rel="canonical" href="http://hacloud.club/2017/09/25/raft/"/>
 
 
 
 
 
-  <title>标签: jersey | Aoho's Blog</title>
+  <title>由Consul谈到Raft | Aoho's Blog</title>
   
 
 
@@ -168,7 +175,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -316,44 +323,309 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h1>jersey<small>标签</small>
-      </h1>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://hacloud.club/2017/09/25/raft/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="keets">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aoho's Blog">
+    </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">由Consul谈到Raft</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-25T16:06:59+08:00">
+                2017-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/25/raft/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/25/raft/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">Views
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <p>在前一篇文章<a href="http://blueskykong.com/2017/09/16/consul/" target="_blank" rel="external">consul配置与实战</a>中，介绍了consul的一些内幕及consul配置相关，并对项目中的一些实际配置进行展示。这篇文章重点介绍consul中所涉及到的一致性算法raft。</p>
+<h2 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h2><p>分布式系统的一致性是相当重要的，即为CAP理论中的C(Consistency)。一致性又可以分为强一致性和最终一致性。这篇文章重点讨论强一致性算法raft。   </p>
+<p>Lamport发表Paxos一致性算法从90年提出到现在已经有二十几年了，直到2006年Google的三篇论文初现“云”的端倪，其中的Chubby Lock服务使用Paxos作为Chubby Cell中的一致性算法，Paxos的人气从此一路狂飙。而Paxos流程太过于繁杂实现起来也比较复杂，虽然现在很广泛使用的Zookeeper也是基于Paxos算法来实现，但是Zookeeper使用的ZAB（Zookeeper Atomic Broadcast）协议对Paxos进行了很多的改进与优化，复杂性是制约他发展的一个重要原因。Raft的设计初衷就是易于理解性。</p>
+<blockquote>
+<p>Raft是斯坦福的Diego Ongaro、John Ousterhout两个人以易懂（Understandability）为目标设计的一致性算法，在2013年发布了论文：《In Search of an Understandable Consensus Algorithm》</p>
+</blockquote>
+<p>从2013年发布到现在不过只有两年，到现在已经有了十多种语言的Raft算法实现框架，较为出名的有etcd。</p>
+<h2 id="2-Raft详解"><a href="#2-Raft详解" class="headerlink" title="2. Raft详解"></a>2. Raft详解</h2><p>强调的是易懂（Understandability），Raft和Paxos一样只要保证n/2+1节点正常就能够提供服务；众所周知但问题较为复杂时可以把问题分解为几个小问题来处理，Raft也使用了分而治之的思想把算法流程分为三个子问题：选举（Leader election）、日志复制（Log replication）、安全性（Safety）三个子问题。</p>
+<h3 id="2-1-raft基本概念"><a href="#2-1-raft基本概念" class="headerlink" title="2.1 raft基本概念"></a>2.1 raft基本概念</h3><ol>
+<li><p>states<br> 一个raft集群拥有多个server，通常会有5台，这样可以允许系统中两台server宕机。在任何情况下，所有的server只有如下三种状态之一：</p>
+<ul>
+<li>Leader，负责Client交互和log复制，同一时刻系统中最多存在1个</li>
+<li>Follower，被动响应请求RPC，从不主动发起请求RPC</li>
+<li><p>Candidate，由Follower向Leader转换的中间状态</p>
+<p>在正常的操作流程中，集群中有且只有一个server，其他所有的server都是follower。follower是被动的，他们只是被动地相应Candidate和leader的请求。。leader处理所有的客户端请求，follower自己不处理而是转发给leader。第三种状态是Candidate，用来选举一个新的leader。</p>
+</li>
+</ul>
+<p><img src="http://ovci9bs39.bkt.clouddn.com/Raft%E8%BD%AC%E6%8D%A2%E5%9B%BE%E7%8A%B6%E6%80%81.jpg" alt="角色转换" title="state转换图"></p>
+</li>
+<li><p>Terms<br>  Raft将时间划分成任意的长度周期。Terms可以理解为逻辑周期，用连续的整数表示。在分布式环境中，时间同步很重要，同时是一个难题。在Raft中使用了一个可以理解为周期（任期）的概念，用Term作为一个周期，每个Term都是一个连续递增的编号，每一轮选举都是一个Term周期，在一个Term中只能产生一个Leader。<br>  每个term伴随着一次election，一个或多个Candidate试图成为leader，如上图的状态转换。如果某个Candidate赢得了这次election，它将升级为剩余server的leader。在某些election的情形中，会产生耗票（Split Votes）的结果 ，即投票结果无效，随后一次新的term开始。raft确保在某个term至多有一个leader。<br>  <img src="http://ovci9bs39.bkt.clouddn.com/terms-raft.jpg" alt="terms" title="terms"><br>如上图所示，时间被划分成多个terms，每个term随着一次election。election完成后，一个leader节点管理整个集群，直至这个term结束。有些election失败了，未能产生一个leader。</p>
+</li>
+</ol>
+<h3 id="2-2-Leader-election"><a href="#2-2-Leader-election" class="headerlink" title="2.2 Leader election"></a>2.2 Leader election</h3><p>所有节点都是以follower启动。一个最小的 Raft 集群需要三个参与者，这样才可能投出多数票。初始状态 都是 Follower，然后发起选举这时有三种可能情形发生。如果每方都投给了自己，结果没有任何一方获得多数票。之后每个参与方随机休息一阵（Election Timeout）重新发起投票直到一方获得多数票。这里的关键就是随机 timeout，最先从timeout中恢复发起投票的一方向还在 timeout 中的另外两方请求投票，这时它们就只能投给对方了，很快达成一致。<br>Raft的选举由定时器来触发，每个节点的选举定时器时间都是不一样的，开始时状态都为Follower某个节点定时器触发选举后Term递增，状态由Follower转为Candidate，向其他节点发起RequestVote RPC请求，这时候有三种可能的情况发生：<br>　　1.该RequestVote请求接收到n/2+1（过半数）个节点的投票，从Candidate转为Leader，向其他节点发送heartBeat以保持Leader的正常运转。<br>　　2.在此期间如果收到其他节点发送过来的AppendEntries RPC请求，如该节点的Term大则当前节点转为Follower，否则保持Candidate拒绝该请求。<br>　　3.Election timeout发生则Term递增，重新发起选举。<br>　　在一个Term期间每个节点只能投票一次，所以当有多个Candidate存在时就会出现每个Candidate发起的选举都存在接收到的投票数都不过半的问题，这时每个Candidate都将Term递增、重启定时器并重新发起选举，由于每个节点中定时器的时间都是随机的，所以就不会多次存在有多个Candidate同时发起投票的问题。</p>
+<p>引用一张网上的图片，比较形象，如下图。<br><img src="http://ovci9bs39.bkt.clouddn.com/voterequest.png" alt="vote" title="vote"></p>
+<h3 id="2-3-Log-replication"><a href="#2-3-Log-replication" class="headerlink" title="2.3 Log replication"></a>2.3 Log replication</h3><p>日志复制主要是用于保证节点的一致性，这阶段所做的操作也是为了保证一致性与高可用性；当Leader选举出来后便开始负责客户端的请求，所有事务（更新操作）请求都必须先经过Leader处理，这些事务请求或说成命令也就是这里说的日志，我们都知道要保证节点的一致性就要保证每个节点都按顺序执行相同的操作序列，日志复制（Log Replication）就是为了保证执行相同的操作序列所做的工作；在Raft中当接收到客户端的日志（事务请求）后先把该日志追加到本地的Log中，然后通过heartbeat把该Entry同步给其他Follower，Follower接收到日志后记录日志然后向Leader发送ACK，当Leader收到大多数（n/2+1）Follower的ACK信息后将该日志设置为已提交并追加到本地磁盘中，通知客户端并在下个heartbeat中Leader将通知所有的Follower将该日志存储在自己的本地磁盘中。</p>
+<p><img src="http://ovci9bs39.bkt.clouddn.com/log-replication.png" alt="log" title="log"></p>
+<p>上图中，当leader选出来之后，follower的logs场景很可能出现在上图中。follower有可能丢失entries、有未提交的entries、有额外的entries等等场景。Raft中，leader通过强制followers复制自己的logs来处理不一致。这意味着，在follower中logs冲突的entries将会被leader logs中的覆写。</p>
+<h3 id="2-4-Safety"><a href="#2-4-Safety" class="headerlink" title="2.4 Safety"></a>2.4 Safety</h3><p>安全性是用于保证每个节点都执行相同序列的安全机制，如当某个Follower在当前Leader commit Log时变得不可用了，稍后可能该Follower又会倍选举为Leader，这时新Leader可能会用新的Log覆盖先前已committed的Log，这就是导致节点执行不同序列；Safety就是用于保证选举出来的Leader一定包含先前 commited Log的机制；</p>
+<ul>
+<li>Election Safety<br>每个Term只能选举出一个Leader，假设某个Term同时选举产生两个LeaderA和LeaderB，根据选举过程定义，A和B必须同时获得超过半数节点的投票，至少存在节点N同时给予A和B投票，因此矛盾。</li>
+<li>Leader Completeness<br>这里所说的完整性是指Leader日志的完整性，当Log在Term1被Commit后，那么以后Term2、Term3…等的Leader必须包含该Log；Raft在选举阶段就使用Term的判断用于保证完整性：当请求投票的该Candidate的Term较大或Term相同Index更大则投票，否则拒绝该请求；</li>
+<li>Leader Append-Only<br>Leader从不“重写”或者“删除”本地Log，仅仅“追加”本地Log。Raft算法中Leader权威至高无上，当Follower和Leader产生分歧的时候，永远是Leader去覆盖修正Follower。</li>
+<li>Log Matching<br>如果两个节点上的日志项拥有相同的Index和Term，那么这两个节点[0, Index]范围内的Log完全一致。</li>
+<li>State Machine Safety<br>一旦某个server将某个日志项应用于本地状态机，以后所有server对于该偏移都将应用相同日志项。</li>
+</ul>
+<h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h2><p>本文主要讲解了Raft算法的基本概念，以及算法中涉及到的leader选举，日志同步，安全性。Raft是以易理解性作为其涉及的一个目标，对于一个学习的新手来说，确实比Paxos易于理解很多。虽然 Raft 的论文比 Paxos 简单版论文容易读，论文依然有很多地方需要深刻体会与理解，笔者也还是搞了好几天。</p>
+<hr>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="http://thesecretlivesofdata.com/raft/" target="_blank" rel="external">Raft Animate Demo</a>   </li>
+<li><a href="https://ramcloud.stanford.edu/raft.pdf" target="_blank" rel="external">Raft Paper</a></li>
+<li><a href="https://raft.github.io/#implementations" target="_blank" rel="external">Raft Website</a></li>
+</ol>
 
-      <h2 class="post-title">
+      
+    </div>
+    <div>
+      
         
-            <a class="post-title-link" href="/2017/09/02/spring-boot-starter-swaggerforjersey/" itemprop="url">
-              
-                <span itemprop="name">自制Jersey-Swagger的spring-boot-starter</span>
-              
-            </a>
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/qrcode.jpg" alt="keets wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎您扫一扫上面的微信公众号，aoho求索，订阅我的博客!</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
         
-      </h2>
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechat.jpg" alt="keets WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/ali.jpg" alt="keets Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-09-02T00:00:00+08:00"
-              content="2017-09-02" >
-          09-02
-        </time>
-      </div>
 
-    </header>
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      keets
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hacloud.club/2017/09/25/raft/" title="由Consul谈到Raft">http://hacloud.club/2017/09/25/raft/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/consul/" rel="tag"># consul</a>
+          
+            <a href="/tags/Cluster/" rel="tag"># Cluster</a>
+          
+            <a href="/tags/Consensus/" rel="tag"># Consensus</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/16/consul/" rel="next" title="consul配置与实战">
+                <i class="fa fa-chevron-left"></i> consul配置与实战
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </div>
 
-  
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
 
 
           </div>
@@ -361,6 +633,17 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -380,8 +663,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.jpg"
@@ -468,6 +760,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-背景"><span class="nav-number">1.</span> <span class="nav-text">1. 背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Raft详解"><span class="nav-number">2.</span> <span class="nav-text">2. Raft详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-raft基本概念"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 raft基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Leader-election"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Leader election</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Log-replication"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 Log replication</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-Safety"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 Safety</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-总结"><span class="nav-number">3.</span> <span class="nav-text">3. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -617,10 +925,10 @@
 
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
 
-  
+
 
   
 
@@ -638,6 +946,18 @@
       <script id="dsq-count-scr" src="https://keets-blog.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://hacloud.club/2017/09/25/raft/';
+          this.page.identifier = '2017/09/25/raft/';
+          this.page.title = '由Consul谈到Raft';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://keets-blog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
