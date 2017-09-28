@@ -8,8 +8,8 @@
         <category>Note</category>
       </categories>
       <tags>
-        <tag>Cluster</tag>
         <tag>consul</tag>
+        <tag>Cluster</tag>
         <tag>Consensus</tag>
       </tags>
   </entry>
