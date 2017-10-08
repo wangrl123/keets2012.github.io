@@ -117,7 +117,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20160826111429053?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="og:image" content="http://img.blog.csdn.net/20160826111437210?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="og:image" content="http://img.blog.csdn.net/20160826111444499?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
-<meta property="og:updated_time" content="2017-10-08T08:51:35.000Z">
+<meta property="og:updated_time" content="2017-10-08T09:19:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NSQ深入与实践">
 <meta name="twitter:description" content="1. 介绍最近在研究一些消息中间件，常用的MQ如RabbitMQ,ActiveMQ,Kafka等。NSQ是一个基于Go语言的分布式实时消息平台，它基于MIT开源协议发布，由bitly公司开源出来的一款简单易用的消息中间件。官方和第三方还为NSQ开发了众多客户端功能库，如官方提供的基于HTTP的nsqd、Go客户端go-nsq、Python客户端pynsq、基于Node.js的JavaScript客">
@@ -488,7 +488,7 @@
 <p>事实上，简单性是我们决定使用NSQ的首要因素，这方便与我们的许多其他软件一起维护，通过引入队列使我们得到了堪称完美的表现，通过队列甚至让我们增加了几个数量级的吞吐量。越来越多的consumer需要一套严格可靠性和顺序性保障，这已经超过了NSQ提供的简单功能。 </p>
 <p>结合我们的业务系统来看，对于我们所需要传输的发票消息，相对比较敏感，无法容忍某个nsqd宕机，或者磁盘无法使用的情况，该节点堆积的消息无法找回。这是我们没有选择该消息中间件的主要原因。简单性和可靠性似乎并不能完全满足。相比Kafka，ops肩负起更多负责的运营。另一方面，它拥有一个可复制的、有序的日志可以提供给我们更好的服务。但对于其他适合NSQ的consumer，它为我们服务的相当好，我们期待着继续巩固它的坚实的基础。   </p>
 <hr>
-<p>ps: 本文首发于笔者的csdn博客<a href="http://blog.csdn.net/keets1992/article/details/52326600" target="_blank" rel="external">http://blog.csdn.net/keets1992/article/details/52326600</a> ，此处将其加入个人的博客。</p>
+<p>ps: 本文首发于笔者的csdn博客，此处将其加入个人的博客。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
 <li><a href="http://www.infoq.com/cn/news/2015/02/nsq-distributed-message-platform/" target="_blank" rel="external">NSQ：分布式的实时消息平台</a></li>
 <li><a href="https://speakerdeck.com/snakes/nsq-nyc-golang-meetup" target="_blank" rel="external">NSQ - NYC Golang Meetup</a></li>
