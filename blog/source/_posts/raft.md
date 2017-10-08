@@ -81,4 +81,5 @@ Leader从不“重写”或者“删除”本地Log，仅仅“追加”本地Lo
 1. [Raft Animate Demo](http://thesecretlivesofdata.com/raft/)   
 2. [Raft Paper](https://ramcloud.stanford.edu/raft.pdf)
 3. [Raft Website](https://raft.github.io/#implementations)
-4. [Raft 为什么是更易理解的分布式一致性算法](http://www.cnblogs.com/mindwind/p/5231986.html)
+4. [Raft 为什么是更易理解的分布式一致性算法](http://www.cnblogs.com/mindwind/p/5231986.html)   
+5. [Raft一致性算法](http://blog.csdn.net/cszhouwei/article/details/38374603)
