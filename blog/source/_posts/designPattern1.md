@@ -1,5 +1,5 @@
 ---
-title: 设计模式分类
+title: 设计模式
 date: 2017-01-12
 categories: 设计模式
 tags:
