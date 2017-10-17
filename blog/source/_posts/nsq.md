@@ -1,5 +1,5 @@
 ---
-title: NSQ深入与实践
+title: 消息中间件NSQ深入与实践
 date: 2017-10-8
 categories: Note
 tags:
@@ -29,8 +29,9 @@ NSQ非常容易配置和部署，生来就绑定了一个管理界面。二进�
 - Messages：消息构成了我们数据流的中坚力量，消费者可以选择结束消息，表明它们正在被正常处理，或者重新将他们排队待到后面再进行处理。每个消息包含传递尝试的次数，当消息传递超过一定的阀值次数时，我们应该放弃这些消息，或者作为额外消息进行处理。
 - nsqd：nsqd 是一个守护进程，负责接收，排队，投递消息给客户端。它可以独立运行，不过通常它是由 nsqlookupd 实例所在集群配置的（它在这能声明 topics 和 channels，以便大家能找到）。
 - nsqlookupd：nsqlookupd 是守护进程负责管理拓扑信息。客户端通过查询 nsqlookupd 来发现指定话题（topic）的生产者，并且 nsqd 节点广播话题（topic）和通道（channel）信息。有两个接口：TCP 接口，nsqd 用它来广播。HTTP 接口，客户端用它来发现和管理。
-- nsqadmin：nsqadmin 是一套 WEB UI，用来汇集集群的实时统计，并执行不同的管理任务。
-常用工具类：
+- nsqadmin：nsqadmin 是一套 WEB UI，用来汇集集群的实时统计，并执行不同的管理任务。   
+
+常用工具类：   
 - nsq_to _file：消费指定的话题（topic）/通道（channel），并写到文件中，有选择的滚动和/或压缩文件。
 - nsq_to _http：消费指定的话题（topic）/通道（channel）和执行 HTTP requests (GET/POST) 到指定的端点。
 - nsq_to _nsq：消费者指定的话题/通道和重发布消息到目的地 nsqd 通过 TCP。
