@@ -1,0 +1,1338 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring Security,OAuth2," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="引言： 本文系《认证鉴权与API权限控制在微服务架构中的设计与实现》系列的第二篇，本文重点讲解用户身份的认证与token发放的具体实现。本文篇幅较长，可收藏于闲暇时间阅读，欢迎订阅本系列文章。 1. 系统概览在上一篇 认证鉴权与API权限控制在微服务架构中的设计与实现（一）介绍了该项目的背景以及技术调研与最后选型，并且对于最终实现的endpoint执行结果进行展示。对系统架构虽然有提到，但是并未列">
+<meta name="keywords" content="Spring Security,OAuth2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="认证鉴权与API权限控制在微服务架构中的设计与实现（二）">
+<meta property="og:url" content="http://hacloud.club/2017/10/22/security2/index.html">
+<meta property="og:site_name" content="Aoho&#39;s Blog">
+<meta property="og:description" content="引言： 本文系《认证鉴权与API权限控制在微服务架构中的设计与实现》系列的第二篇，本文重点讲解用户身份的认证与token发放的具体实现。本文篇幅较长，可收藏于闲暇时间阅读，欢迎订阅本系列文章。 1. 系统概览在上一篇 认证鉴权与API权限控制在微服务架构中的设计与实现（一）介绍了该项目的背景以及技术调研与最后选型，并且对于最终实现的endpoint执行结果进行展示。对系统架构虽然有提到，但是并未列">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/login.png">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/gw.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/oauth.png">
+<meta property="og:updated_time" content="2017-10-22T13:21:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="认证鉴权与API权限控制在微服务架构中的设计与实现（二）">
+<meta name="twitter:description" content="引言： 本文系《认证鉴权与API权限控制在微服务架构中的设计与实现》系列的第二篇，本文重点讲解用户身份的认证与token发放的具体实现。本文篇幅较长，可收藏于闲暇时间阅读，欢迎订阅本系列文章。 1. 系统概览在上一篇 认证鉴权与API权限控制在微服务架构中的设计与实现（一）介绍了该项目的背景以及技术调研与最后选型，并且对于最终实现的endpoint执行结果进行展示。对系统架构虽然有提到，但是并未列">
+<meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/login.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hacloud.club/2017/10/22/security2/"/>
+
+
+
+
+
+  <title>认证鉴权与API权限控制在微服务架构中的设计与实现（二） | Aoho's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Aoho's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Focus On Software Architecture</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archive/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://hacloud.club/2017/10/22/security2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="keets">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aoho's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">认证鉴权与API权限控制在微服务架构中的设计与实现（二）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-22T00:00:00+08:00">
+                2017-10-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Security/" itemprop="url" rel="index">
+                    <span itemprop="name">Security</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/10/22/security2/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/10/22/security2/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">Views
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>引言： 本文系《认证鉴权与API权限控制在微服务架构中的设计与实现》系列的第二篇，本文重点讲解用户身份的认证与token发放的具体实现。本文篇幅较长，可收藏于闲暇时间阅读，欢迎订阅本系列文章。</p>
+<h2 id="1-系统概览"><a href="#1-系统概览" class="headerlink" title="1. 系统概览"></a>1. 系统概览</h2><p>在上一篇 <a href="http://blueskykong.com/2017/10/19/security1/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a>介绍了该项目的背景以及技术调研与最后选型，并且对于最终实现的endpoint执行结果进行展示。对系统架构虽然有提到，但是并未列出详细流程图。在笔者的应用场景中，Auth系统与网关进行结合。在网关出配置相应的端点信息，如登录系统申请token授权，校验check_token等端点。   </p>
+<p>下图为网关与Auth系统结合的流程图，网关系统的具体实现细节在后面另写文章介绍。（此处流程图的绘制中，笔者使用极简的语言描述，各位同学轻喷😆！）</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/login.png" alt="login" title="授权流程图"></p>
+<p>上图展示了系统登录的简单流程，其中的细节有省略，用户信息的合法性校验实际是调用用户系统。大体流程是这样，客户端请求到达网关之后，根据网关识别的请求登录端点，转发到Auth系统，将用户的信息进行校验。</p>
+<p>另一方面是对于一般请求的校验。一些不需要权限的公开接口，在网关处配置好，请求到达网关后，匹配了路径将会直接放行。如果需要对该请求进行校验，会将该请求的相关验证信息截取，以及API权限校验所需的上下文信息（笔者项目对于一些操作进行权限前置验证，下一盘文章会讲到），调用Auth系统，校验成功后进行路由转发。</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/gw.jpg" alt="gw" title="身份及API权限校验的流程图"></p>
+<p>这篇文章就重点讲解我们在<a href="http://blueskykong.com/2017/10/19/security1/" target="_blank" rel="external">第一篇</a>文章中提到的用户身份的认证与token发放。这个也主要包含两个方面：</p>
+<ul>
+<li>用户合法性的认证</li>
+<li>获取到授权的token</li>
+</ul>
+<h2 id="2-配置与类图"><a href="#2-配置与类图" class="headerlink" title="2. 配置与类图"></a>2. 配置与类图</h2><h3 id="2-1-AuthorizationServer主要配置"><a href="#2-1-AuthorizationServer主要配置" class="headerlink" title="2.1 AuthorizationServer主要配置"></a>2.1 AuthorizationServer主要配置</h3><p>关于<code>AuthorizationServer</code>和<code>ResourceServer</code>的配置在上一篇文章已经列出。<code>AuthorizationServer</code>主要是继承了<code>AuthorizationServerConfigurerAdapter</code>，覆写了其实现接口的三个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//对应于配置AuthorizationServer安全认证的相关信息，创建ClientCredentialsTokenEndpointFilter核心过滤器</span></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthorizationServerSecurityConfigurer security)</span> <span class="keyword">throws</span> Exception </span>&#123; </div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//配置OAuth2的客户端相关信息</span></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(ClientDetailsServiceConfigurer clients)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//配置身份认证器，配置认证方式，TokenStore，TokenGranter，OAuth2RequestFactory</span></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthorizationServerEndpointsConfigurer endpoints)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="2-2-主要Authentication类的类图"><a href="#2-2-主要Authentication类的类图" class="headerlink" title="2.2 主要Authentication类的类图"></a>2.2 主要<code>Authentication</code>类的类图</h3><p><img src="http://ovcjgn2x0.bkt.clouddn.com/oauth.png" alt="auth" title="AuthorizationServer UML类图"></p>
+<p>主要的验证方法<code>authenticate(Authentication authentication)</code>在接口<code>AuthenticationManager</code>中，其实现类有<code>ProviderManager</code>，有上图可以看出<code>ProviderManager</code>又依赖于<code>AuthenticationProvider</code>接口，其定义了一个<code>List&lt;AuthenticationProvider&gt;</code>全局变量。笔者这边实现了该接口的实现类<code>CustomAuthenticationProvider</code>。自定义一个<code>provider</code>，并在<code>GlobalAuthenticationConfigurerAdapter</code>中配置好改自定义的校验<code>provider</code>，覆写<code>configure()</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthenticationManagerConfig</span> <span class="keyword">extends</span> <span class="title">GlobalAuthenticationConfigurerAdapter</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    CustomAuthenticationProvider customAuthenticationProvider;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthenticationManagerBuilder auth)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        auth.authenticationProvider(customAuthenticationProvider);<span class="comment">//使用自定义的AuthenticationProvider</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>AuthenticationManagerBuilder</code>是用来创建<code>AuthenticationManager</code>，允许自定义提供多种方式的<code>AuthenticationProvider</code>，比如LDAP、基于JDBC等等。</p>
+<h2 id="3-认证与授权token"><a href="#3-认证与授权token" class="headerlink" title="3. 认证与授权token"></a>3. 认证与授权token</h2><p>下面讲解认证与授权token主要的类与接口。</p>
+<h3 id="3-1-自定义的验证类CustomAuthenticationProvider"><a href="#3-1-自定义的验证类CustomAuthenticationProvider" class="headerlink" title="3.1 自定义的验证类CustomAuthenticationProvider"></a>3.1 自定义的验证类<code>CustomAuthenticationProvider</code></h3><p><code>CustomAuthenticationProvider</code>中定义了验证方法的具体实现。其具体实现如下所示。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//主要的自定义验证方法</span></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> Authentication <span class="title">authenticate</span><span class="params">(Authentication authentication)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</div><div class="line">       String username = authentication.getName();</div><div class="line">       String password = (String) authentication.getCredentials();</div><div class="line">       Map data = (Map) authentication.getDetails();</div><div class="line">       String clientId = (String) data.get(<span class="string">"client"</span>);</div><div class="line">       Assert.hasText(clientId,<span class="string">"clientId must have value"</span> );</div><div class="line">       String type = (String) data.get(<span class="string">"type"</span>);</div><div class="line">       <span class="comment">//通过调用user服务，校验用户信息</span></div><div class="line">       Map map = userClient.checkUsernameAndPassword(getUserServicePostObject(username, password, type));</div><div class="line">		<span class="comment">//校验返回的信息，不正确则抛出异常，授权失败</span></div><div class="line">       String userId = (String) map.get(<span class="string">"userId"</span>);</div><div class="line">       <span class="keyword">if</span> (StringUtils.isBlank(userId)) &#123;</div><div class="line">           String errorCode = (String) map.get(<span class="string">"code"</span>);</div><div class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> BadCredentialsException(errorCode);</div><div class="line">       &#125;</div><div class="line">       CustomUserDetails customUserDetails = buildCustomUserDetails(username, password, userId, clientId);</div><div class="line">       <span class="keyword">return</span> <span class="keyword">new</span> CustomAuthenticationToken(customUserDetails);</div><div class="line">   &#125;</div><div class="line">   <span class="comment">//构造一个CustomUserDetails，简单，略去</span></div><div class="line">   <span class="function"><span class="keyword">private</span> CustomUserDetails <span class="title">buildCustomUserDetails</span><span class="params">(String username, String password, String userId, String clientId)</span> </span>&#123;</div><div class="line">   &#125;</div><div class="line"><span class="comment">//构造一个请求userService的map，内容略</span></div><div class="line">   <span class="function"><span class="keyword">private</span> Map&lt;String, String&gt; <span class="title">getUserServicePostObject</span><span class="params">(String username, String password, String type)</span> </span>&#123;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p><code>authenticate()</code>最后返回构造的自定义<code>CustomAuthenticationToken</code>，在<code>CustomAuthenticationToken</code>中，将<code>boolean authenticated</code>设为true，user信息验证成功。这边传入的参数<code>CustomUserDetails</code>与token生成有关，作为payload中的信息，下面会讲到。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//继承抽象类AbstractAuthenticationToken</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomAuthenticationToken</span> <span class="keyword">extends</span> <span class="title">AbstractAuthenticationToken</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> CustomUserDetails userDetails;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CustomAuthenticationToken</span><span class="params">(CustomUserDetails userDetails)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(<span class="keyword">null</span>);</div><div class="line">        <span class="keyword">this</span>.userDetails = userDetails;</div><div class="line">        <span class="keyword">super</span>.setAuthenticated(<span class="keyword">true</span>);</div><div class="line">    &#125;</div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>而<code>AbstractAuthenticationToken</code>实现了接口<code>Authentication和CredentialsContainer</code>，里面的具体信息读者可以自己看下源码。</p>
+<h3 id="3-2-关于JWT"><a href="#3-2-关于JWT" class="headerlink" title="3.2 关于JWT"></a>3.2 关于JWT</h3><p>用户信息校验完成之后，下一步则是要对该用户进行授权。在讲具体的授权之前，先补充下关于JWT Token的相关知识点。</p>
+<blockquote>
+<p>Json web token (JWT), 是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准（(RFC 7519).该token被设计为紧凑且安全的，特别适用于分布式站点的单点登录（SSO）场景。JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该token也可直接被用于认证，也可被加密。</p>
+</blockquote>
+<p>从上面的描述可知JWT的定义，这边读者可以对比下token的认证和传统的session认证的区别。推荐一篇文章<a href="http://www.jianshu.com/p/576dbf44b2ae" target="_blank" rel="external">什么是 JWT – JSON WEB TOKEN</a>，笔者这边就不详细扩展讲了，只是简单介绍下其构成。</p>
+<p>JWT包含三部分：header头部、payload信息、signature签名。下面以上一篇生成好的access_token为例介绍。</p>
+<ul>
+<li><p>header<br>jwt的头部承载两部分信息，一是声明类型，这里是jwt；二是声明加密的算法 通常直接使用 HMAC SHA256。第一部分一般固定为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9</div></pre></td></tr></table></figure>
+</li>
+<li><p>playload<br>存放的有效信息，这些有效信息包含三个部分、标准中注册的声明、公共的声明、私有的声明。这边笔者额外添加的信息为<code>X-KEETS-UserId</code>和<code>X-KEETS-ClientId</code>。读者可根据实际项目需要进行定制。最后playload经过base64编码后的结果为：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">eyJYLUtFRVRTLVVzZXJJZCI6ImQ2NDQ4YzI0LTNjNGMtNGI4MC04MzcyLWMyZDYxODY4ZjhjNiIsImV4cCI6MTUwODQ0Nzc1NiwidXNlcl9uYW1lIjoia2VldHMiLCJqdGkiOiJiYWQ3MmIxOS1kOWYzLTQ5MDItYWZmYS0wNDMwZTdkYjc5ZWQiLCJjbGllbnRfaWQiOiJmcm9udGVuZCIsInNjb3BlIjpbImFsbCJdfQ</div></pre></td></tr></table></figure>
+</li>
+<li><p>signature<br>jwt的第三部分是一个签证信息，这个签证信息由三部分组成：header (base64后的)、payload (base64后的)、secret。<br>关于secret，细心的读者可能会发现之前的配置里面有具体设置。前两部分连接组成的字符串，通过header中声明的加密方式进行加盐secret组合加密，然后就构成了jwt的第三部分。第三部分结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">5ZNVN8TLavgpWy8KZQKArcbj7ItJLLaY1zBRaAgMjdo</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>至于具体应用方法，可以参见第一篇文章中构建的<code>/logout</code>端点。</p>
+<h3 id="3-3-自定义的AuthorizationTokenServices"><a href="#3-3-自定义的AuthorizationTokenServices" class="headerlink" title="3.3 自定义的AuthorizationTokenServices"></a>3.3 自定义的<code>AuthorizationTokenServices</code></h3><p>现在到了为用户创建token，这边主要与自定义的接口<code>AuthorizationServerTokenServices</code>有关。<code>AuthorizationServerTokenServices</code>主要有如下三个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建token</span></div><div class="line"><span class="function">OAuth2AccessToken <span class="title">createAccessToken</span><span class="params">(OAuth2Authentication authentication)</span> <span class="keyword">throws</span> AuthenticationException</span>;</div><div class="line"><span class="comment">//刷新token</span></div><div class="line"><span class="function">OAuth2AccessToken <span class="title">refreshAccessToken</span><span class="params">(String refreshToken, TokenRequest tokenRequest)</span></span></div><div class="line">		<span class="keyword">throws</span> AuthenticationException;</div><div class="line"><span class="comment">//获取token</span></div><div class="line"><span class="function">OAuth2AccessToken <span class="title">getAccessToken</span><span class="params">(OAuth2Authentication authentication)</span></span>;</div></pre></td></tr></table></figure>
+<p>由于篇幅限制，笔者这边仅对<code>createAccessToken()</code>的实现方法进行分析，其他的方法实现，读者可以下关注笔者的GitHub项目。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomAuthorizationTokenServices</span> <span class="keyword">implements</span> <span class="title">AuthorizationServerTokenServices</span>, <span class="title">ConsumerTokenServices</span> </span>&#123;</div><div class="line">	...</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">public</span> OAuth2AccessToken <span class="title">createAccessToken</span><span class="params">(OAuth2Authentication authentication)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</div><div class="line">		<span class="comment">//通过TokenStore，获取现存的AccessToken</span></div><div class="line">        OAuth2AccessToken existingAccessToken = tokenStore.getAccessToken(authentication);</div><div class="line">        OAuth2RefreshToken refreshToken;</div><div class="line">		<span class="comment">//移除已有的AccessToken和refreshToken</span></div><div class="line">        <span class="keyword">if</span> (existingAccessToken != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (existingAccessToken.getRefreshToken() != <span class="keyword">null</span>) &#123;</div><div class="line">                refreshToken = existingAccessToken.getRefreshToken();</div><div class="line">                <span class="comment">// The token store could remove the refresh token when the</span></div><div class="line">					<span class="comment">// access token is removed, but we want to be sure</span></div><div class="line">                tokenStore.removeRefreshToken(refreshToken);</div><div class="line">            &#125;</div><div class="line">            tokenStore.removeAccessToken(existingAccessToken);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//recreate a refreshToken</span></div><div class="line">        refreshToken = createRefreshToken(authentication);</div><div class="line"></div><div class="line">        OAuth2AccessToken accessToken = createAccessToken(authentication, refreshToken);</div><div class="line">        <span class="keyword">if</span> (accessToken != <span class="keyword">null</span>) &#123;</div><div class="line">            tokenStore.storeAccessToken(accessToken, authentication);</div><div class="line">        &#125;</div><div class="line">        refreshToken = accessToken.getRefreshToken();</div><div class="line">        <span class="keyword">if</span> (refreshToken != <span class="keyword">null</span>) &#123;</div><div class="line">            tokenStore.storeRefreshToken(refreshToken, authentication);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> accessToken;</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这边具体的实现在上面有注释，基本没有改写多少，读者此处可以参阅源码。<code>createAccessToken()</code>还调用了两个私有方法，分别创建accessToken和refreshToken。创建accessToken，需要基于refreshToken。<br>此处可以自定义设置token的时效长度，accessToken创建实现如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> refreshTokenValiditySeconds = <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">30</span>; <span class="comment">// default 30 days.</span></div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> accessTokenValiditySeconds = <span class="number">60</span> * <span class="number">60</span> * <span class="number">12</span>; <span class="comment">// default 12 hours.</span></div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">private</span> OAuth2AccessToken <span class="title">createAccessToken</span><span class="params">(OAuth2Authentication authentication, OAuth2RefreshToken refreshToken)</span> </span>&#123;</div><div class="line">  <span class="comment">//对应tokenId，存储的标识</span></div><div class="line">      DefaultOAuth2AccessToken token = <span class="keyword">new</span> DefaultOAuth2AccessToken(UUID.randomUUID().toString());</div><div class="line">      <span class="keyword">int</span> validitySeconds = getAccessTokenValiditySeconds(authentication.getOAuth2Request());</div><div class="line">      <span class="keyword">if</span> (validitySeconds &gt; <span class="number">0</span>) &#123;</div><div class="line">          token.setExpiration(<span class="keyword">new</span> Date(System.currentTimeMillis() + (validitySeconds * <span class="number">1000L</span>)));</div><div class="line">      &#125;</div><div class="line">      token.setRefreshToken(refreshToken);</div><div class="line">      <span class="comment">//scope对应作用范围</span></div><div class="line">      token.setScope(authentication.getOAuth2Request().getScope());</div><div class="line"><span class="comment">//上一节介绍的自定义TokenEnhancer，这边使用</span></div><div class="line">      <span class="keyword">return</span> accessTokenEnhancer != <span class="keyword">null</span> ? accessTokenEnhancer.enhance(token, authentication) : token;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>既然提到<code>TokenEnhancer</code>，这边简单贴一下代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomTokenEnhancer</span> <span class="keyword">extends</span> <span class="title">JwtAccessTokenConverter</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TOKEN_SEG_USER_ID = <span class="string">"X-KEETS-UserId"</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TOKEN_SEG_CLIENT = <span class="string">"X-KEETS-ClientId"</span>;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> OAuth2AccessToken <span class="title">enhance</span><span class="params">(OAuth2AccessToken accessToken,</span></span></div><div class="line">                                     OAuth2Authentication authentication) &#123;</div><div class="line">        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();</div><div class="line"></div><div class="line">        Map&lt;String, Object&gt; info = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">        <span class="comment">//从自定义的userDetails中取出UserId</span></div><div class="line">        info.put(TOKEN_SEG_USER_ID, userDetails.getUserId());</div><div class="line"></div><div class="line">        DefaultOAuth2AccessToken customAccessToken = <span class="keyword">new</span> DefaultOAuth2AccessToken(accessToken);</div><div class="line">        customAccessToken.setAdditionalInformation(info);</div><div class="line"></div><div class="line">        OAuth2AccessToken enhancedToken = <span class="keyword">super</span>.enhance(customAccessToken, authentication);</div><div class="line">        <span class="comment">//设置ClientId</span></div><div class="line">        enhancedToken.getAdditionalInformation().put(TOKEN_SEG_CLIENT, userDetails.getClientId());</div><div class="line"></div><div class="line">        <span class="keyword">return</span> enhancedToken;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>自此，用户身份校验与发放授权token结束。最终成功返回的结果为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	&quot;access_token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJYLUtFRVRTLVVzZXJJZCI6ImQ2NDQ4YzI0LTNjNGMtNGI4MC04MzcyLWMyZDYxODY4ZjhjNiIsImV4cCI6MTUwODQ0Nzc1NiwidXNlcl9uYW1lIjoia2VldHMiLCJqdGkiOiJiYWQ3MmIxOS1kOWYzLTQ5MDItYWZmYS0wNDMwZTdkYjc5ZWQiLCJjbGllbnRfaWQiOiJmcm9udGVuZCIsInNjb3BlIjpbImFsbCJdfQ.5ZNVN8TLavgpWy8KZQKArcbj7ItJLLaY1zBRaAgMjdo&quot;,   </div><div class="line">    &quot;token_type&quot;: &quot;bearer&quot;,</div><div class="line">    &quot;refresh_token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJYLUtFRVRTLVVzZXJJZCI6ImQ2NDQ4YzI0LTNjNGMtNGI4MC04MzcyLWMyZDYxODY4ZjhjNiIsInVzZXJfbmFtZSI6ImtlZXRzIiwic2NvcGUiOlsiYWxsIl0sImF0aSI6ImJhZDcyYjE5LWQ5ZjMtNDkwMi1hZmZhLTA0MzBlN2RiNzllZCIsImV4cCI6MTUxMDk5NjU1NiwianRpIjoiYWE0MWY1MjctODE3YS00N2UyLWFhOTgtZjNlMDZmNmY0NTZlIiwiY2xpZW50X2lkIjoiZnJvbnRlbmQifQ.mICT1-lxOAqOU9M-Ud7wZBb4tTux6OQWouQJ2nn1DeE&quot;,</div><div class="line">    &quot;expires_in&quot;: 43195,</div><div class="line">    &quot;scope&quot;: &quot;all&quot;,</div><div class="line">    &quot;X-KEETS-UserId&quot;: &quot;d6448c24-3c4c-4b80-8372-c2d61868f8c6&quot;,</div><div class="line">    &quot;jti&quot;: &quot;bad72b19-d9f3-4902-affa-0430e7db79ed&quot;,</div><div class="line">    &quot;X-KEETS-ClientId&quot;: &quot;frontend&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>本文开头给出了Auth系统概述，画出了简要的登录和校验的流程图，方便读者能对系统的实现有个大概的了解。然后主要讲解了用户身份的认证与token发放的具体实现。对于其中主要的类和接口进行了分析与讲解。下一篇文章主要讲解token的鉴定和API级别的上下文权限校验。</p>
+<p><strong>本文的源码地址：<br>GitHub：<a href="https://github.com/keets2012/Auth-service" target="_blank" rel="external">https://github.com/keets2012/Auth-service</a><br>码云： <a href="https://gitee.com/keets/Auth-Service" target="_blank" rel="external">https://gitee.com/keets/Auth-Service</a></strong></p>
+<hr>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="http://www.jianshu.com/p/576dbf44b2ae" target="_blank" rel="external">什么是 JWT – JSON WEB TOKEN</a>   </li>
+<li><a href="https://www.cnkirito.moe/2017/08/09/Re%EF%BC%9A%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84Spring%20Security%20OAuth2%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">Re：从零开始的Spring Security OAuth2（二）</a></li>
+</ol>
+<h3 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h3><p><a href="http://blueskykong.com/2017/10/19/security1/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a></p>
+
+      
+    </div>
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/qrcode.jpg" alt="keets wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎您扫一扫上面的微信公众号，aoho求索，订阅我的博客!</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechat.jpg" alt="keets WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/ali.jpg" alt="keets Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      keets
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hacloud.club/2017/10/22/security2/" title="认证鉴权与API权限控制在微服务架构中的设计与实现（二）">http://hacloud.club/2017/10/22/security2/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring-Security/" rel="tag"># Spring Security</a>
+          
+            <a href="/tags/OAuth2/" rel="tag"># OAuth2</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/19/security1/" rel="next" title="认证鉴权与API权限控制在微服务架构中的设计与实现（一）">
+                <i class="fa fa-chevron-left"></i> 认证鉴权与API权限控制在微服务架构中的设计与实现（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="keets" />
+          <p class="site-author-name" itemprop="name">keets</p>
+           
+              <p class="site-description motion-element" itemprop="description">聚沙成塔！</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archive/">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/archive/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/keets2012" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://didispace.com/" title="didi" target="_blank">didi</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-系统概览"><span class="nav-number">1.</span> <span class="nav-text">1. 系统概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置与类图"><span class="nav-number">2.</span> <span class="nav-text">2. 配置与类图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-AuthorizationServer主要配置"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 AuthorizationServer主要配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-主要Authentication类的类图"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 主要Authentication类的类图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-认证与授权token"><span class="nav-number">3.</span> <span class="nav-text">3. 认证与授权token</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-自定义的验证类CustomAuthenticationProvider"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 自定义的验证类CustomAuthenticationProvider</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-关于JWT"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 关于JWT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-自定义的AuthorizationTokenServices"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 自定义的AuthorizationTokenServices</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-总结"><span class="nav-number">4.</span> <span class="nav-text">4. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.1.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关阅读"><span class="nav-number">4.2.</span> <span class="nav-text">相关阅读</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">keets</span>
+</div>
+
+
+<div class="powered-by">
+  Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a> 
+</div>
+
+<div class="theme-info">
+  主题 - Next
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cytgwPxMy';
+      var conf = 'c4bd093f0f2e95659d2adf52c85aa195';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
