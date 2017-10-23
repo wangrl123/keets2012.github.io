@@ -1,5 +1,5 @@
 ---
-title: 设计模式
+title: 23种设计模式总览
 date: 2017-01-12
 categories: 设计模式
 tags:
