@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="HTTPS,HTTP2," />
+  <meta name="keywords" content="Spring Security,OAuth2," />
 
 
 
@@ -100,21 +100,20 @@
 
 
 
-<meta name="description" content="1. HTTPS协议原理分析1.1 需要解决的问题 身份验证:确保通信双方身份的真实性。 通信加密:通信的机密性、完整性依赖于算法与密钥，通信双方是如何选择算法与密钥的。  1.2相关概念 数字证书 CA（certification authority）:数字证书的签发机构。 HTTPS协议、SSL协议、TLS协议、握手协议的关系 HTTPS是Hypertext Transfer Protocol">
-<meta name="keywords" content="HTTPS,HTTP2">
+<meta name="description" content="引言： 本文系《认证鉴权与API权限控制在微服务架构中的设计与实现》系列的第三篇，本文重点讲解token以及API级别的鉴权。本文对涉及到的大部分代码进行了分析，欢迎订阅本系列文章。 1. 前文回顾在开始讲解这一篇文章之前，先对之前两篇文章进行回忆下。在第一篇 认证鉴权与API权限控制在微服务架构中的设计与实现（一）介绍了该项目的背景以及技术调研与最后选型。第二篇认证鉴权与API权限控制在微服务架">
+<meta name="keywords" content="Spring Security,OAuth2">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HTTPS vs HTTP 1.1 vs HTTP 2">
-<meta property="og:url" content="http://hacloud.club/2017/08/26/HTTP2/index.html">
+<meta property="og:title" content="认证鉴权与API权限控制在微服务架构中的设计与实现（三）">
+<meta property="og:url" content="http://hacloud.club/2017/10/24/security3/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="1. HTTPS协议原理分析1.1 需要解决的问题 身份验证:确保通信双方身份的真实性。 通信加密:通信的机密性、完整性依赖于算法与密钥，通信双方是如何选择算法与密钥的。  1.2相关概念 数字证书 CA（certification authority）:数字证书的签发机构。 HTTPS协议、SSL协议、TLS协议、握手协议的关系 HTTPS是Hypertext Transfer Protocol">
-<meta property="og:image" content="http://img.blog.csdn.net/20170320161103113">
-<meta property="og:image" content="http://img.blog.csdn.net/20170320161954297">
-<meta property="og:image" content="http://img.blog.csdn.net/20170320161738200">
-<meta property="og:updated_time" content="2017-09-04T03:27:54.000Z">
+<meta property="og:description" content="引言： 本文系《认证鉴权与API权限控制在微服务架构中的设计与实现》系列的第三篇，本文重点讲解token以及API级别的鉴权。本文对涉及到的大部分代码进行了分析，欢迎订阅本系列文章。 1. 前文回顾在开始讲解这一篇文章之前，先对之前两篇文章进行回忆下。在第一篇 认证鉴权与API权限控制在微服务架构中的设计与实现（一）介绍了该项目的背景以及技术调研与最后选型。第二篇认证鉴权与API权限控制在微服务架">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/check.png">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/checktoken.png">
+<meta property="og:updated_time" content="2017-10-23T14:57:54.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HTTPS vs HTTP 1.1 vs HTTP 2">
-<meta name="twitter:description" content="1. HTTPS协议原理分析1.1 需要解决的问题 身份验证:确保通信双方身份的真实性。 通信加密:通信的机密性、完整性依赖于算法与密钥，通信双方是如何选择算法与密钥的。  1.2相关概念 数字证书 CA（certification authority）:数字证书的签发机构。 HTTPS协议、SSL协议、TLS协议、握手协议的关系 HTTPS是Hypertext Transfer Protocol">
-<meta name="twitter:image" content="http://img.blog.csdn.net/20170320161103113">
+<meta name="twitter:title" content="认证鉴权与API权限控制在微服务架构中的设计与实现（三）">
+<meta name="twitter:description" content="引言： 本文系《认证鉴权与API权限控制在微服务架构中的设计与实现》系列的第三篇，本文重点讲解token以及API级别的鉴权。本文对涉及到的大部分代码进行了分析，欢迎订阅本系列文章。 1. 前文回顾在开始讲解这一篇文章之前，先对之前两篇文章进行回忆下。在第一篇 认证鉴权与API权限控制在微服务架构中的设计与实现（一）介绍了该项目的背景以及技术调研与最后选型。第二篇认证鉴权与API权限控制在微服务架">
+<meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/check.png">
 
 
 
@@ -142,13 +141,13 @@
 
 
 
-  <link rel="canonical" href="http://hacloud.club/2017/08/26/HTTP2/"/>
+  <link rel="canonical" href="http://hacloud.club/2017/10/24/security3/"/>
 
 
 
 
 
-  <title>HTTPS vs HTTP 1.1 vs HTTP 2 | Aoho's Blog</title>
+  <title>认证鉴权与API权限控制在微服务架构中的设计与实现（三） | Aoho's Blog</title>
   
 
 
@@ -332,7 +331,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://hacloud.club/2017/08/26/HTTP2/">
+    <link itemprop="mainEntityOfPage" href="http://hacloud.club/2017/10/24/security3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="keets">
@@ -349,7 +348,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">HTTPS vs HTTP 1.1 vs HTTP 2</h1>
+          <h1 class="post-title" itemprop="name headline">认证鉴权与API权限控制在微服务架构中的设计与实现（三）</h1>
         
 
         <div class="post-meta">
@@ -361,8 +360,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-26T11:06:59+08:00">
-                2017-08-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-24T00:00:00+08:00">
+                2017-10-24
               </time>
             
 
@@ -384,8 +383,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Note/" itemprop="url" rel="index">
-                    <span itemprop="name">Note</span>
+                  <a href="/categories/Security/" itemprop="url" rel="index">
+                    <span itemprop="name">Security</span>
                   </a>
                 </span>
 
@@ -403,8 +402,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/08/26/HTTP2/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/08/26/HTTP2/" itemprop="commentsCount"></span>
+                <a href="/2017/10/24/security3/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/10/24/security3/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -434,79 +433,31 @@
       
 
       
-        <h2 id="1-HTTPS协议原理分析"><a href="#1-HTTPS协议原理分析" class="headerlink" title="1. HTTPS协议原理分析"></a>1. HTTPS协议原理分析</h2><h3 id="1-1-需要解决的问题"><a href="#1-1-需要解决的问题" class="headerlink" title="1.1 需要解决的问题"></a>1.1 需要解决的问题</h3><ul>
-<li>身份验证:确保通信双方身份的真实性。</li>
-<li>通信加密:通信的机密性、完整性依赖于算法与密钥，通信双方是如何选择算法与密钥的。</li>
-</ul>
-<h3 id="1-2相关概念"><a href="#1-2相关概念" class="headerlink" title="1.2相关概念"></a>1.2相关概念</h3><ul>
-<li>数字证书</li>
-<li>CA（certification authority）:数字证书的签发机构。</li>
-<li>HTTPS协议、SSL协议、TLS协议、握手协议的关系<ul>
-<li>HTTPS是Hypertext Transfer Protocol over Secure Socket Layer的缩写，即HTTP over SSL，可理解为基于SSL的HTTP协议。</li>
-<li>HTTPS协议安全是由SSL协议（目前常用的，本文基于TLS 1.2进行分析）实现的。</li>
-<li>SSL协议是一种记录协议，扩展性良好，可以很方便的添加子协议，而握手协议便是SSL协议的一个子协议。</li>
-<li>TLS协议是SSL协议的后续版本，本文中涉及的SSL协议默认是TLS协议1.2版本。   </li>
-</ul>
-</li>
-</ul>
-<p>HTTPS协议的安全性由SSL协议实现，当前使用的TLS协议1.2版本包含了四个核心子协议：握手协议、密钥配置切换协议、应用数据协议及报警协议。</p>
-<h3 id="1-3-握手协议"><a href="#1-3-握手协议" class="headerlink" title="1.3 握手协议"></a>1.3 握手协议</h3><p>握手协议的作用便是通信双方进行身份确认、协商安全连接各参数（加密算法、密钥等），确保双方身份真实并且协商的算法与密钥能够保证通信安全。<br>协议交互图：<br><img src="http://img.blog.csdn.net/20170320161103113" alt="协议交互" title="协议交互">  </p>
-<ol>
-<li>ClientHello消息的作用是，将客户端可用于建立加密通道的参数集合，一次性发送给服务端。</li>
-<li>ServerHello消息的作用是，在ClientHello参数集合中选择适合的参数，并将服务端用于建立加密通道的参数发送给客户端。</li>
-<li>Certificate消息的作用是，将服务端证书的详细信息发送给客户端，供客户端进行服务端身份校验。</li>
-<li>ServerKeyExchange消息的作用是，将需要服务端提供的密钥交换的额外参数，传给客户端。有的算法不需要额外参数，则ServerKeyExchange消息可不发送。</li>
-<li>ServerHelloDone消息的作用是，通知客户端ServerHello阶段的数据均已发送完毕，等待客户端下一步消息。</li>
-<li>ClientKeyExchange消息的作用是，将客户端需要为密钥交换提供的数据发送给服务端。</li>
-<li>ChangeCipherSpec消息的作用，便是声明后续消息均采用密钥加密。在此消息后，我们在WireShark上便看不到明文信息了。</li>
-<li>Finished消息的作用，是对握手阶段所有消息计算摘要，并发送给对方校验，避免通信过程中被中间人所篡改。</li>
-</ol>
-<h3 id="1-4-总结"><a href="#1-4-总结" class="headerlink" title="1.4 总结"></a>1.4 总结</h3><p>HTTPS如何保证通信安全，通过握手协议的介绍，我们已经有所了解。<br>但是，在全面使用HTTPS前，我们还需要考虑一个众所周知的问题——HTTPS性能。<br>相对HTTP协议来说，HTTPS协议建立数据通道的更加耗时，若直接部署到App中，势必降低数据传递的效率，间接影响用户体验。</p>
-<h2 id="2-HTTP-2"><a href="#2-HTTP-2" class="headerlink" title="2. HTTP 2"></a>2. HTTP 2</h2><h3 id="2-1-HTTP1-x协议"><a href="#2-1-HTTP1-x协议" class="headerlink" title="2.1 HTTP1.x协议"></a>2.1 HTTP1.x协议</h3><p>随着互联网的快速发展，HTTP1.x协议得到了迅猛发展，但当App一个页面包含了数十个请求时，HTTP1.x协议的局限性便暴露了出来：</p>
-<ul>
-<li>每个请求与响应需要单独建立链路进行请求(Connection字段能够解决部分问题)，浪费资源。</li>
-<li>每个请求与响应都需要添加完整的头信息，应用数据传输效率较低。</li>
-<li>默认没有进行加密，数据在传输过程中容易被监听与篡改。</li>
-</ul>
-<h3 id="2-2-HTTP-2介绍"><a href="#2-2-HTTP-2介绍" class="headerlink" title="2.2 HTTP 2介绍"></a>2.2 HTTP 2介绍</h3><p>HTTP2正是为了解决HTTP1.x暴露出来的问题而诞生的。</p>
-<blockquote>
-<p>说到HTTP2不得不提spdy。<br>由于HTTP1.x暴露出来的问题，Google设计了全新的名为spdy的新协议。spdy在五层协议栈的TCP层与HTTP层引入了一个新的逻辑层以提高效率。spdy是一个中间层，对TCP层与HTTP层有很好的兼容，不需要修改HTTP层即可改善应用数据传输速度。<br>spdy通过多路复用技术，使客户端与服务器只需要保持一条链接即可并发多次数据交互，提高了通信效率。<br>而HTTP2便士基于spdy的思路开发的。<br>通过流与帧概念的引入，继承了spdy的多路复用，并增加了一些实用特性。</p>
-</blockquote>
-<p>新特性：</p>
-<ul>
-<li>多路复用</li>
-<li>压缩头信息</li>
-<li>对请求划分优先级</li>
-<li>支持服务端Push消息到客户端</li>
-</ul>
-<p>HTTP2目前在实际使用中，只用于HTTPS协议场景下，通过握手阶段ClientHello与ServerHello的extension字段协商而来，所以目前HTTP2的使用场景，都是默认安全加密的。</p>
-<p>查看了wiki发现：</p>
-<blockquote>
-<p>Netty and OkHttp are the only two implementations supported by Spring. </p>
-</blockquote>
-<h3 id="2-3-协议协商"><a href="#2-3-协议协商" class="headerlink" title="2.3 协议协商"></a>2.3 协议协商</h3><p>HTTP2协议的协商是在握手阶段进行的。</p>
-<p>协商的方式是通过握手协议extension扩展字段进行扩展，新增Application Layer Protocol Negotiation字段进行协商。</p>
-<p>在握手协议的ClientHello阶段，客户端将所支持的协议列表填入Application Layer Protocol Negotiation字段，供服务端进行挑选。</p>
-<h3 id="2-4-多路复用Multipexing"><a href="#2-4-多路复用Multipexing" class="headerlink" title="2.4 多路复用Multipexing"></a>2.4 多路复用Multipexing</h3><p>在HTTP2中，同一域名下的请求，可通过同一条TCP链路进行传输，使多个请求不必单独建立链路，节省建立链路的开销。</p>
-<p>为了达到这个目的，HTTP2提出了流与帧的概念，流代表请求与响应，而请求与响应具体的数据则包装为帧，对链路中传输的数据通过流ID与帧类型进行区分处理。下图是多路复用的抽象图，每个块代表一帧，而相同颜色的块则代表是同一个流。<br><img src="http://img.blog.csdn.net/20170320161954297" alt="http2_stream" title="http2 stream">  </p>
-<p>归纳下okhttp的多路复用实现思路：</p>
-<ol>
-<li>通过请求的Address与连接池中现有连接Address依次匹配，选出可用的Connection。</li>
-<li>通过Http2xStream创建的FramedStream在发送了请求后，将FramedStream对象与StreamID的映射关系缓存到FramedConnection中。</li>
-<li>收到消息后，FramedConnection解析帧信息，在Map中通过解析的StreamID选出缓存的FramedStream，并唤醒FramedStream进行Response的处理。</li>
-</ol>
-<h3 id="2-5-压缩头信息"><a href="#2-5-压缩头信息" class="headerlink" title="2.5 压缩头信息"></a>2.5 压缩头信息</h3><p>HTTP2为了解决HTTP1.x中头信息过大导致效率低下的问题，提出的解决方案便是压缩头部信息。具体的压缩方式，则引入了HPACK。</p>
-<p>HPACK压缩算法是专门为HTTP2头部压缩服务的。为了达到压缩头部信息的目的，HPACK将头部字段缓存为索引，通过索引ID代表头部字段。客户端与服务端维护索引表，通信过程中尽可能采用索引进行通信，收到索引后查询索引表，才能解析出真正的头部信息。</p>
-<p>HPACK索引表划分为动态索引表与静态索引表，动态索引表是HTTP2协议通信过程中两端动态维护的索引表，而静态索引表是硬编码进协议中的索引表。</p>
-<p>作为分析HPACK压缩头信息的基础，需要先介绍HPACK对索引以及头部字符串的表示方式。</p>
-<p>索引</p>
-<p>索引以整型数字表示，由于HPACK需要考虑压缩与编解码问题，所以整型数字结构定义下图所示：<br><img src="http://img.blog.csdn.net/20170320161738200" alt="索引结构" title="索引结构"></p>
-<ul>
-<li>类别标识:<br>通过类别标识进行HPACK类别分类，指导后续编解码操作，常见的有1，01，01000000等八个类别。</li>
-<li>首字节低位整型:<br>首字节排除类别标识的剩余位，用于表示低位整型。若数值大于剩余位所能表示的容量，则需要后续字节表示高位整型。</li>
-<li>结束标识:<br>表示此字节是否为整型解析终止字节。</li>
-<li>高位整型:<br>字节余下7bit，用于填充整型高位。</li>
-</ul>
+        <p>引言： 本文系《认证鉴权与API权限控制在微服务架构中的设计与实现》系列的第三篇，本文重点讲解token以及API级别的鉴权。本文对涉及到的大部分代码进行了分析，欢迎订阅本系列文章。</p>
+<h2 id="1-前文回顾"><a href="#1-前文回顾" class="headerlink" title="1. 前文回顾"></a>1. 前文回顾</h2><p>在开始讲解这一篇文章之前，先对之前两篇文章进行回忆下。在第一篇 <a href="http://blueskykong.com/2017/10/19/security1/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a>介绍了该项目的背景以及技术调研与最后选型。第二篇<a href="http://blueskykong.com/2017/10/22/security2/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（二）</a>画出了简要的登录和校验的流程图，并重点讲解了用户身份的认证与token发放的具体实现。   </p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/check.png" alt="check" title="身份及API权限校验的流程图"></p>
+<p>本文重点讲解鉴权，包括两个方面：token合法性以及API级别的操作权限。首先token合法性很容易理解，第二篇文章讲解了获取授权token的一系列流程，token是否是认证服务器颁发的，必然是需要验证的。其次对于API级别的操作权限，将上下文信息不具备操作权限的请求直接拒绝，当然此处是设计token合法性校验在先，其次再对操作权限进行验证，如果前一个验证直接拒绝，通过则进入操作权限验证。</p>
+<h2 id="2-鉴权endpoint"><a href="#2-鉴权endpoint" class="headerlink" title="2. 鉴权endpoint"></a>2. 鉴权endpoint</h2><p>鉴权主要是使用内置的endpoint <code>/oauth/check_token</code>，笔者将对端点的分析放在前面，因为这是鉴权的唯一入口。下面我们来看下该API接口中的主要代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/oauth/check_token"</span>)</div><div class="line">   <span class="meta">@ResponseBody</span></div><div class="line">   <span class="keyword">public</span> Map&lt;String, ?&gt; checkToken(CheckTokenEntity checkTokenEntity) &#123;</div><div class="line">	<span class="comment">//CheckTokenEntity为自定义的dto</span></div><div class="line">       Assert.notNull(checkTokenEntity, <span class="string">"invalid token entity!"</span>);</div><div class="line">       <span class="comment">//识别token</span></div><div class="line">       OAuth2AccessToken token = resourceServerTokenServices.readAccessToken(checkTokenEntity.getToken());</div><div class="line">	<span class="comment">//判断token是否为空</span></div><div class="line">       <span class="keyword">if</span> (token == <span class="keyword">null</span>) &#123;</div><div class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> InvalidTokenException(<span class="string">"Token was not recognised"</span>);</div><div class="line">       &#125;</div><div class="line">	<span class="comment">//未过期</span></div><div class="line">       <span class="keyword">if</span> (token.isExpired()) &#123;</div><div class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> InvalidTokenException(<span class="string">"Token has expired"</span>);</div><div class="line">       &#125;</div><div class="line">       <span class="comment">//加载OAuth2Authentication</span></div><div class="line">       OAuth2Authentication authentication = resourceServerTokenServices.loadAuthentication(token.getValue());</div><div class="line">	<span class="comment">//获取response，token合法性验证完毕</span></div><div class="line">       Map&lt;String, Object&gt; response = (Map&lt;String, Object&gt;) accessTokenConverter.convertAccessToken(token, authentication);</div><div class="line"></div><div class="line">       <span class="comment">//check for api permission</span></div><div class="line">       <span class="keyword">if</span> (response.containsKey(<span class="string">"jti"</span>)) &#123;</div><div class="line">       	<span class="comment">//上下文操作权限校验</span></div><div class="line">           Assert.isTrue(checkPermissions.checkPermission(checkTokenEntity));</div><div class="line">       &#125;</div><div class="line">       </div><div class="line">       response.put(<span class="string">"active"</span>, <span class="keyword">true</span>);    <span class="comment">// Always true if token exists and not expired</span></div><div class="line"></div><div class="line">       <span class="keyword">return</span> response;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>看过security-oauth源码的同学可能立马就看出上述代码与源码不同，熟悉<code>/oauth/check_token</code>校验流程的也会看出来，这边笔者对<code>security-oauth</code> jar进行了重新编译，修改了部分源码用于该项目需求的场景。主要是加入了前置的API级别的权限校验。</p>
+<h2 id="3-token-合法性验证"><a href="#3-token-合法性验证" class="headerlink" title="3. token 合法性验证"></a>3. token 合法性验证</h2><p>从上面的<code>CheckTokenEndpoint</code>中可以看出，对于token合法性验证首先是识别请求体中的token。用到的主要方法是<code>ResourceServerTokenServices</code>提供的<code>readAccessToken()</code>方法。该接口的实现类为<code>DefaultTokenServices</code>，在之前的配置中有讲过这边配置了jdbc的TokenStore。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JdbcTokenStore</span> <span class="keyword">implements</span> <span class="title">TokenStore</span> </span>&#123;</div><div class="line">	...</div><div class="line">	<span class="function"><span class="keyword">public</span> OAuth2AccessToken <span class="title">readAccessToken</span><span class="params">(String tokenValue)</span> </span>&#123;</div><div class="line">		OAuth2AccessToken accessToken = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			<span class="comment">//使用selectAccessTokenSql语句，调用了私有的extractTokenKey()方法</span></div><div class="line">			accessToken = jdbcTemplate.queryForObject(selectAccessTokenSql, <span class="keyword">new</span> RowMapper&lt;OAuth2AccessToken&gt;() &#123;</div><div class="line">				<span class="function"><span class="keyword">public</span> OAuth2AccessToken <span class="title">mapRow</span><span class="params">(ResultSet rs, <span class="keyword">int</span> rowNum)</span> <span class="keyword">throws</span> SQLException </span>&#123;</div><div class="line">					<span class="keyword">return</span> deserializeAccessToken(rs.getBytes(<span class="number">2</span>));</div><div class="line">				&#125;</div><div class="line">			&#125;, extractTokenKey(tokenValue));</div><div class="line">		&#125;</div><div class="line">		<span class="comment">//异常情况</span></div><div class="line">		<span class="keyword">catch</span> (EmptyResultDataAccessException e) &#123;</div><div class="line">			<span class="keyword">if</span> (LOG.isInfoEnabled()) &#123;</div><div class="line">				LOG.info(<span class="string">"Failed to find access token for token "</span> + tokenValue);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">catch</span> (IllegalArgumentException e) &#123;</div><div class="line">			LOG.warn(<span class="string">"Failed to deserialize access token for "</span> + tokenValue, e);</div><div class="line">			<span class="comment">//不合法则移除</span></div><div class="line">			removeAccessToken(tokenValue);</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="keyword">return</span> accessToken;</div><div class="line">	&#125;</div><div class="line">	...</div><div class="line">	<span class="comment">//提取TokenKey方法</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> String <span class="title">extractTokenKey</span><span class="params">(String value)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (value == <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">		&#125;</div><div class="line">		MessageDigest digest;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			<span class="comment">//MD5</span></div><div class="line">			digest = MessageDigest.getInstance(<span class="string">"MD5"</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">catch</span> (NoSuchAlgorithmException e) &#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"MD5 algorithm not available.  Fatal (should be in the JDK)."</span>);</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			<span class="keyword">byte</span>[] bytes = digest.digest(value.getBytes(<span class="string">"UTF-8"</span>));</div><div class="line">			<span class="keyword">return</span> String.format(<span class="string">"%032x"</span>, <span class="keyword">new</span> BigInteger(<span class="number">1</span>, bytes));</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"UTF-8 encoding not available.  Fatal (should be in the JDK)."</span>);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>readAccessToken()</code>检索出该token值的完整信息。上述代码比较简单，涉及到的逻辑也不复杂，此处简单讲解。下图为debug token校验的变量信息，读者可以自己动手操作下，截图仅供参考。</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/checktoken.png" alt="token" title="debug token校验"></p>
+<p>至于后面的步骤，<code>loadAuthentication()</code>为特定的access token 加载credentials。得到的credentials 与token作为<code>convertAccessToken()</code>参数，得到校验token的response。</p>
+<h2 id="4-API级别权限校验"><a href="#4-API级别权限校验" class="headerlink" title="4. API级别权限校验"></a>4. API级别权限校验</h2><p>笔者项目目前都是基于Web的权限验证，之前遗留的一个巨大的单体应用系统正在逐渐拆分，然而当前又不能完全拆分完善。为了同时兼容新旧服务，尽量减少对业务系统的入侵，实现微服务的统一性和独立性。笔者根据业务业务场景，尝试在Auth处做操作权限校验。<br>首先想到的是资源服务器配置ResourceServer，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">http.authorizeRequests()</div><div class="line">.antMatchers(&quot;/order/**&quot;).access(&quot;#oauth2.hasScope(&apos;select&apos;) and hasRole(&apos;ROLE_USER&apos;)&quot;)</div></pre></td></tr></table></figure>
+<p>这样做需要将每个操作接口的API权限控制放在各个不同的业务服务，每个服务在接收到请求后，需要先从Auth服务取出该token 对应的role和scope等权限信息。这个方法肯定是可行的，但是由于项目鉴权的粒度更细，而且暂时不想大动原有系统，在加上之前网关设计，网关调用Auth服务校验token合法性，所以最后决定在Auth系统调用中，把这些校验一起解决完。再回顾下我们之前配置的资源服务器：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@EnableResourceServer</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResourceServerConfig</span> <span class="keyword">extends</span> <span class="title">ResourceServerConfigurerAdapter</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        http.csrf().disable()</div><div class="line">                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)</div><div class="line">                .and()</div><div class="line">                .requestMatchers().antMatchers(<span class="string">"/**"</span>)</div><div class="line">                .and().authorizeRequests()</div><div class="line">                .antMatchers(<span class="string">"/**"</span>).permitAll()</div><div class="line">                .anyRequest().authenticated()</div><div class="line">                .and().logout()</div><div class="line">                .logoutUrl(<span class="string">"/logout"</span>)</div><div class="line">                .clearAuthentication(<span class="keyword">true</span>)</div><div class="line">                .logoutSuccessHandler(<span class="keyword">new</span> HttpStatusReturningLogoutSuccessHandler())</div><div class="line">                .addLogoutHandler(customLogoutHandler());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面代码可以看出，对于所有的资源并没有做拦截，因为网关处是调用Auth系统的相关endpoint，并不是所有的请求url都会经过一遍Auth系统，所以对于所有的资源。在Auth系统中，定义需要鉴权接口所需要的API权限，然后根据上下文进行匹配。这是第二种方式，也是笔者目前采用的方法。当然这种方式的弊端也很明显，一旦并发量大，网关还要耗时在调用Auth系统的鉴权上，TPS势必要下降很多，对于一些不需要鉴权的服务接口也会引起不可用。另外一点是，对于某些特殊权限的接口，需要的上下文信息很多，可能并不能完全覆盖，对于此，笔者的解决是分两方面：一是尽量将这些特殊情况进行分类，某一类的情况统一解决；二是将严苛的校验降低，对于上下文校验失败的直接拒绝，而通过的，对于某些接口，在接口内进行操作之前，对特殊的地方还要再次进行校验。</p>
+<p>上面在讲endpoint有提到这边对源码进行了改写。<code>CheckTokenEntity</code>是自定义的DTO，这这个类中定义了鉴权需要的上下文，这里是指能校验操作权限的最小集合，如URI、roleId、affairId等等。另外定义了<code>CheckPermissions</code>接口，其方法<code>checkPermission(CheckTokenEntity checkTokenEntity)</code>返回了check的结果。而其具体实现类则定义在Auth系统中。笔者项目中调用的实例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomCheckPermission</span> <span class="keyword">implements</span> <span class="title">CheckPermissions</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> PermissionService permissionService;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">checkPermission</span><span class="params">(CheckTokenEntity checkTokenEntity)</span> </span>&#123;</div><div class="line">        String url = checkTokenEntity.getUri();</div><div class="line">        Long affairId = checkTokenEntity.getAffairId();</div><div class="line">        Long roleId = checkTokenEntity.getRoleId();</div><div class="line">        <span class="comment">//校验</span></div><div class="line">        <span class="keyword">if</span> (StringUtils.isEmpty(url) || affairId &lt;= <span class="number">0</span> || roleId &lt;= <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">return</span> permissionService.checkPermission(url, affairId, roleId);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>关于jar包<code>spring-cloud-starter-oauth2</code>中的具体修改内容，大家可以看下文末笔者的GitHub项目。通过自定义<code>CustomCheckPermission</code>，覆写<code>checkPermission()</code>方法，大家也可以对自己业务的操作权限进行校验，非常灵活。这边涉及到具体业务，笔者在项目中只提供接口，具体的实现需要读者自行完成。</p>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h2><p>本文相对来说比较简单，主要讲解了token以及API级别的鉴权。token的合法性认证很常规，Auth系统对于API级别的鉴权是结合自身业务需要和现状进行的设计。这两块的校验都前置到Auth系统中，优缺点在上面的小节也有讲述。最后，架构设计根据自己的需求和现状，笔者的解决思路仅供参考。</p>
+<p><strong>本文的源码地址：<br>GitHub：<a href="https://github.com/keets2012/Auth-service" target="_blank" rel="external">https://github.com/keets2012/Auth-service</a><br>码云： <a href="https://gitee.com/keets/Auth-Service" target="_blank" rel="external">https://gitee.com/keets/Auth-Service</a></strong></p>
+<hr>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.csdn.net/OmniStack/article/details/77881185?locationNum=10&amp;fps=1" target="_blank" rel="external">微服务API级权限的技术架构</a></p>
+<h3 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h3><p><a href="http://blueskykong.com/2017/10/19/security1/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a><br><a href="http://blueskykong.com/2017/10/22/security2/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（二）</a></p>
 
       
     </div>
@@ -560,7 +511,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://hacloud.club/2017/08/26/HTTP2/" title="HTTPS vs HTTP 1.1 vs HTTP 2">http://hacloud.club/2017/08/26/HTTP2/</a>
+      <a href="http://hacloud.club/2017/10/24/security3/" title="认证鉴权与API权限控制在微服务架构中的设计与实现（三）">http://hacloud.club/2017/10/24/security3/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -576,9 +527,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/HTTPS/" rel="tag"># HTTPS</a>
+            <a href="/tags/Spring-Security/" rel="tag"># Spring Security</a>
           
-            <a href="/tags/HTTP2/" rel="tag"># HTTP2</a>
+            <a href="/tags/OAuth2/" rel="tag"># OAuth2</a>
           
         </div>
       
@@ -591,8 +542,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/10/mongodb集群基础/" rel="next" title="mongodb 集群基础">
-                <i class="fa fa-chevron-left"></i> mongodb 集群基础
+              <a href="/2017/10/22/security2/" rel="next" title="认证鉴权与API权限控制在微服务架构中的设计与实现（二）">
+                <i class="fa fa-chevron-left"></i> 认证鉴权与API权限控制在微服务架构中的设计与实现（二）
               </a>
             
           </div>
@@ -600,10 +551,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/27/http2应用/" rel="prev" title="HTTP 2实际应用">
-                HTTP 2实际应用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -797,7 +744,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-HTTPS协议原理分析"><span class="nav-number">1.</span> <span class="nav-text">1. HTTPS协议原理分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-需要解决的问题"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 需要解决的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2相关概念"><span class="nav-number">1.2.</span> <span class="nav-text">1.2相关概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-握手协议"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 握手协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-总结"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-HTTP-2"><span class="nav-number">2.</span> <span class="nav-text">2. HTTP 2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-HTTP1-x协议"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 HTTP1.x协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-HTTP-2介绍"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 HTTP 2介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-协议协商"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 协议协商</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-多路复用Multipexing"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 多路复用Multipexing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-压缩头信息"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 压缩头信息</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-前文回顾"><span class="nav-number">1.</span> <span class="nav-text">1. 前文回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-鉴权endpoint"><span class="nav-number">2.</span> <span class="nav-text">2. 鉴权endpoint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-token-合法性验证"><span class="nav-number">3.</span> <span class="nav-text">3. token 合法性验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-API级别权限校验"><span class="nav-number">4.</span> <span class="nav-text">4. API级别权限校验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-总结"><span class="nav-number">5.</span> <span class="nav-text">5. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">5.1.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关阅读"><span class="nav-number">5.2.</span> <span class="nav-text">相关阅读</span></a></li></ol></li></ol></div>
             
 
           </div>
