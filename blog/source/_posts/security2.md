@@ -126,8 +126,11 @@ public class TokenEndpoint extends AbstractEndpoint {
 ```
 ![client](http://ovcjgn2x0.bkt.clouddn.com/client.png "endpoint")
 
-上面给代码进行了注释，读者感兴趣可以看看。接口处理的主要流程就是对authentication信息进行检查是否合法，不合法直接抛出异常，然后对请求的GrantType进行处理，根据GrantType，进行password模式的身份验证和token的发放。
-这边涉及到的`getTokenGranter()`，代码也列下：
+上面给代码进行了注释，读者感兴趣可以看看。接口处理的主要流程就是对authentication信息进行检查是否合法，不合法直接抛出异常，然后对请求的GrantType进行处理，根据GrantType，进行password模式的身份验证和token的发放。下面我们来看下`TokenGranter`的类图。
+
+![granter](http://ovcjgn2x0.bkt.clouddn.com/granter.png "TokenGranter")
+
+可以看出`TokenGranter`的实现类CompositeTokenGranter中有一个`List<TokenGranter>`，对应五种GrantType的实际授权实现。这边涉及到的`getTokenGranter()`，代码也列下：
 
 ```java
 public class CompositeTokenGranter implements TokenGranter {
@@ -387,17 +390,11 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
 GitHub：https://github.com/keets2012/Auth-service   
 码云： https://gitee.com/keets/Auth-Service**
 
-### 订阅最新文章，欢迎关注我的公众号
-
-![微信公众号](http://ovci9bs39.bkt.clouddn.com/qrcode_for_gh_ca56415d4966_430.jpg)
-
-
-
 ---
 ### 参考
 1. [什么是 JWT -- JSON WEB TOKEN](http://www.jianshu.com/p/576dbf44b2ae)   
 2. [Re：从零开始的Spring Security OAuth2（二）](https://www.cnkirito.moe/2017/08/09/Re%EF%BC%9A%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84Spring%20Security%20OAuth2%EF%BC%88%E4%BA%8C%EF%BC%89/)
+3. [spring-security-oauth](http://projects.spring.io/spring-security-oauth/docs/oauth2.html)
 
 ### 相关阅读
 [认证鉴权与API权限控制在微服务架构中的设计与实现（一）](http://blueskykong.com/2017/10/19/security1/)
-
