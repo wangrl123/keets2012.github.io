@@ -109,7 +109,7 @@
 <meta property="og:description" content="认证鉴权与API权限控制在微服务架构中的设计与实现（四）引言： 本文系《认证鉴权与API权限控制在微服务架构中的设计与实现》系列的完结篇，前面三篇已经将认证鉴权与API权限控制的流程和主要细节讲解完。本文比较长，对这个系列进行收尾，主要内容包括对授权和鉴权流程之外的endpoint以及Spring Security过滤器部分踩坑的经历。欢迎阅读本系列文章。 1. 前文回顾首先还是照例对前文进行回顾">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/logout.png">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/filterSecurity.png">
-<meta property="og:updated_time" content="2017-10-26T13:03:26.000Z">
+<meta property="og:updated_time" content="2017-10-26T13:04:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="认证鉴权与API权限控制在微服务架构中的设计与实现（四）">
 <meta name="twitter:description" content="认证鉴权与API权限控制在微服务架构中的设计与实现（四）引言： 本文系《认证鉴权与API权限控制在微服务架构中的设计与实现》系列的完结篇，前面三篇已经将认证鉴权与API权限控制的流程和主要细节讲解完。本文比较长，对这个系列进行收尾，主要内容包括对授权和鉴权流程之外的endpoint以及Spring Security过滤器部分踩坑的经历。欢迎阅读本系列文章。 1. 前文回顾首先还是照例对前文进行回顾">
@@ -522,6 +522,7 @@
 <li>将API级别操作权限分散到各个服务接口之后，相应的能提升Auth服务的响应。网关能够及时的对请求进行转发或者拒绝。</li>
 <li>API级别操作权限所需要的上下文信息对各个接口真的设计的很复杂，这边我们确实花了时间，同时管理移动服务的好几百操作接口所对应的权限，非常烦。！</li>
 </ul>
+<p><strong>本文的源码地址：<br>GitHub：<a href="https://github.com/keets2012/Auth-service" target="_blank" rel="external">https://github.com/keets2012/Auth-service</a><br>码云： <a href="https://gitee.com/keets/Auth-Service" target="_blank" rel="external">https://gitee.com/keets/Auth-Service</a></strong></p>
 <hr>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
 <li><a href="http://www.tianshouzhi.com/api/tutorials/spring_security_4/265" target="_blank" rel="external">配置表单登录</a></li>
