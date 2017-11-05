@@ -190,6 +190,11 @@ validateTimestamp:
 ## 4. 总结
 这篇文章和大家分享了笔者项目中全局id生成服务的演进过程。当前的方案可以满足笔者当前项目的需求，至于分data-center（同一个机房优先调用），需要结合rpc调用进一步做处理，所以这块后续可以继续完善。欢迎大家提出建议。
 
+**本文的源码地址：   
+GitHub：https://github.com/keets2012/snowflake-id-generator      
+码云： https://gitee.com/keets/snowflake-id-generator**
+
+
 ----
 参考：   
 

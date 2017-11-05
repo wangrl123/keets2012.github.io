@@ -6,13 +6,13 @@
 title: Aoho's Blog
 subtitle: Focus On Software Architecture
 description: 聚沙成塔！
-author: keets
+author: aoho
 language: zh-Hans
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://hacloud.club/
+url: http://blueskykong.com/
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
