@@ -122,7 +122,7 @@
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/skydependency.jpg">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/skytree1.jpg">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/serversky.jpg">
-<meta property="og:updated_time" content="2017-11-10T09:57:25.000Z">
+<meta property="og:updated_time" content="2017-11-10T09:58:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="几种分布式调用链监控组件的实践与比较（一）实践">
 <meta name="twitter:description" content="引言：最近在调研与选型分布式调用链监控组件。选了主要的三种APM组件进行了实践与比较。本来打算一篇文章写完的，篇幅太长，打算分两篇。本文主要讲下链路traceing的基本概念和几种APM组件的实践，实践部分也没给出特别详细的步骤，因为本文重点不在具体的步骤。第二篇将会讲下几种APM选型的比较与性能测试。 1. 问题背景微服务架构下，服务按照不同的维度进行拆分，一次请求请求往往需要涉及到多个服务。互">
@@ -476,14 +476,12 @@
 <li><p>Annotation: 注解,用来记录请求特定事件相关信息(例如时间)，通常包含四个注解信息：</p>
 <ul>
 <li><p>cs：Client Start,表示客户端发起请求</p>
-<ul>
+</li>
 <li><p>sr：Server Receive,表示服务端收到请求</p>
 </li>
 <li><p>ss：Server Send,表示服务端完成处理，并将结果发送给客户端</p>
 </li>
 <li><p>cr：Client Received,表示客户端获取到服务端返回信息</p>
-</li>
-</ul>
 </li>
 </ul>
 </li>
