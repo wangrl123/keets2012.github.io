@@ -1,0 +1,1435 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="APM,zipkin,micro-service," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="引言：最近在调研与选型分布式调用链监控组件。选了主要的三种APM组件进行了实践与比较。本来打算一篇文章写完的，篇幅太长，打算分两篇。本文主要讲下链路traceing的基本概念和几种APM组件的实践，实践部分也没给出特别详细的步骤，因为本文重点不在具体的步骤。第二篇将会讲下几种APM选型的比较与性能测试。 1. 问题背景微服务架构下，服务按照不同的维度进行拆分，一次请求请求往往需要涉及到多个服务。互">
+<meta name="keywords" content="APM,zipkin,micro-service">
+<meta property="og:type" content="article">
+<meta property="og:title" content="几种分布式调用链监控组件的实践与比较（一）实践">
+<meta property="og:url" content="http://blueskykong.com/2017/11/10/apm1/index.html">
+<meta property="og:site_name" content="Aoho&#39;s Blog">
+<meta property="og:description" content="引言：最近在调研与选型分布式调用链监控组件。选了主要的三种APM组件进行了实践与比较。本来打算一篇文章写完的，篇幅太长，打算分两篇。本文主要讲下链路traceing的基本概念和几种APM组件的实践，实践部分也没给出特别详细的步骤，因为本文重点不在具体的步骤。第二篇将会讲下几种APM选型的比较与性能测试。 1. 问题背景微服务架构下，服务按照不同的维度进行拆分，一次请求请求往往需要涉及到多个服务。互">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/trace-id.png">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/span.png">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/architecture-1.png">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/zipdependency1.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/zipkintrace.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/trace-demo2.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/pinpoint-architecture.png">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/Jietu20171106-215536.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/Jietu20171106-215606.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/Jietu20171106-215642.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/skyarche.png">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/collectorsky.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/skydependency.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/skytree1.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/serversky.jpg">
+<meta property="og:updated_time" content="2017-11-10T09:55:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="几种分布式调用链监控组件的实践与比较（一）实践">
+<meta name="twitter:description" content="引言：最近在调研与选型分布式调用链监控组件。选了主要的三种APM组件进行了实践与比较。本来打算一篇文章写完的，篇幅太长，打算分两篇。本文主要讲下链路traceing的基本概念和几种APM组件的实践，实践部分也没给出特别详细的步骤，因为本文重点不在具体的步骤。第二篇将会讲下几种APM选型的比较与性能测试。 1. 问题背景微服务架构下，服务按照不同的维度进行拆分，一次请求请求往往需要涉及到多个服务。互">
+<meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/trace-id.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blueskykong.com/2017/11/10/apm1/"/>
+
+
+
+
+
+  <title>几种分布式调用链监控组件的实践与比较（一）实践 | Aoho's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Aoho's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Focus On Software Architecture</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archive/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2017/11/10/apm1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aoho">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aoho's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">几种分布式调用链监控组件的实践与比较（一）实践</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-10T00:00:00+08:00">
+                2017-11-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Ops/" itemprop="url" rel="index">
+                    <span itemprop="name">Ops</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/11/10/apm1/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/11/10/apm1/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">Views
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>引言：最近在调研与选型分布式调用链监控组件。选了主要的三种APM组件进行了实践与比较。本来打算一篇文章写完的，篇幅太长，打算分两篇。本文主要讲下链路traceing的基本概念和几种APM组件的实践，实践部分也没给出特别详细的步骤，因为本文重点不在具体的步骤。第二篇将会讲下几种APM选型的比较与性能测试。</p>
+<h2 id="1-问题背景"><a href="#1-问题背景" class="headerlink" title="1. 问题背景"></a>1. 问题背景</h2><p>微服务架构下，服务按照不同的维度进行拆分，一次请求请求往往需要涉及到多个服务。互联网应用构建在不同的软件模块集上，这些软件模块，有可能是由不同的团队开发、可能使用不同的编程语言来实现、有可能布在了几千台服务器，横跨多个不同的数据中心。因此，就需要一些可以帮助理解系统行为、用于分析性能问题的工具，以便发生故障的时候，能够快速定位和解决问题。</p>
+<p>分布式调用链监控组件在这样的环境下产生了。最出名的是谷歌公开的论文提到的<code>Dapper</code>。开发Dapper是为了收集更多的复杂分布式系统的行为信息，然后呈现给Google的开发者们。这样的分布式系统有一个特殊的好处，因为那些大规模的低端服务器，作为互联网服务的载体，是一个特殊的经济划算的平台。想要在这个上下文中理解分布式系统的行为，就需要监控那些横跨了不同的应用、不同的服务器之间的关联动作。</p>
+<p>市面上的APM（Application Performance Management）理论模型大多都是借鉴（borrow）<code>Google Dapper</code>论文，本文重点关注以下几种APM组件：</p>
+<ul>
+<li>Zipkin<br>  由Twitter公司开源，开放源代码分布式的跟踪系统，用于收集服务的定时数据，以解决微服务架构中的延迟问题，包括数据的收集、存储、查找和展现。</li>
+<li><p>Pinpoint<br>Pinpoint是一款对Java编写的大规模分布式系统的APM工具，由韩国人开源的分布式跟踪组件。</p>
+</li>
+<li><p>Skywalking<br>国产的优秀APM组件，是一个对JAVA分布式应用程序集群的业务运行情况进行追踪、告警和分析的系统。</p>
+</li>
+</ul>
+<p>其他类似的组件还有美团点评的CAT，淘宝的鹰眼EgleEye。</p>
+<p>如上所述，那么我们选择链路监控组件有哪些要求呢？Dapper中也提到了，笔者总结如下：</p>
+<ul>
+<li><p>探针的性能消耗。<br>APM组件服务的影响应该做到足够小。在一些高度优化过的服务，即使一点点损耗也会很容易察觉到，而且有可能迫使在线服务的部署团队不得不将跟踪系统关停。</p>
+</li>
+<li><p>代码的侵入性<br>对于应用的程序员来说，是不需要知道有跟踪系统这回事的。如果一个跟踪系统想生效，就必须需要依赖应用的开发者主动配合，那么这个跟踪系统也太脆弱了，往往由于跟踪系统在应用中植入代码的bug或疏忽导致应用出问题，这样才是无法满足对跟踪系统“无所不在的部署”这个需求。</p>
+</li>
+<li><p>可扩展性<br>能够支持的组件越多当然越好。或者提供便捷的插件开发API，对于一些没有监控到的组件，应用开发者也可以自行扩展。</p>
+</li>
+<li><p>数据的分析<br>数据的分析要快 ，分析的维度尽可能多。跟踪系统能提供足够快的信息反馈，就可以对生产环境下的异常状况做出快速反应。分析的全面，能够避免二次开发。</p>
+</li>
+</ul>
+<h2 id="2-基础概念"><a href="#2-基础概念" class="headerlink" title="2. 基础概念"></a>2. 基础概念</h2><p>上面列出的几种组件，其中Zipkin是严格按照<code>Google Dapper</code>论文实现的，下面介绍下其中涉及的基本概念。</p>
+<ul>
+<li><p>Span<br>基本工作单元，一次链路调用(可以是RPC，DB等没有特定的限制)创建一个span，通过一个64位ID标识它，uuid较为方便，span中还有其他的数据，例如描述信息，时间戳，key-value对的(Annotation)tag信息，parent-id等,其中parent-id可以表示span调用链路来源。</p>
+</li>
+<li><p>Trace:类似于树结构的Span集合，表示一条调用链路，存在唯一标识。比如你运行的分布式大数据存储一次Trace就由你的一次请求组成。</p>
+</li>
+<li><p>Annotation: 注解,用来记录请求特定事件相关信息(例如时间)，通常包含四个注解信息：</p>
+<ul>
+<li><p>cs：Client Start,表示客户端发起请求</p>
+<ul>
+<li><p>sr：Server Receive,表示服务端收到请求</p>
+</li>
+<li><p>ss：Server Send,表示服务端完成处理，并将结果发送给客户端</p>
+</li>
+<li><p>cr：Client Received,表示客户端获取到服务端返回信息</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-1-Trace"><a href="#2-1-Trace" class="headerlink" title="2.1 Trace"></a>2.1 Trace</h3><p>下面看一下，在系统中Trace是什么样子。 </p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/trace-id.png" alt="trace" title="trace"></p>
+<p>每种颜色的note标注了一个span，一条链路通过TraceId唯一标识，Span标识发起的请求信息。树节点是整个架构的基本单元，而每一个节点又是对span的引用。节点之间的连线表示的span和它的父span直接的关系。虽然span在日志文件中只是简单的代表span的开始和结束时间，他们在整个树形结构中却是相对独立的。</p>
+<h3 id="2-2-Span"><a href="#2-2-Span" class="headerlink" title="2.2 Span"></a>2.2 Span</h3><p><img src="http://ovcjgn2x0.bkt.clouddn.com/span.png" alt="sp" title="span"></p>
+<p>上图说明了span在一次大的跟踪过程中是什么样的。Dapper记录了span名称，以及每个span的ID和父ID，以重建在一次追踪过程中不同span之间的关系。如果一个span没有父ID被称为root span。所有span都挂在一个特定的跟踪上，也共用一个跟踪id。</p>
+<h3 id="2-3-Annotation"><a href="#2-3-Annotation" class="headerlink" title="2.3 Annotation"></a>2.3 Annotation</h3><p>自动的探针，不需要修改应用程序源代码，对应用开发者近乎零浸入的成本对分布式控制路径进行跟踪，几乎完全依赖于基于少量通用组件库的改造。Dapper还允许应用程序开发人员在Dapper跟踪的过程中添加额外的信息，以监控更高级别的系统行为，或帮助调试问题。</p>
+<p>下面章节将会介绍下上述三种APM组件的使用与实践。</p>
+<h2 id="3-zipkin"><a href="#3-zipkin" class="headerlink" title="3. zipkin"></a>3. zipkin</h2><p>zipkin主要涉及几个组件：<code>collector</code>收集agent的数据，<code>storage</code>存储，<code>web UI</code>图形化界面，<code>search</code>查询Storage中存储的数据,提供简单的JSON API获取数据。<br><img src="http://ovcjgn2x0.bkt.clouddn.com/architecture-1.png" alt="" title="zipkin组件"> </p>
+<p>我们的项目基于微服务框架spring cloud构建微服务。spring cloud也提供了spring-cloud-sleuth来方便集成zipkin实现。所以笔者就在项目中试了下spring-cloud-sleuth-zipkin。</p>
+<p>起了三个服务：<br>zipkin-server、zipkin-client-backend、zipkin-client。<br>其中server服务负责收集以及信息展示。client-backend调用client，产生调用链路信息。</p>
+<h3 id="3-1-zipkin-server实现"><a href="#3-1-zipkin-server实现" class="headerlink" title="3.1 zipkin-server实现"></a>3.1 zipkin-server实现</h3><p>zipkin-server实现主要有两点需要注意，其一是收集到数据的存储，方式包括内存、数据库、ES等；其二是通信方式，包括http通信和mq异步方式通信，http通信会对正常的访问造成影响，所以还是推荐基于mq异步方式通信。</p>
+<p>本文使用mysql作为存储，使用MQ通信，MQ通信基于Spring-cloud-Stream。本文重点不在zipkin-server的具体几种实现方式，其他方式，读者可以自己去官网查看。</p>
+<p>（1）pom需要添加的引用如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">   <span class="comment">&lt;!--zipkin依赖--&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-sleuth-zipkin-stream<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-stream-rabbit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.zipkin.java<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zipkin-autoconfigure-ui<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">   <span class="comment">&lt;!--保存到数据库需要如下依赖--&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>（2）启动类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 使用Stream方式启动ZipkinServer</span></div><div class="line"><span class="meta">@EnableZipkinStreamServer</span></div><div class="line"><span class="meta">@SpringBootApplication</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ZipkinStreamServerApplication</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        SpringApplication.run(ZipkinStreamServerApplication.class,args);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>@EnableZipkinStreamServer</code>注解引入了<code>@EnableZipkinServer</code>注解，同时还创建了一个rabbit-mq的SleuthSink消息队列监听器。</p>
+<p>（3）配置文件</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="attr">server:</span></div><div class="line"><span class="attr">  port:</span> <span class="number">9411</span></div><div class="line"></div><div class="line"><span class="attr">spring:</span></div><div class="line"><span class="attr">  datasource:</span></div><div class="line"><span class="attr">    username:</span> <span class="string">root</span></div><div class="line"><span class="attr">    password:</span> <span class="string">root123</span></div><div class="line">    <span class="string">schema[0]:</span> <span class="attr">classpath:/zipkin.sql</span></div><div class="line"></div><div class="line"><span class="attr">zipkin:</span></div><div class="line"><span class="attr">  storage:</span></div><div class="line"><span class="attr">    type:</span> <span class="string">mysql</span></div><div class="line"></div><div class="line"><span class="meta">---</span></div><div class="line"><span class="attr">spring:</span></div><div class="line"><span class="attr">  application:</span></div><div class="line"><span class="attr">    name:</span> <span class="string">microservice-zipkin-stream-server</span></div><div class="line"><span class="attr">  rabbitmq:</span></div><div class="line"><span class="attr">    host:</span> <span class="string">$&#123;RABBIT_ADDR:localhost&#125;</span></div><div class="line"><span class="attr">    port:</span> <span class="string">$&#123;RABBIT_PORT:5672&#125;</span></div><div class="line"><span class="attr">    username:</span> <span class="string">guest</span></div><div class="line"><span class="attr">    password:</span> <span class="string">guest</span></div><div class="line"><span class="attr">  sleuth:</span></div><div class="line"><span class="attr">    enabled:</span> <span class="literal">false</span></div><div class="line"><span class="attr">  profiles:</span> <span class="string">default</span></div><div class="line"><span class="attr">  datasource:</span></div><div class="line"><span class="attr">    url:</span>  <span class="attr">jdbc:mysql://localhost:3307/zipkin?autoReconnect=true&amp;useSSL=false</span></div></pre></td></tr></table></figure>
+<p>zipkin.sql可以去官网获取，设置了zipkin-server的端口号为9411。</p>
+<h3 id="3-2-zipkin-client"><a href="#3-2-zipkin-client" class="headerlink" title="3.2 zipkin-client"></a>3.2 zipkin-client</h3><p>两个zipkin-client的配置一样，所以放在一起。</p>
+<p>（1）pom依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-sleuth-zipkin-stream<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-stream-rabbit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">      <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-sleuth<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>(2) 配置文件</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="attr">spring:</span></div><div class="line"><span class="attr">  rabbitmq:</span></div><div class="line"><span class="attr">    host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></div><div class="line">    <span class="string">port</span> <span class="string">:</span> <span class="number">5672</span></div><div class="line"><span class="attr">    username:</span> <span class="string">guest</span></div><div class="line"><span class="attr">    password:</span> <span class="string">guest</span></div></pre></td></tr></table></figure>
+<h3 id="3-3-结果"><a href="#3-3-结果" class="headerlink" title="3.3 结果"></a>3.3 结果</h3><p>服务之间的调用关系如下：</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/zipdependency1.jpg" alt="" title="zipdependency.jpg"></p>
+<p>可以看到客户端的请求经过gateway，调用内网中的各个服务，部分还涉及到调用notice服务。从图中可以清楚的看出客户端请求所经过的服务。<br>下面看下demo2-default服务实例中的http path：</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/zipkintrace.jpg" alt="" title="zipkintrace"></p>
+<p>上图中demo2-default服务的几个http path按照时长排序，显示了trace调用时长和span数量。点进去可以看到：</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/trace-demo2.jpg" alt="" title="demo2"></p>
+<p>图中列出了从父span开始，每一个span的耗时。本次trace中，涉及到两个服务demo1和demo2。demo2调用demo1，从597ms开始调用demo1，完成最终的请求总共耗时1265ms。</p>
+<h2 id="4-pinpoint"><a href="#4-pinpoint" class="headerlink" title="4. pinpoint"></a>4. pinpoint</h2><p>对代码零侵入，运用JavaAgent字节码增强技术，只需要加启动参数即可。<br>pinpoint的几个组件部分和zipkin差不多，架构图如下：</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/pinpoint-architecture.png" alt="" title="pinpoint"></p>
+<p>Pinpoint-Collector收集各种性能数据、Pinpoint-Agent和自己运行的应用关联起来的探针、Pinpoint-Web将收集到的数据显示成WEB网页形式、HBase Storage收集到的数据存到HBase中。</p>
+<h3 id="4-1-pinpoint安装"><a href="#4-1-pinpoint安装" class="headerlink" title="4.1 pinpoint安装"></a>4.1 pinpoint安装</h3><p>主要涉及以下软件的安装：</p>
+<ul>
+<li><p>jdk 1.8<br>Java环境必须的，没啥好解释。</p>
+</li>
+<li><p>Hbase<br>pinpoint收集来的测试数据，主要是存在Hbase数据库的。所以它可以收集大量的数据，可以进行更加详细的分析。Hbase安装完成后，需要初始化Hbase的pinpoint库，由pinpoint提供。Hbase内置了zookeeper。</p>
+</li>
+<li><p>pinpoint-collector<br>collector收集agent的数据，将数据存到hbase集群，对外暴露collector的tcp和udp的监听端口9994，9995，9996。</p>
+</li>
+<li><p>pinpoint-web<br>页面展示，配置文件中设置环境变量HBASE_HOST、HBASE_PORT等。</p>
+</li>
+<li><p>pinpoint-agent</p>
+</li>
+</ul>
+<p>到<a href="https://github.com/naver/pinpoint/wiki" target="_blank" rel="external">官网</a>release页面下载pinpoint-agent-x-SNAPSHOT.tar.gz，配置pinpoint.config中相关collector的信息。</p>
+<p><strong>安装确实还比较麻烦，本文篇幅太长了，具体步骤后面再单独写文章讲解。</strong></p>
+<h3 id="4-2-运行pinpoint-agent"><a href="#4-2-运行pinpoint-agent" class="headerlink" title="4.2 运行pinpoint-agent"></a>4.2 运行pinpoint-agent</h3><p>笔者使用的是spring-boot项目，所以只需要在启动jar包的命令中加入-javaagent参数，并指定pinpoint-bootstrap包的绝对路径。实例代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -javaagent:/aoho/auth_compose/pinpoint-bootstrap-1.6.0.jar -Dpinpoint.agentId=aoho-consumer -Dpinpoint.applicationName=aoho-consumer -jar id_generator/snowflake-id-generate-1.0-SNAPSHOT.jar</div></pre></td></tr></table></figure>
+<p>起的id生成器服务比较简单，没有用到数据库等存储介质。服务注册到consul上，本地客户端请求了id-server获取id。其调用链如下：</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/Jietu20171106-215536.jpg" alt="call tree" title="pinpoint 调用链"></p>
+<p>pinpoint提供的功能比较丰富，下图是调用/api/id接口的详细信息。</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/Jietu20171106-215606.jpg" alt="api" title="接口信息"></p>
+<p>可以看到，pinpoint记录了客户端的相应时间、IP地址等，调用树在下面也有详细列出，每个方法的耗时等。</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/Jietu20171106-215642.jpg" alt="serverMap" title="serverMap"></p>
+<p>serverMap中还展示了服务器的堆、永久代、CPU等信息，非常强大。</p>
+<h2 id="5-Skywalking"><a href="#5-Skywalking" class="headerlink" title="5. Skywalking"></a>5. Skywalking</h2><p>Skywalking是国内开源的APM监控组件，官网<a href="https://github.com/OpenSkywalking/" target="_blank" rel="external">OpenSkywalking</a>，根据官网介绍，其着力于性能和实时性两方面。<br>网上找到的Skywalking的架构图。</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/skyarche.png" alt=""></p>
+<p>可以看到Skywalking也是四部分组成，collector、agent、web、storage。支持集群部署，集群之间还引入了grpc通信。存储支持内置的h2和elasticsearch存储。</p>
+<h3 id="5-1-安装"><a href="#5-1-安装" class="headerlink" title="5.1 安装"></a>5.1 安装</h3><p>具体安装可见<a href="https://github.com/OpenSkywalking/skywalking/wiki/3.2.3-%E9%9B%86%E7%BE%A4%E6%A8%A1%E5%BC%8F%E9%83%A8%E7%BD%B2Collector" target="_blank" rel="external">官网</a>。</p>
+<ul>
+<li>collector安装<br>此处笔者使用单机版的collector，在release页面下载好压缩包，解压后，单机版的collector默认使用h2数据库，所以配置文件可以不需要修改，即可以运行<code>bin/startup.sh</code>。 </li>
+</ul>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/collectorsky.jpg" alt=""></p>
+<p>目录结构如上，logs文件夹中，有启动的日志，可以查看启动情况。</p>
+<ul>
+<li><p>web<br>解压好skywalking-ui，设置server的config/collector_config.properties、log4j2以及监听端口等相关信息，</p>
+</li>
+<li><p>agent<br>拷贝skywalking-agent目录到所需位置，探针包含整个目录，设置/config/agent.config中的collector信息。</p>
+</li>
+</ul>
+<h3 id="5-2-运行agent"><a href="#5-2-运行agent" class="headerlink" title="5.2 运行agent"></a>5.2 运行agent</h3><p>Spring boot的项目，启动和上面pinpoint agent启动方式相同。增加JVM启动参数，<code>-javaagent:/path/to/skywalking-agent/skywalking-agent.jar</code>。</p>
+<p>这次起了user服务，涉及到mysql、redis、consul等组件。可以看到其调用链路图如下：</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/skydependency.jpg" alt=""></p>
+<p>当访问<code>/api/external/register-code</code>和<code>/api/external/validate-code</code>接口时，形成了上图中的调用链。</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/skytree1.jpg" alt=""></p>
+<p>上图TraceId为    2.59.15103021777910001的请求<code>/api/external/register-code</code>。这次trace中，每个涉及的span的耗时都有在图中统计。</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/serversky.jpg" alt=""></p>
+<p>上面这张图，是对userService中的Entry Service List接口进行了统计，包括调用数、成功率等信息。（因为内置的h2，这边在UI响应很久）</p>
+<p>还有个对instance的统计，统计jvm的相关信息，API响应也很慢，可能与我用的存储有关吧，就不截图了。</p>
+<h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h2><p>本文主要写了链路监控组件的实践。首先介绍了链路监控组件产生与应用的背景，以及选择的要求；其次介绍了opentracing中涉及的基本概念；最后大篇幅介绍了三种APM组件的安装与使用，并展示了每种APM的UI截图。本文比较简单，下一篇文章主要介绍几种APM选型的比较与性能测试。</p>
+<p>最后，祝大家1111快乐!</p>
+<p><strong>zipkin-server-stream的源码<br>github:  <a href="https://github.com/keets2012/Spring-Boot-Samples/" target="_blank" rel="external">https://github.com/keets2012/Spring-Boot-Samples/</a><br>oschina:  <a href="https://gitee.com/keets/spring-boot-samples" target="_blank" rel="external">https://gitee.com/keets/spring-boot-samples</a></strong></p>
+<hr>
+<h3 id="参考-疯狂找资料"><a href="#参考-疯狂找资料" class="headerlink" title="参考(疯狂找资料)"></a>参考(疯狂找资料)</h3><ol>
+<li><a href="https://github.com/opentracing-contrib/opentracing-specification-zh" target="_blank" rel="external">OpenTracing官方标准-中文版</a></li>
+<li><a href="https://github.com/wu-sheng/sky-walking" target="_blank" rel="external">Skywalking</a></li>
+<li><a href="http://zipkin.io/" target="_blank" rel="external">Zipkin</a></li>
+<li><a href="https://github.com/naver/pinpoint" target="_blank" rel="external">PinPoint</a></li>
+<li><a href="http://cloud.spring.io/spring-cloud-static/spring-cloud-sleuth/1.2.5.RELEASE/single/spring-cloud-sleuth.html#" target="_blank" rel="external">Spring Cloud Sleuth</a></li>
+<li><a href="http://bigbully.github.io/Dapper-translation/" target="_blank" rel="external">Dapper</a></li>
+<li><a href="http://www.cnblogs.com/yyhh/p/6106472.html" target="_blank" rel="external">pinpoint 安装部署</a></li>
+<li><a href="https://segmentfault.com/a/1190000006817114" target="_blank" rel="external">java开源APM概要</a></li>
+<li><a href="http://blog.csdn.net/john1337/article/details/71127056" target="_blank" rel="external">分布式系统监控系统zipkin入门</a></li>
+<li><a href="http://www.jianshu.com/p/17a015848dc1" target="_blank" rel="external">跟着小程学微服务-自己动手扩展分布式调用链</a></li>
+</ol>
+
+      
+    </div>
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/qrcode.jpg" alt="aoho wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎您扫一扫上面的微信公众号，aoho求索，订阅我的博客!</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechat.jpg" alt="aoho WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/ali.jpg" alt="aoho Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      aoho
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://blueskykong.com/2017/11/10/apm1/" title="几种分布式调用链监控组件的实践与比较（一）实践">http://blueskykong.com/2017/11/10/apm1/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/APM/" rel="tag"># APM</a>
+          
+            <a href="/tags/zipkin/" rel="tag"># zipkin</a>
+          
+            <a href="/tags/micro-service/" rel="tag"># micro-service</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/02/dockermaven/" rel="next" title="微服务部署之Maven插件构建Docker镜像">
+                <i class="fa fa-chevron-left"></i> 微服务部署之Maven插件构建Docker镜像
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="aoho" />
+          <p class="site-author-name" itemprop="name">aoho</p>
+           
+              <p class="site-description motion-element" itemprop="description">聚沙成塔！</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archive/">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/archive/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/keets2012" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.tianshouzhi.com/" title="田守枝|博客" target="_blank">田守枝|博客</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-问题背景"><span class="nav-number">1.</span> <span class="nav-text">1. 问题背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-基础概念"><span class="nav-number">2.</span> <span class="nav-text">2. 基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Trace"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Trace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Span"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Span</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Annotation"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 Annotation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-zipkin"><span class="nav-number">3.</span> <span class="nav-text">3. zipkin</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-zipkin-server实现"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 zipkin-server实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-zipkin-client"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 zipkin-client</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-结果"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-pinpoint"><span class="nav-number">4.</span> <span class="nav-text">4. pinpoint</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-pinpoint安装"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 pinpoint安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-运行pinpoint-agent"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 运行pinpoint-agent</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Skywalking"><span class="nav-number">5.</span> <span class="nav-text">5. Skywalking</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-安装"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-运行agent"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 运行agent</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-总结"><span class="nav-number">6.</span> <span class="nav-text">6. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考-疯狂找资料"><span class="nav-number">6.1.</span> <span class="nav-text">参考(疯狂找资料)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aoho</span>
+</div>
+
+
+<div class="powered-by">
+  Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a> 
+</div>
+
+<div class="theme-info">
+  主题 - Next
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cytgwPxMy';
+      var conf = 'c4bd093f0f2e95659d2adf52c85aa195';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
