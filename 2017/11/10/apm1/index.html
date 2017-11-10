@@ -122,7 +122,7 @@
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/skydependency.jpg">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/skytree1.jpg">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/serversky.jpg">
-<meta property="og:updated_time" content="2017-11-10T09:58:29.000Z">
+<meta property="og:updated_time" content="2017-11-10T10:01:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="几种分布式调用链监控组件的实践与比较（一）实践">
 <meta name="twitter:description" content="引言：最近在调研与选型分布式调用链监控组件。选了主要的三种APM组件进行了实践与比较。本来打算一篇文章写完的，篇幅太长，打算分两篇。本文主要讲下链路traceing的基本概念和几种APM组件的实践，实践部分也没给出特别详细的步骤，因为本文重点不在具体的步骤。第二篇将会讲下几种APM选型的比较与性能测试。 1. 问题背景微服务架构下，服务按照不同的维度进行拆分，一次请求请求往往需要涉及到多个服务。互">
@@ -473,17 +473,10 @@
 </li>
 <li><p>Trace:类似于树结构的Span集合，表示一条调用链路，存在唯一标识。比如你运行的分布式大数据存储一次Trace就由你的一次请求组成。</p>
 </li>
-<li><p>Annotation: 注解,用来记录请求特定事件相关信息(例如时间)，通常包含四个注解信息：</p>
-<ul>
-<li><p>cs：Client Start,表示客户端发起请求</p>
-</li>
-<li><p>sr：Server Receive,表示服务端收到请求</p>
-</li>
-<li><p>ss：Server Send,表示服务端完成处理，并将结果发送给客户端</p>
-</li>
-<li><p>cr：Client Received,表示客户端获取到服务端返回信息</p>
-</li>
-</ul>
+<li><p>Annotation: 注解,用来记录请求特定事件相关信息(例如时间)，通常包含四个注解信息：<br>  (1) cs：Client Start,表示客户端发起请求</p>
+<p> (2) sr：Server Receive,表示服务端收到请求</p>
+<p> (3) ss：Server Send,表示服务端完成处理，并将结果发送给客户端</p>
+<p> (4) cr：Client Received,表示客户端获取到服务端返回信息</p>
 </li>
 </ul>
 <h3 id="2-1-Trace"><a href="#2-1-Trace" class="headerlink" title="2.1 Trace"></a>2.1 Trace</h3><p>下面看一下，在系统中Trace是什么样子。 </p>
@@ -570,7 +563,6 @@
 <p>上面这张图，是对userService中的Entry Service List接口进行了统计，包括调用数、成功率等信息。（因为内置的h2，这边在UI响应很久）</p>
 <p>还有个对instance的统计，统计jvm的相关信息，API响应也很慢，可能与我用的存储有关吧，就不截图了。</p>
 <h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h2><p>本文主要写了链路监控组件的实践。首先介绍了链路监控组件产生与应用的背景，以及选择的要求；其次介绍了opentracing中涉及的基本概念；最后大篇幅介绍了三种APM组件的安装与使用，并展示了每种APM的UI截图。本文比较简单，下一篇文章主要介绍几种APM选型的比较与性能测试。</p>
-<p>最后，祝大家1111快乐!</p>
 <p><strong>zipkin-server-stream的源码<br>github:  <a href="https://github.com/keets2012/Spring-Boot-Samples/" target="_blank" rel="external">https://github.com/keets2012/Spring-Boot-Samples/</a><br>oschina:  <a href="https://gitee.com/keets/spring-boot-samples" target="_blank" rel="external">https://gitee.com/keets/spring-boot-samples</a></strong></p>
 <hr>
 <h3 id="参考-疯狂找资料"><a href="#参考-疯狂找资料" class="headerlink" title="参考(疯狂找资料)"></a>参考(疯狂找资料)</h3><ol>
