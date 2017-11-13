@@ -103,7 +103,7 @@
 <meta name="description" content="聚沙成塔！">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Aoho&#39;s Blog">
-<meta property="og:url" content="http://blueskykong.com/tags/cluster/index.html">
+<meta property="og:url" content="http://blueskykong.com/tags/gateway/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
 <meta property="og:description" content="聚沙成塔！">
 <meta name="twitter:card" content="summary">
@@ -136,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://blueskykong.com/tags/cluster/"/>
+  <link rel="canonical" href="http://blueskykong.com/tags/gateway/"/>
 
 
 
 
 
-  <title>标签: cluster | Aoho's Blog</title>
+  <title>标签: gateway | Aoho's Blog</title>
   
 
 
@@ -318,7 +318,7 @@
 
   <div id="posts" class="posts-collapse">
     <div class="collection-title">
-      <h1>cluster<small>标签</small>
+      <h1>gateway<small>标签</small>
       </h1>
     </div>
 
@@ -330,9 +330,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/09/16/consul/" itemprop="url">
+            <a class="post-title-link" href="/2017/11/13/gateway/" itemprop="url">
               
-                <span itemprop="name">consul配置与实战</span>
+                <span itemprop="name">微服务网关netflix-zuul</span>
               
             </a>
         
@@ -340,9 +340,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2017-09-16T00:00:00+08:00"
-              content="2017-09-16" >
-          09-16
+              datetime="2017-11-13T00:00:00+08:00"
+              content="2017-11-13" >
+          11-13
         </time>
       </div>
 
@@ -952,73 +952,6 @@
               }
             });
           }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
-
-
-  
-
-  
-
-  
-
-  
-
-</body>
-</html>
-      }
 
           // remove loading animation
           $(".local-search-pop-overlay").remove();
