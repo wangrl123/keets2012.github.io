@@ -100,19 +100,19 @@
 
 
 
-<meta name="description" content="引言：前面一个系列文章介绍了认证鉴权与API权限控制在微服务架构中的设计与实现 ，好多同学询问有没有完整的demo项目，笔者回答肯定有的。由于之前系列文章侧重讲解了权限前置，所以近期补上完整的后置项目，但是这最好有一个完整的微服务调用。本文主要讲下API网关的设计与实现。netflix-zuul是由netflix开源的API网关，在微服务架构下，网关作为对外的门户，实现动态路由、监控、授权、安全、">
+<meta name="description" content="微服务网关netflix-zuul引言：前面一个系列文章介绍了认证鉴权与API权限控制在微服务架构中的设计与实现 ，好多同学询问有没有完整的demo项目，笔者回答肯定有的。由于之前系列文章侧重讲解了权限前置，所以近期补上完整的后置项目，但是这最好有一个完整的微服务调用。本文主要讲下API网关的设计与实现。netflix-zuul是由netflix开源的API网关，在微服务架构下，网关作为对外的门户">
 <meta name="keywords" content="zuul,gateway">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微服务网关netflix-zuul">
 <meta property="og:url" content="http://blueskykong.com/2017/11/13/gateway/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="引言：前面一个系列文章介绍了认证鉴权与API权限控制在微服务架构中的设计与实现 ，好多同学询问有没有完整的demo项目，笔者回答肯定有的。由于之前系列文章侧重讲解了权限前置，所以近期补上完整的后置项目，但是这最好有一个完整的微服务调用。本文主要讲下API网关的设计与实现。netflix-zuul是由netflix开源的API网关，在微服务架构下，网关作为对外的门户，实现动态路由、监控、授权、安全、">
+<meta property="og:description" content="微服务网关netflix-zuul引言：前面一个系列文章介绍了认证鉴权与API权限控制在微服务架构中的设计与实现 ，好多同学询问有没有完整的demo项目，笔者回答肯定有的。由于之前系列文章侧重讲解了权限前置，所以近期补上完整的后置项目，但是这最好有一个完整的微服务调用。本文主要讲下API网关的设计与实现。netflix-zuul是由netflix开源的API网关，在微服务架构下，网关作为对外的门户">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/zuul-use1-1000x550.jpg">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/filterzuul.png">
-<meta property="og:updated_time" content="2017-11-13T15:09:29.000Z">
+<meta property="og:updated_time" content="2017-11-14T02:34:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务网关netflix-zuul">
-<meta name="twitter:description" content="引言：前面一个系列文章介绍了认证鉴权与API权限控制在微服务架构中的设计与实现 ，好多同学询问有没有完整的demo项目，笔者回答肯定有的。由于之前系列文章侧重讲解了权限前置，所以近期补上完整的后置项目，但是这最好有一个完整的微服务调用。本文主要讲下API网关的设计与实现。netflix-zuul是由netflix开源的API网关，在微服务架构下，网关作为对外的门户，实现动态路由、监控、授权、安全、">
+<meta name="twitter:description" content="微服务网关netflix-zuul引言：前面一个系列文章介绍了认证鉴权与API权限控制在微服务架构中的设计与实现 ，好多同学询问有没有完整的demo项目，笔者回答肯定有的。由于之前系列文章侧重讲解了权限前置，所以近期补上完整的后置项目，但是这最好有一个完整的微服务调用。本文主要讲下API网关的设计与实现。netflix-zuul是由netflix开源的API网关，在微服务架构下，网关作为对外的门户">
 <meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/zuul-use1-1000x550.jpg">
 
 
@@ -383,8 +383,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Note/" itemprop="url" rel="index">
-                    <span itemprop="name">Note</span>
+                  <a href="/categories/微服务/" itemprop="url" rel="index">
+                    <span itemprop="name">微服务</span>
                   </a>
                 </span>
 
@@ -433,17 +433,15 @@
       
 
       
-        <p>引言：前面一个系列文章介绍了<a href="http://blueskykong.com/2017/10/19/security1/">认证鉴权与API权限控制在微服务架构中的设计与实现</a> ，好多同学询问有没有完整的demo项目，笔者回答肯定有的。由于之前系列文章侧重讲解了权限前置，所以近期补上完整的后置项目，但是这最好有一个完整的微服务调用。本文主要讲下API网关的设计与实现。netflix-zuul是由netflix开源的API网关，在微服务架构下，网关作为对外的门户，实现动态路由、监控、授权、安全、调度等功能。</p>
-<h2 id="1-网关介绍"><a href="#1-网关介绍" class="headerlink" title="1. 网关介绍"></a>1. 网关介绍</h2><p>当使用单体应用程序架构时，移动客户端将通过向应用程序发起一次REST调用来获取这些数据。负载均衡器将请求路由给N个相同的应用程序实例中的一个。然后应用程序会查询各种数据库表，并将响应返回给客户端。微服务架构下，单体应用被切割成多个微服务，如果将所有的微服务直接对外暴露，势必会出现安全方面的各种问题。<br>客户端可以直接向每个微服务发送请求，其问题主要如下：</p>
+        <h1 id="微服务网关netflix-zuul"><a href="#微服务网关netflix-zuul" class="headerlink" title="微服务网关netflix-zuul"></a>微服务网关netflix-zuul</h1><p>引言：前面一个系列文章介绍了<a href="http://blueskykong.com/2017/10/19/security1/">认证鉴权与API权限控制在微服务架构中的设计与实现</a> ，好多同学询问有没有完整的demo项目，笔者回答肯定有的。由于之前系列文章侧重讲解了权限前置，所以近期补上完整的后置项目，但是这最好有一个完整的微服务调用。本文主要讲下API网关的设计与实现。netflix-zuul是由netflix开源的API网关，在微服务架构下，网关作为对外的门户，实现动态路由、监控、授权、安全、调度等功能。</p>
+<h2 id="1-网关介绍"><a href="#1-网关介绍" class="headerlink" title="1. 网关介绍"></a>1. 网关介绍</h2><p>当使用单体应用程序架构时，客户端（web和移动端）通过向后端应用程序发起一次REST调用来获取数据。负载均衡器将请求路由给N个相同的应用程序实例中的一个。然后应用程序会查询各种数据库表，并将响应返回给客户端。微服务架构下，单体应用被切割成多个微服务，如果将所有的微服务直接对外暴露，势必会出现安全方面的各种问题。<br>客户端可以直接向每个微服务发送请求，其问题主要如下：</p>
 <ul>
-<li>一个问题是客户端需求和每个微服务暴露的细粒度API不匹配。</li>
-<li>客户端直接调用微服务的另一个问题是，部分服务使用的协议不是Web友好协议。一个服务可能使用Thrift二进制RPC，而另一个服务可能使用AMQP消息传递协议。不管哪种协议都不是浏览器友好或防火墙友好的，最好是内部使用。在防火墙之外，应用程序应该使用诸如HTTP和WebSocket之类的协议。</li>
-<li>最后，这会使得微服务难以重构。随着时间推移，我们可能想要更改系统划分成服务的方式。例如，我们可能合并两个服务，或者将一个服务拆分成两个或更多服务。然而，如果客户端与微服务直接通信，那么执行这类重构就非常困难了。</li>
+<li>客户端需求和每个微服务暴露的细粒度API不匹配。</li>
+<li>部分服务使用的协议不是Web友好协议。可能使用Thrift二进制RPC，也可能使用AMQP消息传递协议。</li>
+<li>微服务难以重构。如果合并两个服务，或者将一个服务拆分成两个或更多服务，这类重构就非常困难了。</li>
 </ul>
-<p>一个更好的方法是使用所谓的API网关。API网关是一个服务器，是系统的唯一入口。从面向对象设计的角度看，它与外观模式类似。API网关封装了系统内部架构，为每个客户端提供一个定制的API。它可能还具有其它职责，如身份验证、监控、负载均衡、限流、降级与应用检测。</p>
+<p>如上问题，解决的方法是使用API网关。API网关是一个服务，是系统的唯一入口。从面向对象设计的角度看，它与外观模式类似。API网关封装了系统内部架构，为每个客户端提供一个定制的API。它可能还具有其它职责，如身份验证、监控、负载均衡、限流、降级与应用检测。</p>
 <p><img src="http://ovcjgn2x0.bkt.clouddn.com/zuul-use1-1000x550.jpg" alt="zu" title="zuul"></p>
-<p>API网关负责服务请求路由、组合及协议转换。客户端的所有请求都首先经过API网关，然后由它将请求路由到合适的微服务。API网管经常会通过调用多个微服务并合并结果来处理一个请求。它可以在Web协议（如HTTP与WebSocket）与内部使用的非Web友好协议之间转换。</p>
-<p>API网关还能为每个客户端提供一个定制的API。通常，它会向移动客户端暴露一个粗粒度的API。例如，考虑下产品详情的场景。API网关可以提供一个端点（/productdetails?productid=xxx），使移动客户端可以通过一个请求获取所有的产品详情。API网关通过调用各个服务（产品信息、推荐、评论等等）并合并结果来处理请求。</p>
 <h2 id="2-zuul网关"><a href="#2-zuul网关" class="headerlink" title="2. zuul网关"></a>2. zuul网关</h2><p>API Gateway，常见的选型有基于 Openresty 的 Kong和基于 JVM 的 Zuul，其他还有基于Go的Tyk。技术选型上，之前稍微调研了Kong，性能还可以。考虑到快速应用和二次开发，netflix-zuul也在Spring Cloud的全家桶中，和其他组件配合使用还挺方便，后期可能还会对网关的功能进行扩增，最后选了Zuul。   </p>
 <h3 id="2-1-pom配置"><a href="#2-1-pom配置" class="headerlink" title="2.1 pom配置"></a>2.1 pom配置</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-zuul<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-consul-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>在Spring Cloud的项目中，引入zuul的starter，consul-discovery是为了服务的动态路由，这边没有用eureka，是通过注册到consul上的服务实例进行路由。</p>
@@ -498,7 +496,7 @@
 <p>一般来说我们希望只在网络连接失败时进行重试、或是对 5XX 的 GET 请求进行重试（不推荐对 POST 请求进行重试，无法保证幂等性会造成数据不一致）。单台的重试次数可以尽量小一些，重试的节点数尽量多一些，整体效果会更好。</p>
 <p>如果有更加复杂的重试场景，例如需要对特定的某些 API、特定的返回值进行重试，那么也可以通过实现 RequestSpecificRetryHandler 定制逻辑（不建议直接使用 RetryHandler，因为这个子类可以使用很多已有的功能）。</p>
 <h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>本文首先介绍了API网关的相关知识；其次介绍了zuul网关的配置实现，同时支持https；最后介绍了zuul网关的一些内幕原理，这边大部分参考了网上的文章。网关作为内网与外网之间的门户，所有访问内网的请求都会经过网关，网关处进行反向代理。在整个Spring Cloud微服务框架里，Zuul扮演着”智能网关“的角色。</p>
-<p><strong>gitee: <a href="https://gitee.com/keets/spring-boot-samples/tree/master/api-gateway" target="_blank" rel="external">https://gitee.com/keets/spring-boot-samples/tree/master/api-gateway</a><br>github: <a href="https://github.com/keets2012/Spring-Boot-Samples/tree/master/api-gateway" target="_blank" rel="external">https://github.com/keets2012/Spring-Boot-Samples/tree/master/api-gateway</a></strong></p>
+<p><strong>github: <a href="https://github.com/keets2012/Spring-Boot-Samples/tree/master/api-gateway" target="_blank" rel="external">Spring-Boot-Samples</a>   <a href="https://github.com/keets2012/Spring-Boot-Samples/tree/master/api-gateway" target="_blank" rel="external">https://github.com/keets2012/Spring-Boot-Samples/tree/master/api-gateway</a><br>gitee: <a href="https://gitee.com/keets/spring-boot-samples/tree/master/api-gateway" target="_blank" rel="external">spring-boot-samples</a>  <a href="https://gitee.com/keets/spring-boot-samples/tree/master/api-gateway" target="_blank" rel="external">https://gitee.com/keets/spring-boot-samples/tree/master/api-gateway</a></strong></p>
 <hr>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
 <li><a href="http://www.scienjus.com/api-gateway-and-netflix-zuul/" target="_blank" rel="external">聊聊 API Gateway 和 Netflix Zuul
@@ -722,7 +720,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/archive/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -793,7 +791,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-网关介绍"><span class="nav-number">1.</span> <span class="nav-text">1. 网关介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-zuul网关"><span class="nav-number">2.</span> <span class="nav-text">2. zuul网关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-pom配置"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 pom配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-入口类"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 入口类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-bootstrap-yml"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 bootstrap.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-支持https"><span class="nav-number">2.4.</span> <span class="nav-text">2.3 支持https</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-一些internals"><span class="nav-number">3.</span> <span class="nav-text">3. 一些internals</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-过滤器"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 过滤器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-配置管理"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 配置管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-隔离机制"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 隔离机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-重试机制"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 重试机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-总结"><span class="nav-number">4.</span> <span class="nav-text">4. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#微服务网关netflix-zuul"><span class="nav-number">1.</span> <span class="nav-text">微服务网关netflix-zuul</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-网关介绍"><span class="nav-number">1.1.</span> <span class="nav-text">1. 网关介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-zuul网关"><span class="nav-number">1.2.</span> <span class="nav-text">2. zuul网关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-pom配置"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 pom配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-入口类"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 入口类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-bootstrap-yml"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 bootstrap.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-支持https"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.3 支持https</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-一些internals"><span class="nav-number">1.3.</span> <span class="nav-text">3. 一些internals</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-过滤器"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 过滤器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-配置管理"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 配置管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-隔离机制"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3 隔离机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-重试机制"><span class="nav-number">1.3.4.</span> <span class="nav-text">3.4 重试机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-总结"><span class="nav-number">1.4.</span> <span class="nav-text">4. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.4.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
