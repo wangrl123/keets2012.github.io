@@ -109,7 +109,7 @@
 <meta property="og:description" content="引言：前面一个系列文章介绍了认证鉴权与API权限控制在微服务架构中的设计与实现 ，好多同学询问有没有完整的demo项目，笔者回答肯定有的。由于之前系列文章侧重讲解了权限前置，所以近期补上完整的后置项目，但是这最好有一个完整的微服务调用。本文主要讲下API网关的设计与实现。netflix-zuul是由netflix开源的API网关，在微服务架构下，网关作为对外的门户，实现动态路由、监控、授权、安全、">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/zuul-use1-1000x550.jpg">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/filterzuul.png">
-<meta property="og:updated_time" content="2017-11-14T02:35:09.000Z">
+<meta property="og:updated_time" content="2017-11-14T03:15:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务网关netflix-zuul">
 <meta name="twitter:description" content="引言：前面一个系列文章介绍了认证鉴权与API权限控制在微服务架构中的设计与实现 ，好多同学询问有没有完整的demo项目，笔者回答肯定有的。由于之前系列文章侧重讲解了权限前置，所以近期补上完整的后置项目，但是这最好有一个完整的微服务调用。本文主要讲下API网关的设计与实现。netflix-zuul是由netflix开源的API网关，在微服务架构下，网关作为对外的门户，实现动态路由、监控、授权、安全、">
@@ -496,7 +496,7 @@
 <p>一般来说我们希望只在网络连接失败时进行重试、或是对 5XX 的 GET 请求进行重试（不推荐对 POST 请求进行重试，无法保证幂等性会造成数据不一致）。单台的重试次数可以尽量小一些，重试的节点数尽量多一些，整体效果会更好。</p>
 <p>如果有更加复杂的重试场景，例如需要对特定的某些 API、特定的返回值进行重试，那么也可以通过实现 RequestSpecificRetryHandler 定制逻辑（不建议直接使用 RetryHandler，因为这个子类可以使用很多已有的功能）。</p>
 <h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>本文首先介绍了API网关的相关知识；其次介绍了zuul网关的配置实现，同时支持https；最后介绍了zuul网关的一些内幕原理，这边大部分参考了网上的文章。网关作为内网与外网之间的门户，所有访问内网的请求都会经过网关，网关处进行反向代理。在整个Spring Cloud微服务框架里，Zuul扮演着”智能网关“的角色。</p>
-<p><strong>github: <a href="https://github.com/keets2012/Spring-Boot-Samples/tree/master/api-gateway" target="_blank" rel="external">Spring-Boot-Samples</a>   <a href="https://github.com/keets2012/Spring-Boot-Samples/tree/master/api-gateway" target="_blank" rel="external">https://github.com/keets2012/Spring-Boot-Samples/tree/master/api-gateway</a><br>gitee: <a href="https://gitee.com/keets/spring-boot-samples/tree/master/api-gateway" target="_blank" rel="external">spring-boot-samples</a>  <a href="https://gitee.com/keets/spring-boot-samples/tree/master/api-gateway" target="_blank" rel="external">https://gitee.com/keets/spring-boot-samples/tree/master/api-gateway</a></strong></p>
+<p><strong>github: <a href="https://github.com/keets2012/Spring-Boot-Samples/tree/master/api-gateway" target="_blank" rel="external">https://github.com/keets2012/Spring-Boot-Samples/tree/master/api-gateway</a><br>gitee: <a href="https://gitee.com/keets/spring-boot-samples/tree/master/api-gateway" target="_blank" rel="external">https://gitee.com/keets/spring-boot-samples/tree/master/api-gateway</a></strong></p>
 <hr>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
 <li><a href="http://www.scienjus.com/api-gateway-and-netflix-zuul/" target="_blank" rel="external">聊聊 API Gateway 和 Netflix Zuul
