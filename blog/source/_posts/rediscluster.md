@@ -1,7 +1,7 @@
 ---
 title: Redis Cluster深入与实践
 date: 2017-9-29
-categories: Note
+categories: 中间件
 tags:
 - redis 
 - mq

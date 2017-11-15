@@ -1,7 +1,7 @@
 ---
 title: 消息中间件NSQ深入与实践
 date: 2017-10-8
-categories: Note
+categories: 中间件
 tags:
 - Cluster
 - mq

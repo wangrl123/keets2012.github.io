@@ -1,7 +1,7 @@
 ---
 title: 由Consul谈到Raft
 date: 2017-9-25 16:06:59
-categories: Note
+categories: 算法
 tags:
 - consul
 - Cluster

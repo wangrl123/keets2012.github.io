@@ -1,7 +1,7 @@
 ---
 title: mongodb 集群基础
 date: 2017-08-10 20:11:59
-categories: Note
+categories: 中间件
 tags:
 - MongoDB
 - Cluster

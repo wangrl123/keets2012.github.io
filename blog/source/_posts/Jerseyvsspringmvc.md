@@ -1,7 +1,7 @@
 ---
 title: Restful Layer of SpringMVC vs Jersey
 date: 2017-08-30
-categories: Note
+categories: 微服务
 tags:
 - REST
 - Jersey

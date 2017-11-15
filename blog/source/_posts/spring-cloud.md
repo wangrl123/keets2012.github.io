@@ -1,7 +1,7 @@
 ---
 title: Spring Cloud 入门
 date: 2017-07-18 16:21:19
-categories: Note
+categories: 微服务
 tags:
 - Spring Cloud
 ---

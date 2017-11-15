@@ -1,7 +1,7 @@
 ---
 title: consul配置与实战
 date: 2017-09-16 
-categories: Note
+categories: 中间件
 tags:
 - consul
 - cluster

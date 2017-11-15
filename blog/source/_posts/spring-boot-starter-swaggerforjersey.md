@@ -1,7 +1,7 @@
 ---
 title: 自制Jersey-Swagger的spring-boot-starter
 date: 2017-9-2 
-categories: Note
+categories: 微服务
 tags:
 - starter
 - spring-boot
