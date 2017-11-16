@@ -192,10 +192,10 @@
         <category>微服务</category>
       </categories>
       <tags>
+        <tag>Jersey</tag>
         <tag>starter</tag>
-        <tag>spring-boot</tag>
         <tag>swagger</tag>
-        <tag>jersey</tag>
+        <tag>Spring Boot</tag>
       </tags>
   </entry>
   <entry>
@@ -208,7 +208,7 @@
       <tags>
         <tag>REST</tag>
         <tag>Jersey</tag>
-        <tag>Spring</tag>
+        <tag>Spring Boot</tag>
       </tags>
   </entry>
   <entry>
