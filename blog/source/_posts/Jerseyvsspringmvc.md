@@ -5,7 +5,7 @@ categories: 微服务
 tags:
 - REST
 - Jersey
-- Spring
+- Spring Boot
 ---
 
 笔者项目实现前后端剥离，服务端对外提供restful接口。REST逐渐成为影响Web框架、Web协议与Web应用设计的重要概念。现在有越来越多的公司希望能以简单而又贴合Web架构本身的方式公开Web API，因此REST变得越来越重要也就不足为奇了。使用Ajax进行通信的富浏览器端也在朝这个目标不断迈进。这个架构原则提升了万维网的可伸缩性，无论何种应用都能从该原则中受益无穷。SpringMVC和Jersey都可以为你提供restful风格的接口。本文将介绍SpringMVC中的REST特性并与Jersey进行对比。

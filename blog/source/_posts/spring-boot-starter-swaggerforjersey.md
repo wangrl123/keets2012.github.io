@@ -4,15 +4,12 @@ date: 2017-9-2
 categories: 微服务
 tags:
 - starter
-- spring-boot
+- Spring Boot
 - swagger
-- jersey
+- Jersey
 ---
 
-
 Spring Boot的自动化配置特性来实现快速的将swagger2引入spring boot应用来生成jersey的API文档，简化原生使用swagger2的整合代码。
-
-**欢迎使用和Star支持，如使用过程中碰到问题，可以提出Issue，我会尽力完善该Starter**
 
 # 版本基础
 
