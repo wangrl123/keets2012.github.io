@@ -434,7 +434,7 @@
 
       
         <p>引言： 本文系《认证鉴权与API权限控制在微服务架构中的设计与实现》系列的完结篇，前面三篇已经将认证鉴权与API权限控制的流程和主要细节讲解完。本文比较长，对这个系列进行收尾，主要内容包括对授权和鉴权流程之外的endpoint以及<code>Spring Security</code>过滤器部分踩坑的经历。欢迎阅读本系列文章。</p>
-<h2 id="1-前文回顾"><a href="#1-前文回顾" class="headerlink" title="1. 前文回顾"></a>1. 前文回顾</h2><p>首先还是照例对前文进行回顾。在第一篇 <a href="http://blueskykong.com/2017/10/19/security1/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a>介绍了该项目的背景以及技术调研与最后选型。第二篇<a href="http://blueskykong.com/2017/10/22/security2/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（二）</a>画出了简要的登录和校验的流程图，并重点讲解了用户身份的认证与token发放的具体实现。第三篇<a href="http://blueskykong.com/2017/10/24/security3/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（三）</a>先介绍了资源服务器配置，以及其中涉及的配置类，后面重点讲解了token以及API级别的鉴权。   </p>
+<h2 id="1-前文回顾"><a href="#1-前文回顾" class="headerlink" title="1. 前文回顾"></a>1. 前文回顾</h2><p>首先还是照例对前文进行回顾。在第一篇 <a href="http://blueskykong.com/2017/10/19/security1/">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a>介绍了该项目的背景以及技术调研与最后选型。第二篇<a href="http://blueskykong.com/2017/10/22/security2/">认证鉴权与API权限控制在微服务架构中的设计与实现（二）</a>画出了简要的登录和校验的流程图，并重点讲解了用户身份的认证与token发放的具体实现。第三篇<a href="http://blueskykong.com/2017/10/24/security3/">认证鉴权与API权限控制在微服务架构中的设计与实现（三）</a>先介绍了资源服务器配置，以及其中涉及的配置类，后面重点讲解了token以及API级别的鉴权。   </p>
 <p>本文将会讲解剩余的两个内置端点：注销和刷新token。注销token端点的处理与<code>Spring Security</code>默认提供的有些’/logout’有些区别，不仅清空SpringSecurityContextHolder中的信息，还要增加对存储token的清空。另一个刷新token端点其实和之前的请求授权是一样的API，只是参数中的grant_type不一样。   </p>
 <p>除了以上两个内置端点，后面将会重点讲下几种<code>Spring Security</code>过滤器。API级别的操作权限校验本来设想是通过<code>Spring Security</code>的过滤器实现，特地把这边学习了一遍，踩了一遍坑。 </p>
 <p>最后是本系列的总结，并对于存在的不足和后续工作进行论述。</p>
@@ -530,7 +530,7 @@
 <li><a href="https://docs.spring.io/spring-security/site/docs/3.0.x/reference/core-web-filters.html" target="_blank" rel="external">Core Security Filters</a></li>
 <li><a href="https://www.cnkirito.moe/2017/09/30/spring-security-4/" target="_blank" rel="external">Spring Security(四)–核心过滤器源码分析</a></li>
 </ol>
-<h3 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h3><p><a href="http://blueskykong.com/2017/10/19/security1/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a><br><a href="http://blueskykong.com/2017/10/22/security2/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（二）</a><br><a href="http://blueskykong.com/2017/10/24/security3/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（三）</a></p>
+<h3 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h3><p><a href="http://blueskykong.com/2017/10/19/security1/">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a><br><a href="http://blueskykong.com/2017/10/22/security2/">认证鉴权与API权限控制在微服务架构中的设计与实现（二）</a><br><a href="http://blueskykong.com/2017/10/24/security3/">认证鉴权与API权限控制在微服务架构中的设计与实现（三）</a></p>
 
       
     </div>
@@ -749,8 +749,8 @@
             
             
             <div class="site-state-item site-state-categories">
-              <a href="/archive/index.html">
-                <span class="site-state-item-count">10</span>
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -761,7 +761,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

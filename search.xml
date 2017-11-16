@@ -8,9 +8,9 @@
         <category>Ops</category>
       </categories>
       <tags>
+        <tag>Spring Boot</tag>
         <tag>Docker</tag>
         <tag>Ops</tag>
-        <tag>Spring Boot</tag>
         <tag>Maven</tag>
       </tags>
   </entry>
@@ -47,9 +47,9 @@
         <category>Ops</category>
       </categories>
       <tags>
-        <tag>Spring Cloud</tag>
         <tag>Docker</tag>
         <tag>Ops</tag>
+        <tag>Spring Cloud</tag>
       </tags>
   </entry>
   <entry>
@@ -193,9 +193,9 @@
       </categories>
       <tags>
         <tag>Jersey</tag>
+        <tag>Spring Boot</tag>
         <tag>starter</tag>
         <tag>swagger</tag>
-        <tag>Spring Boot</tag>
       </tags>
   </entry>
   <entry>

@@ -437,13 +437,13 @@
 
       
         <p>引言： 本文系《认证鉴权与API权限控制在微服务架构中的设计与实现》系列的第二篇，本文重点讲解用户身份的认证与token发放的具体实现。本文篇幅较长，对涉及到的大部分代码进行了分析，可收藏于闲暇时间阅读，欢迎订阅本系列文章。</p>
-<h2 id="1-系统概览"><a href="#1-系统概览" class="headerlink" title="1. 系统概览"></a>1. 系统概览</h2><p>在上一篇 <a href="http://blueskykong.com/2017/10/19/security1/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a>介绍了该项目的背景以及技术调研与最后选型，并且对于最终实现的endpoint执行结果进行展示。对系统架构虽然有提到，但是并未列出详细流程图。在笔者的应用场景中，Auth系统与网关进行结合。在网关出配置相应的端点信息，如登录系统申请token授权，校验check_token等端点。   </p>
+<h2 id="1-系统概览"><a href="#1-系统概览" class="headerlink" title="1. 系统概览"></a>1. 系统概览</h2><p>在上一篇 <a href="http://blueskykong.com/2017/10/19/security1/">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a>介绍了该项目的背景以及技术调研与最后选型，并且对于最终实现的endpoint执行结果进行展示。对系统架构虽然有提到，但是并未列出详细流程图。在笔者的应用场景中，Auth系统与网关进行结合。在网关出配置相应的端点信息，如登录系统申请token授权，校验check_token等端点。   </p>
 <p>下图为网关与Auth系统结合的流程图，网关系统的具体实现细节在后面另写文章介绍。（此处流程图的绘制中，笔者使用极简的语言描述，各位同学轻喷😆！）</p>
 <p><img src="http://ovcjgn2x0.bkt.clouddn.com/login.png" alt="login" title="授权流程图"></p>
 <p>上图展示了系统登录的简单流程，其中的细节有省略，用户信息的合法性校验实际是调用用户系统。大体流程是这样，客户端请求到达网关之后，根据网关识别的请求登录端点，转发到Auth系统，将用户的信息进行校验。</p>
 <p>另一方面是对于一般请求的校验。一些不需要权限的公开接口，在网关处配置好，请求到达网关后，匹配了路径将会直接放行。如果需要对该请求进行校验，会将该请求的相关验证信息截取，以及API权限校验所需的上下文信息（笔者项目对于一些操作进行权限前置验证，下一篇章会讲到），调用Auth系统，校验成功后进行路由转发。</p>
 <p><img src="http://ovcjgn2x0.bkt.clouddn.com/gw.jpg" alt="gw" title="身份及API权限校验的流程图"></p>
-<p>这篇文章就重点讲解我们在<a href="http://blueskykong.com/2017/10/19/security1/" target="_blank" rel="external">第一篇</a>文章中提到的用户身份的认证与token发放。这个也主要包含两个方面：</p>
+<p>这篇文章就重点讲解我们在<a href="http://blueskykong.com/2017/10/19/security1/">第一篇</a>文章中提到的用户身份的认证与token发放。这个也主要包含两个方面：</p>
 <ul>
 <li>用户合法性的认证</li>
 <li>获取到授权的token</li>
@@ -506,7 +506,7 @@
 <li><a href="https://www.cnkirito.moe/2017/08/09/Re%EF%BC%9A%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84Spring%20Security%20OAuth2%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">Re：从零开始的Spring Security OAuth2（二）</a></li>
 <li><a href="http://projects.spring.io/spring-security-oauth/docs/oauth2.html" target="_blank" rel="external">spring-security-oauth</a></li>
 </ol>
-<h3 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h3><p><a href="http://blueskykong.com/2017/10/19/security1/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a></p>
+<h3 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h3><p><a href="http://blueskykong.com/2017/10/19/security1/">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a></p>
 
       
     </div>
@@ -725,8 +725,8 @@
             
             
             <div class="site-state-item site-state-categories">
-              <a href="/archive/index.html">
-                <span class="site-state-item-count">10</span>
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -737,7 +737,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -436,7 +436,7 @@
 
       
         <p>引言： 本文系《认证鉴权与API权限控制在微服务架构中的设计与实现》系列的第三篇，本文重点讲解token以及API级别的鉴权。本文对涉及到的大部分代码进行了分析，欢迎订阅本系列文章。</p>
-<h2 id="1-前文回顾"><a href="#1-前文回顾" class="headerlink" title="1. 前文回顾"></a>1. 前文回顾</h2><p>在开始讲解这一篇文章之前，先对之前两篇文章进行回忆下。在第一篇 <a href="http://blueskykong.com/2017/10/19/security1/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a>介绍了该项目的背景以及技术调研与最后选型。第二篇<a href="http://blueskykong.com/2017/10/22/security2/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（二）</a>画出了简要的登录和校验的流程图，并重点讲解了用户身份的认证与token发放的具体实现。   </p>
+<h2 id="1-前文回顾"><a href="#1-前文回顾" class="headerlink" title="1. 前文回顾"></a>1. 前文回顾</h2><p>在开始讲解这一篇文章之前，先对之前两篇文章进行回忆下。在第一篇 <a href="http://blueskykong.com/2017/10/19/security1/">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a>介绍了该项目的背景以及技术调研与最后选型。第二篇<a href="http://blueskykong.com/2017/10/22/security2/">认证鉴权与API权限控制在微服务架构中的设计与实现（二）</a>画出了简要的登录和校验的流程图，并重点讲解了用户身份的认证与token发放的具体实现。   </p>
 <p><img src="http://ovcjgn2x0.bkt.clouddn.com/check.png" alt="check" title="身份及API权限校验的流程图"></p>
 <p>本文重点讲解鉴权，包括两个方面：token合法性以及API级别的操作权限。首先token合法性很容易理解，第二篇文章讲解了获取授权token的一系列流程，token是否是认证服务器颁发的，必然是需要验证的。其次对于API级别的操作权限，将上下文信息不具备操作权限的请求直接拒绝，当然此处是设计token合法性校验在先，其次再对操作权限进行验证，如果前一个验证直接拒绝，通过则进入操作权限验证。</p>
 <h2 id="2-资源服务器配置"><a href="#2-资源服务器配置" class="headerlink" title="2.资源服务器配置"></a>2.资源服务器配置</h2><p><code>ResourceServer</code>配置在第一篇就列出了，在进入鉴权之前，把这边的配置搞清，即使有些配置在本项目中没有用到，大家在自己的项目有可能用到。</p>
@@ -473,7 +473,7 @@
 <li><a href="http://projects.spring.io/spring-security-oauth/docs/oauth2.html" target="_blank" rel="external">spring-security-oauth</a></li>
 <li><a href="http://projects.spring.io/spring-security/" target="_blank" rel="external">Spring-Security Docs</a></li>
 </ol>
-<h3 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h3><p><a href="http://blueskykong.com/2017/10/19/security1/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a><br><a href="http://blueskykong.com/2017/10/22/security2/" target="_blank" rel="external">认证鉴权与API权限控制在微服务架构中的设计与实现（二）</a></p>
+<h3 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h3><p><a href="http://blueskykong.com/2017/10/19/security1/">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</a><br><a href="http://blueskykong.com/2017/10/22/security2/">认证鉴权与API权限控制在微服务架构中的设计与实现（二）</a></p>
 
       
     </div>
@@ -692,8 +692,8 @@
             
             
             <div class="site-state-item site-state-categories">
-              <a href="/archive/index.html">
-                <span class="site-state-item-count">10</span>
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -704,7 +704,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
