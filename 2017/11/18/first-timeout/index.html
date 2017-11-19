@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Spring Cloud,Ribbon," />
 
 
 
@@ -100,15 +100,22 @@
 
 
 
-<meta name="description" content="聚沙成塔！">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Aoho&#39;s Blog">
-<meta property="og:url" content="http://blueskykong.com/archives/index.html">
+<meta name="description" content="1. 问题背景使用Spring Cloud组件构建的服务集群，在第一次请求时经常会出现timeout的情况，然而第二次就正常了。Spring Cloud版本为Dalston.SR4。 启动涉及到的相关服务：  gateway(zuul网关) auth-Service（鉴权服务） user-Service（用户服务）  测试的端点接口为：http:/login/oauth/token。服务之间的调用">
+<meta name="keywords" content="Spring Cloud,Ribbon">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Cloud 服务第一次请求超时的优化">
+<meta property="og:url" content="http://blueskykong.com/2017/11/18/first-timeout/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="聚沙成塔！">
+<meta property="og:description" content="1. 问题背景使用Spring Cloud组件构建的服务集群，在第一次请求时经常会出现timeout的情况，然而第二次就正常了。Spring Cloud版本为Dalston.SR4。 启动涉及到的相关服务：  gateway(zuul网关) auth-Service（鉴权服务） user-Service（用户服务）  测试的端点接口为：http:/login/oauth/token。服务之间的调用">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/gw-not-eager.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/gw-second.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/lazy-load.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/eager-load.jpg">
+<meta property="og:updated_time" content="2017-11-19T09:13:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Aoho&#39;s Blog">
-<meta name="twitter:description" content="聚沙成塔！">
+<meta name="twitter:title" content="Spring Cloud 服务第一次请求超时的优化">
+<meta name="twitter:description" content="1. 问题背景使用Spring Cloud组件构建的服务集群，在第一次请求时经常会出现timeout的情况，然而第二次就正常了。Spring Cloud版本为Dalston.SR4。 启动涉及到的相关服务：  gateway(zuul网关) auth-Service（鉴权服务） user-Service（用户服务）  测试的端点接口为：http:/login/oauth/token。服务之间的调用">
+<meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/gw-not-eager.jpg">
 
 
 
@@ -136,13 +143,13 @@
 
 
 
-  <link rel="canonical" href="http://blueskykong.com/archives/"/>
+  <link rel="canonical" href="http://blueskykong.com/2017/11/18/first-timeout/"/>
 
 
 
 
 
-  <title>归档 | Aoho's Blog</title>
+  <title>Spring Cloud 服务第一次请求超时的优化 | Aoho's Blog</title>
   
 
 
@@ -168,7 +175,7 @@
     
   
 
-  <div class="container sidebar-position-left  page-archive  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -316,403 +323,299 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 26 篇日志。 继续努力。
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2017/11/18/first-timeout/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aoho">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aoho's Blog">
     </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Cloud 服务第一次请求超时的优化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-18T00:00:00+08:00">
+                2017-11-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/微服务/" itemprop="url" rel="index">
+                    <span itemprop="name">微服务</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/11/18/first-timeout/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/11/18/first-timeout/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">Views
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
-      
 
+      
+        <h2 id="1-问题背景"><a href="#1-问题背景" class="headerlink" title="1. 问题背景"></a>1. 问题背景</h2><p>使用Spring Cloud组件构建的服务集群，在第一次请求时经常会出现timeout的情况，然而第二次就正常了。Spring Cloud版本为Dalston.SR4。</p>
+<p>启动涉及到的相关服务：</p>
+<ul>
+<li>gateway(zuul网关)</li>
+<li>auth-Service（鉴权服务）</li>
+<li>user-Service（用户服务）</li>
+</ul>
+<p>测试的端点接口为：http:/login/oauth/token。服务之间的调用顺序为：gateway-&gt;auth-Service-&gt;user-Service。网关收到客户端的请求，转发请求到鉴权服务，鉴权服务对用户身份的核验是通过调用用户服，用户服务给鉴权服务返回身份校验的结果，鉴权服务将身份授权信息返回给gateway，gateway将最终的结果response返回给客户端。<br>三个服务启动后，通过zipkin监控调用链路信息，可以看到第一次和第二次调用情况如下图所示：</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/gw-not-eager.jpg" alt="not-eager-1st" title="首次调用端点"></p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/gw-second.jpg" alt="second" title="第二次调用信息"></p>
+<p>通过上面两次的链路监控信息截图，可以看到第一次的耗时是第二次的10多倍。遇到某些情况，很可能会出现第一次请求的超时。去官网看了下，主要原因是zuul网关和各个调用服务之间的Ribbon进行客户端负载均衡的Client懒加载，导致第一次的请求调用包括了创建Ribbon Client的时间。通过启动日志信息就可以发现：</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/lazy-load.jpg" alt="lazy-load" title="Ribbon 客户端懒加载"></p>
+<p>下面分两部分解决这个问题，一是服务之间调用Ribbon的饥饿加载，对应上面的测试为auth-Service调用user-Service；二是zuul网关的饥饿加载。</p>
+<h2 id="2-ribbon的饥饿加载"><a href="#2-ribbon的饥饿加载" class="headerlink" title="2. ribbon的饥饿加载"></a>2. ribbon的饥饿加载</h2><p>经过调查发现，造成第一次auth-Service调用user-Service耗时长的原因主要是，Ribbon进行客户端负载均衡的服务实例并不是在服务启动的时候就初始化好的，而是在调用的时候才会去创建相应的服务实例。所以第一次调用user-Service耗时不仅仅包含发送HTTP请求的时间，还包含了创建Ribbon Client的时间，这样一来如果创建时间速度较慢，同时设置的请求超时又比较短的话，很容易就会出现耗时很长甚至超时的情况。<br>在官网可以看到如下的配置说明：</p>
+<blockquote>
+<p>Each Ribbon named client has a corresponding child Application Context that Spring Cloud maintains, this application context is lazily loaded up on the first request to the named client. This lazy loading behavior can be changed to instead eagerly load up these child Application contexts at startup by specifying the names of the Ribbon clients.</p>
+</blockquote>
+<p>意为Spring Cloud为每个Ribbon客户端维护了一个相对的子应用环境的上下文，应用的上下文在第一次请求到指定客户端的时候懒加载。不过可以通过如下配置进行修改：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="attr">ribbon:</span></div><div class="line"><span class="attr">  eager-load:</span></div><div class="line"><span class="attr">    enabled:</span> <span class="literal">true</span></div><div class="line"><span class="attr">    clients:</span> <span class="string">client1,</span> <span class="string">client2,</span> <span class="string">client3</span></div></pre></td></tr></table></figure>
+<p>按照如上的配置之后，发现鉴权服务启动时就将user服务的Ribbon客户端进行了加载。</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/eager-load.jpg" alt="el" title="user服务eager load"></p>
+<h2 id="3-zuul网关的饥饿加载"><a href="#3-zuul网关的饥饿加载" class="headerlink" title="3. zuul网关的饥饿加载"></a>3. zuul网关的饥饿加载</h2><p>上面小节解决了auth-Service调用user-Service的Ribbon客户端启动时饥饿加载。网关作为对外请求的入口，zuul内部使用Ribbon调用其他服务，Spring Cloud默认在第一次调用时懒加载Ribbon客户端。zuul同样需要维护一个相对的子应用环境的上下文，所以也需要启动时饥饿加载。</p>
+<blockquote>
+<p>Zuul internally uses Ribbon for calling the remote url’s and Ribbon clients are by default lazily loaded up by Spring Cloud on first call. This behavior can be changed for Zuul using the following configuration and will result in the child Ribbon related Application contexts being eagerly loaded up at application startup time.</p>
+</blockquote>
+<p>具体配置如下：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="attr">zuul:</span></div><div class="line"><span class="attr">  ribbon:</span></div><div class="line"><span class="attr">    eager-load:</span></div><div class="line"><span class="attr">      enabled:</span> <span class="literal">true</span></div></pre></td></tr></table></figure>
+<p>至此，优化完成，再次重启服务进行第一次请求，发现情况已经好多了，大家可以自己动手尝试改进一下。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>本文主要介绍了Spring Cloud的服务第一次请求超时的优化方法。首先介绍了问题的背景，并排查了问题造成的原因，主要是Ribbon客户端的懒加载；然后分别针对zuul网关和服务之间调用的Ribbon客户端进行配置，使其启动时便加载Ribbon客户端的相关上下文信息。最后想说的是，http调用毕竟还是性能远低于RPC。。🙂</p>
+<hr>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="http://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html" target="_blank" rel="external">spring-cloud Dalston.SR4</a></li>
+<li><a href="http://blog.didispace.com/spring-cloud-tips-ribbon-eager/" target="_blank" rel="external">Spring Cloud实战小贴士：Ribbon的饥饿加载(eager-load)模式</a></li>
+</ol>
+
+      
+    </div>
+    <div>
       
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/qrcode.jpg" alt="aoho wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎您扫一扫上面的微信公众号，aoho求索，订阅我的博客!</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechat.jpg" alt="aoho WeChat Pay"/>
+          <p>微信打赏</p>
         </div>
       
       
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/ali.jpg" alt="aoho Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
 
       
+    </div>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
+    <div>
+      
         
-            <a class="post-title-link" href="/2017/11/18/first-timeout/" itemprop="url">
-              
-                <span itemprop="name">Spring Cloud 服务第一次请求超时的优化</span>
-              
-            </a>
-        
-      </h2>
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      aoho
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://blueskykong.com/2017/11/18/first-timeout/" title="Spring Cloud 服务第一次请求超时的优化">http://blueskykong.com/2017/11/18/first-timeout/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-11-18T00:00:00+08:00"
-              content="2017-11-18" >
-          11-18
-        </time>
-      </div>
 
-    </header>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring-Cloud/" rel="tag"># Spring Cloud</a>
+          
+            <a href="/tags/Ribbon/" rel="tag"># Ribbon</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/16/profile/" rel="next" title="微服务之配置服务器切换profile">
+                <i class="fa fa-chevron-left"></i> 微服务之配置服务器切换profile
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
 
-    
-
+    <div class="post-spread">
       
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/11/16/profile/" itemprop="url">
-              
-                <span itemprop="name">微服务之配置服务器切换profile</span>
-              
-            </a>
-        
-      </h2>
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-11-16T00:00:00+08:00"
-              content="2017-11-16" >
-          11-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/11/13/gateway/" itemprop="url">
-              
-                <span itemprop="name">微服务网关netflix-zuul</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-11-13T00:00:00+08:00"
-              content="2017-11-13" >
-          11-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
 
       
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/11/10/apm1/" itemprop="url">
-              
-                <span itemprop="name">几种分布式调用链监控组件的实践与比较（一）实践</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-11-10T00:00:00+08:00"
-              content="2017-11-10" >
-          11-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/11/02/dockermaven/" itemprop="url">
-              
-                <span itemprop="name">微服务部署之Maven插件构建Docker镜像</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-11-02T00:00:00+08:00"
-              content="2017-11-02" >
-          11-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/26/security4/" itemprop="url">
-              
-                <span itemprop="name">认证鉴权与API权限控制在微服务架构中的设计与实现（四）</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-26T00:00:00+08:00"
-              content="2017-10-26" >
-          10-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/24/security3/" itemprop="url">
-              
-                <span itemprop="name">认证鉴权与API权限控制在微服务架构中的设计与实现（三）</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-24T00:00:00+08:00"
-              content="2017-10-24" >
-          10-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/22/security2/" itemprop="url">
-              
-                <span itemprop="name">认证鉴权与API权限控制在微服务架构中的设计与实现（二）</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-22T00:00:00+08:00"
-              content="2017-10-22" >
-          10-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/19/security1/" itemprop="url">
-              
-                <span itemprop="name">认证鉴权与API权限控制在微服务架构中的设计与实现（一）</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-19T00:00:00+08:00"
-              content="2017-10-19" >
-          10-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/08/nsq/" itemprop="url">
-              
-                <span itemprop="name">消息中间件NSQ深入与实践</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-08T00:00:00+08:00"
-              content="2017-10-08" >
-          10-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-
+    </div>
+  </div>
 
 
           </div>
@@ -720,6 +623,12 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
 
         </div>
         
@@ -739,8 +648,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.jpg"
@@ -827,6 +745,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-问题背景"><span class="nav-number">1.</span> <span class="nav-text">1. 问题背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-ribbon的饥饿加载"><span class="nav-number">2.</span> <span class="nav-text">2. ribbon的饥饿加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-zuul网关的饥饿加载"><span class="nav-number">3.</span> <span class="nav-text">3. zuul网关的饥饿加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-总结"><span class="nav-number">4.</span> <span class="nav-text">4. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -971,11 +905,9 @@
 
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
 
 
   
