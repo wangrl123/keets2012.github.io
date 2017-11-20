@@ -100,22 +100,22 @@
 
 
 
-<meta name="description" content="1. 分布式配置中心分布式系统中，服务数量剧增，其配置文件需要实现统一管理并且能够实时更新，分布式配置中心组件必然是需要的。Spring Cloud提供了配置中心组件Spring Cloud Config ，它支持配置服务放在远程Git仓库和本地文件中。默认采用git来存储配置信息，笔者示例也是采用默认的git repository，这样通过git客户端工具来方便的管理和访问配置内容。  在Spr">
+<meta name="description" content="微服务之分布式配置中心Cloud Config1. 分布式配置中心分布式系统中，服务数量剧增，其配置文件需要实现统一管理并且能够实时更新，分布式配置中心组件必然是需要的。Spring Cloud提供了配置中心组件Spring Cloud Config ，它支持配置服务放在远程Git仓库和本地文件中。默认采用git来存储配置信息，笔者示例也是采用默认的git repository，这样通过git客户">
 <meta name="keywords" content="Spring Cloud">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微服务之分布式配置中心Cloud Config">
 <meta property="og:url" content="http://blueskykong.com/2017/11/20/config-server1/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="1. 分布式配置中心分布式系统中，服务数量剧增，其配置文件需要实现统一管理并且能够实时更新，分布式配置中心组件必然是需要的。Spring Cloud提供了配置中心组件Spring Cloud Config ，它支持配置服务放在远程Git仓库和本地文件中。默认采用git来存储配置信息，笔者示例也是采用默认的git repository，这样通过git客户端工具来方便的管理和访问配置内容。  在Spr">
+<meta property="og:description" content="微服务之分布式配置中心Cloud Config1. 分布式配置中心分布式系统中，服务数量剧增，其配置文件需要实现统一管理并且能够实时更新，分布式配置中心组件必然是需要的。Spring Cloud提供了配置中心组件Spring Cloud Config ，它支持配置服务放在远程Git仓库和本地文件中。默认采用git来存储配置信息，笔者示例也是采用默认的git repository，这样通过git客户">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/%E9%85%8D%E7%BD%AE%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B7%A5%E4%BD%9C%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/configstartupload.jpg">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/realconfig.jpg">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/refrestresult.jpg">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/webhooks.jpg">
-<meta property="og:updated_time" content="2017-11-20T13:27:29.000Z">
+<meta property="og:updated_time" content="2017-11-20T14:13:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务之分布式配置中心Cloud Config">
-<meta name="twitter:description" content="1. 分布式配置中心分布式系统中，服务数量剧增，其配置文件需要实现统一管理并且能够实时更新，分布式配置中心组件必然是需要的。Spring Cloud提供了配置中心组件Spring Cloud Config ，它支持配置服务放在远程Git仓库和本地文件中。默认采用git来存储配置信息，笔者示例也是采用默认的git repository，这样通过git客户端工具来方便的管理和访问配置内容。  在Spr">
+<meta name="twitter:description" content="微服务之分布式配置中心Cloud Config1. 分布式配置中心分布式系统中，服务数量剧增，其配置文件需要实现统一管理并且能够实时更新，分布式配置中心组件必然是需要的。Spring Cloud提供了配置中心组件Spring Cloud Config ，它支持配置服务放在远程Git仓库和本地文件中。默认采用git来存储配置信息，笔者示例也是采用默认的git repository，这样通过git客户">
 <meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/%E9%85%8D%E7%BD%AE%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B7%A5%E4%BD%9C%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
 
 
@@ -436,7 +436,7 @@
       
 
       
-        <h2 id="1-分布式配置中心"><a href="#1-分布式配置中心" class="headerlink" title="1. 分布式配置中心"></a>1. 分布式配置中心</h2><p>分布式系统中，服务数量剧增，其配置文件需要实现统一管理并且能够实时更新，分布式配置中心组件必然是需要的。Spring Cloud提供了配置中心组件Spring Cloud Config ，它支持配置服务放在远程Git仓库和本地文件中。默认采用git来存储配置信息，笔者示例也是采用默认的git repository，这样通过git客户端工具来方便的管理和访问配置内容。</p>
+        <h1 id="微服务之分布式配置中心Cloud-Config"><a href="#微服务之分布式配置中心Cloud-Config" class="headerlink" title="微服务之分布式配置中心Cloud Config"></a>微服务之分布式配置中心Cloud Config</h1><h2 id="1-分布式配置中心"><a href="#1-分布式配置中心" class="headerlink" title="1. 分布式配置中心"></a>1. 分布式配置中心</h2><p>分布式系统中，服务数量剧增，其配置文件需要实现统一管理并且能够实时更新，分布式配置中心组件必然是需要的。Spring Cloud提供了配置中心组件Spring Cloud Config ，它支持配置服务放在远程Git仓库和本地文件中。默认采用git来存储配置信息，笔者示例也是采用默认的git repository，这样通过git客户端工具来方便的管理和访问配置内容。</p>
 <p><img src="http://ovcjgn2x0.bkt.clouddn.com/%E9%85%8D%E7%BD%AE%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B7%A5%E4%BD%9C%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="配置服务器工作示意图" title="配置服务器工作示意图"></p>
 <p>在Spring Cloud Config 组件中，有两个角色，一是Config Server配置服务器，为其他服务提供配置文件信息；另一个是Config Client即其他服务，启动时从Config Server拉取配置。<br>下面分别介绍下Config Server和Config Client的搭建实现方法。</p>
 <h2 id="2-配置服务器Config-Server"><a href="#2-配置服务器Config-Server" class="headerlink" title="2. 配置服务器Config Server"></a>2. 配置服务器Config Server</h2><h3 id="2-1-pom中的jars"><a href="#2-1-pom中的jars" class="headerlink" title="2.1 pom中的jars"></a>2.1 pom中的jars</h3><p>只需要添加如下两个jar包的引用。</p>
@@ -477,10 +477,20 @@
 <p>可以看到确实是Dalston.SR4，配置服务能够正常运行。</p>
 <h3 id="5-2-动态刷新配置"><a href="#5-2-动态刷新配置" class="headerlink" title="5.2 动态刷新配置"></a>5.2 动态刷新配置</h3><p>Spring Cloud Config还可以实现动态更新配置的功能。下面我们修改下Config Repo中的cloud.version配置为Camden SR7，并通过刷新config client的/refresh端点来应用配置。<br>从下图可以看到结果是预期所想。</p>
 <p><img src="http://ovcjgn2x0.bkt.clouddn.com/refrestresult.jpg" alt="rr" title="刷新配置"></p>
-<p>这边配置的刷新是通过手工完成了，还可以利用githook进行触发。当本地提交代码到git后，调用了下图设置的url，即/refresh端点更新配置信息，更新页面如下。</p>
+<p>这边配置的刷新是通过手工完成了，还可以利用githook进行触发。当本地提交代码到git后，调用了下图设置的url。有两个端点可以使用：</p>
+<ul>
+<li>refresh：以post方式执行/refresh 会刷新env中的配置</li>
+<li>restart：如果配置信息已经注入到bean中，由于bean是单例的，不会去加载修改后的配置<br>需要通过post方式去执行/restart, 还需要配置endpoints.restart.enabled: true。</li>
+</ul>
+<p>第二种情况比较耗时，<code>@RefreshScope</code>是spring cloud提供的注解，在执行refresh时会刷新bean中变量值。</p>
+<blockquote>
+<p>Convenience annotation to put a @Bean definition in RefreshScope.<br> Beans annotated this way can be refreshed at runtime and any components that are using them will get a new instance on the next method call, fully initialized and injected with all dependencies.</p>
+</blockquote>
+<p>上面说了RefreshScope是一个方便的bean注解，加上这个注解可以在运行态刷新bean。其他使用该bean的components下次调用时会获取一个已经被初始化好和注入的新实例对象。</p>
+<p>githook设置页面如下。</p>
 <p><img src="http://ovcjgn2x0.bkt.clouddn.com/webhooks.jpg" alt="githook" title="githook设置"></p>
 <h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h2><p>本文主要讲了配置服务器和配置客户端的搭建过程，最后通过配置客户端的日志和端点信息验证是否能成功使用配置服务中心。总体来说，非常简单。文中的部分配置没有写完整，读者需要可以看文末的git项目。   </p>
-<p>不过关于配置中心，本文的讲解并不完整，下一篇文章将会讲解配置服务器与消息总线的结合使用，实现对配置客户端的自动更新及灰度发布等功能。   </p>
+<p>不过关于配置中心，本文的讲解并不完整，下一篇文章将会讲解配置服务器与消息总线的结合使用，实现对配置客户端的自动更新及灰度发布等功能。</p>
 <p><strong>本文源码<br>github: <a href="https://github.com/keets2012/Spring-Boot-Samples/" target="_blank" rel="external">https://github.com/keets2012/Spring-Boot-Samples/</a><br>gitee: <a href="https://gitee.com/keets/spring-boot-samples/" target="_blank" rel="external">https://gitee.com/keets/spring-boot-samples/</a></strong></p>
 <hr>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
@@ -771,7 +781,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-分布式配置中心"><span class="nav-number">1.</span> <span class="nav-text">1. 分布式配置中心</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置服务器Config-Server"><span class="nav-number">2.</span> <span class="nav-text">2. 配置服务器Config Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-pom中的jars"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 pom中的jars</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-入口类"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 入口类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-bootstrap-yml"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 bootstrap.yml</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-配置的git仓库"><span class="nav-number">3.</span> <span class="nav-text">3. 配置的git仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-配置客户端Config-Client"><span class="nav-number">4.</span> <span class="nav-text">4. 配置客户端Config Client</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-pom中的jars"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 pom中的jars</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-入口类"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 入口类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-bootstrap-yml"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 bootstrap.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-TestResource"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 TestResource</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-测试结果"><span class="nav-number">5.</span> <span class="nav-text">5. 测试结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-获取配置"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 获取配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-动态刷新配置"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 动态刷新配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-总结"><span class="nav-number">6.</span> <span class="nav-text">6. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">6.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#微服务之分布式配置中心Cloud-Config"><span class="nav-number">1.</span> <span class="nav-text">微服务之分布式配置中心Cloud Config</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-分布式配置中心"><span class="nav-number">1.1.</span> <span class="nav-text">1. 分布式配置中心</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置服务器Config-Server"><span class="nav-number">1.2.</span> <span class="nav-text">2. 配置服务器Config Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-pom中的jars"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 pom中的jars</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-入口类"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 入口类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-bootstrap-yml"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 bootstrap.yml</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-配置的git仓库"><span class="nav-number">1.3.</span> <span class="nav-text">3. 配置的git仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-配置客户端Config-Client"><span class="nav-number">1.4.</span> <span class="nav-text">4. 配置客户端Config Client</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-pom中的jars"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1 pom中的jars</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-入口类"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2 入口类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-bootstrap-yml"><span class="nav-number">1.4.3.</span> <span class="nav-text">4.3 bootstrap.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-TestResource"><span class="nav-number">1.4.4.</span> <span class="nav-text">4.4 TestResource</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-测试结果"><span class="nav-number">1.5.</span> <span class="nav-text">5. 测试结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-获取配置"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1 获取配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-动态刷新配置"><span class="nav-number">1.5.2.</span> <span class="nav-text">5.2 动态刷新配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-总结"><span class="nav-number">1.6.</span> <span class="nav-text">6. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.6.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
