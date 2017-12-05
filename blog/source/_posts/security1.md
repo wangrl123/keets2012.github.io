@@ -266,7 +266,7 @@ method: get
 url: http://localhost:9000/logout
 header:
 {
-	Authorization: Basic ZnJvbnRlbmQ6ZnJvbnRlbmQ=
+	Authorization: bearereyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDgzMzkwNTQsIlgtU0lNVS1Vc2VySWQiOiIwOGFhMTYxYi1lYjI3LTQ2NjAtYjA1MC1lMDc5YTJiODBhODMiLCJ1c2VyX25hbWUiOiJrZWV0cyIsImp0aSI6IjJhNTQ4NjY2LTRjNzEtNGEzNi1hZmY0LTMwZTI1Mjc0ZjQxZSIsImNsaWVudF9pZCI6ImZyb250ZW5kIiwic2NvcGUiOlsibWVua29yIl19.rA-U2iXnjH0AdPaGuvSEJH3bTth6AT3oQrGsKIams30
 }
 ```
 注销成功则会返回200，注销端点主要是将token和SecurityContextHolder进行清空。
