@@ -110,7 +110,7 @@
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%9D%83%E9%99%90%20%281%29.png">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/gwflow.jpg">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/backend%E6%B5%81%E7%A8%8B.png">
-<meta property="og:updated_time" content="2017-12-10T14:40:05.000Z">
+<meta property="og:updated_time" content="2017-12-11T01:33:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务架构中整合网关、权限服务">
 <meta name="twitter:description" content="前言：之前的文章有讲过微服务的权限系列和网关实现，都是孤立存在，本文将整合后端服务与网关、权限系统。安全权限部分的实现还讲解了基于前置验证的方式实现，但是由于与业务联系比较紧密，没有具体的示例。业务权限与业务联系非常密切，本次的整合项目将会把这部分的操作权限校验实现基于具体的业务服务。 1. 前文回顾与整合设计在认证鉴权与API权限控制在微服务架构中的设计与实现系列文章中，讲解了在微服务架构中Au">
@@ -503,7 +503,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/test"</span>, method = RequestMethod.GET)</div><div class="line"><span class="meta">@PreAuth</span>(<span class="string">"hasAuthority('CREATE_COMPANY')"</span>) <span class="comment">// 还可以定义很多表达式，如hasRole('Admin')</span></div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"ok"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><code>@PreAuth</code>中，可以定义的表达式很多，可以看<code>SecurityExpressionOperations</code>接口中的方法。目前笔者只是实现了<code>hasAuthority()</code>表达式，如果你想支持其他所有表达式，只需要构造相应的<code>SecurityContextHolder</code>即可。</p>
 <h3 id="4-4-为什么这样设计？"><a href="#4-4-为什么这样设计？" class="headerlink" title="4.4 为什么这样设计？"></a>4.4 为什么这样设计？</h3><p>有些读者看了上面的设计，既然好多用到了Spring Security的工具类，肯定会问，为什么要引入这么复杂的工具类？   </p>
-<p>其实很简单，首先因为<code>SecurityExpressionOperations</code>接口中定义的表达式足够多，且较为合理，能够覆盖我们在平时用到的大部分场景；其次，笔者之前的设计是直接在注解中指定所需权限，没有扩展性，且可读性查；最后，Spring Security 4 确实引入了<code>@PreAuthorize,@PostAuthorize</code>等注解，本来想用来着，自己尝试了一下，发现对于微服务架构这样的接口级别的操作权限校验不是很适合，十多个过滤器太过复杂，而且还涉及到的Principal、Credentials等信息，这些已经在auth系统实现了身份合法性校验。笔者认为这边的功能实现并不是很复杂，需要很轻量的实现，读者有兴趣可以试着这部分的实现封装成jar包或者Spring Boot的starter。</p>
+<p>其实很简单，首先因为<code>SecurityExpressionOperations</code>接口中定义的表达式足够多，且较为合理，能够覆盖我们在平时用到的大部分场景；其次，笔者之前的设计是直接在注解中指定所需权限，没有扩展性，且可读性差；最后，Spring Security 4 确实引入了<code>@PreAuthorize,@PostAuthorize</code>等注解，本来想用来着，自己尝试了一下，发现对于微服务架构这样的接口级别的操作权限校验不是很适合，十多个过滤器太过复杂，而且还涉及到的Principal、Credentials等信息，这些已经在auth系统实现了身份合法性校验。笔者认为这边的功能实现并不是很复杂，需要很轻量的实现，读者有兴趣可以试着这部分的实现封装成jar包或者Spring Boot的starter。</p>
 <h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h2><p>如上，首先讲了整合的设计思路，主要包含三个服务：gateway、auth和backend demo。整合的项目，总体比较复杂，其中gateway服务扩充了好多内容，对于暴露的接口进行路由转发，这边引入了Spring Security 的starter，配置资源服务器对暴露的路径进行放行；对于其他接口需要调用auth服务进行身份合法性校验，保证到达backend的请求都是合法的或者公开的接口；auth服务在之前的基础上，补充了role、permission、user相应的接口，供外部调用；backend demo是新起的服务，实现了接口级别的操作权限的校验，主要用到了自定义注解和Spring AOP切面。</p>
 <p>由于实现的细节实在有点多，本文限于篇幅，只对部分重要的实现进行列出与讲解。如果读者有兴趣实际的应用，可以根据实际的业务进行扩增一些信息，如auth授权的token、网关拦截请求构造的头部信息、注解支持的表达式等等。</p>
 <p>可以优化的地方当然还有很多，整合项目中设计不合理的地方，各位同学可以多多提意见。</p>
