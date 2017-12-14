@@ -107,7 +107,7 @@
 <meta property="og:url" content="http://blueskykong.com/2017/12/14/aop/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
 <meta property="og:description" content="1. Spring AOPSpring是一个轻型容器，Spring整个系列的最最核心的概念当属IoC、AOP。可见AOP是Spring框架中的核心之一，在应用中具有非常重要的作用，也是Spring其他组件的基础。AOP（Aspect Oriented Programming），即面向切面编程，可以说是OOP（Object Oriented Programming，面向对象编程）的补充和完善。OOP">
-<meta property="og:updated_time" content="2017-12-14T13:56:55.000Z">
+<meta property="og:updated_time" content="2017-12-14T14:01:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解Spring AOP的动态代理">
 <meta name="twitter:description" content="1. Spring AOPSpring是一个轻型容器，Spring整个系列的最最核心的概念当属IoC、AOP。可见AOP是Spring框架中的核心之一，在应用中具有非常重要的作用，也是Spring其他组件的基础。AOP（Aspect Oriented Programming），即面向切面编程，可以说是OOP（Object Oriented Programming，面向对象编程）的补充和完善。OOP">
@@ -451,7 +451,7 @@
 <h3 id="3-3-测试"><a href="#3-3-测试" class="headerlink" title="3.3 测试"></a>3.3 测试</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AOPTest</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        OrderManager order = (OrderManager) <span class="keyword">new</span> CGLibProxy().createProxyObject(<span class="keyword">new</span> OrderManager(<span class="string">"aoho"</span>));</div><div class="line">        order.save(UUID.randomUUID(), <span class="string">"aoho"</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p>结果如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">---before intercept----</div><div class="line">call save()方法,save:aoho</div><div class="line">---after intercept----</div></pre></td></tr></table></figure>
-<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>本文主要见讲了Spring Aop动态代理实现的两种方式，并分别介绍了其优缺点。jdk动态代理的应用前提是目标类基于统一的接口。如果没有该前提，jdk动态代理不能应用。由此可以看出，jdk动态代理有一定的局限性，cglib这种第三方类库实现的动态代理应用更加广泛，且在效率上更有优势。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>本文主要讲了Spring Aop动态代理实现的两种方式，并分别介绍了其优缺点。jdk动态代理的应用前提是目标类基于统一的接口。如果没有该前提，jdk动态代理不能应用。由此可以看出，jdk动态代理有一定的局限性，cglib这种第三方类库实现的动态代理应用更加广泛，且在效率上更有优势。</p>
 <p>JDK动态代理机制是委托机制，不需要以来第三方的库，只要要JDK环境就可以进行代理，动态实现接口类，在动态生成的实现类里面委托为hanlder去调用原始实现类方法；CGLib 必须依赖于CGLib的类库，使用的是继承机制，是被代理类和代理类继承的关系，所以代理类是可以赋值给被代理类的，如果被代理类有接口，那么代理类也可以赋值给接口。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
 <li><a href="http://ifeve.com/jdk%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E4%BB%A3%E7%90%86%E4%B8%8Ecglib%E4%BB%A3%E7%90%86%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A9%B6/" target="_blank" rel="external">jdk动态代理代理与cglib代理原理探究</a></li>
