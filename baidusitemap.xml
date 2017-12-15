@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/12/14/aop/</loc>
+    <lastmod>2017-12-14T14:01:03.000Z</lastmod>
+    <data>
+        <display>
+        <title>深入理解Spring AOP的动态代理</title>
+        <pubTime>2017-12-13T16:00:00.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>AOP</tag>
+         
+         
+           
+             
+              <breadCrumb title="java" url="http://blueskykong.com/categories/java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/09/02/spring-boot-starter-swaggerforjersey/</loc>
+    <lastmod>2017-12-14T02:17:15.000Z</lastmod>
+    <data>
+        <display>
+        <title>自制Jersey-Swagger的spring-boot-starter</title>
+        <pubTime>2017-09-01T16:00:00.000Z</pubTime>
+        
+        <tag>Jersey</tag>
+         
+        <tag>Spring Boot</tag>
+         
+        <tag>starter</tag>
+         
+        <tag>swagger</tag>
+         
+         
+           
+             
+              <breadCrumb title="微服务" url="http://blueskykong.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/12/10/integration/</loc>
+    <lastmod>2017-12-12T04:56:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>微服务架构中整合网关、权限服务</title>
+        <pubTime>2017-12-09T16:00:00.000Z</pubTime>
+        
+        <tag>zuul</tag>
+         
+        <tag>gateway</tag>
+         
+        <tag>Spring Security</tag>
+         
+        <tag>OAuth2</tag>
+         
+         
+           
+             
+              <breadCrumb title="微服务" url="http://blueskykong.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/12/05/apm2/</loc>
+    <lastmod>2017-12-06T01:27:55.000Z</lastmod>
+    <data>
+        <display>
+        <title>几种分布式调用链监控组件的实践与比较（二）比较</title>
+        <pubTime>2017-12-04T16:00:00.000Z</pubTime>
+        
+        <tag>APM</tag>
+         
+        <tag>zipkin</tag>
+         
+        <tag>micro-service</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ops" url="http://blueskykong.com/categories/Ops/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/10/19/security1/</loc>
+    <lastmod>2017-12-05T05:39:24.000Z</lastmod>
+    <data>
+        <display>
+        <title>认证鉴权与API权限控制在微服务架构中的设计与实现（一）</title>
+        <pubTime>2017-10-18T16:00:00.000Z</pubTime>
+        
+        <tag>Spring Security</tag>
+         
+        <tag>OAuth2</tag>
+         
+         
+           
+             
+              <breadCrumb title="Security" url="http://blueskykong.com/categories/Security/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/08/26/HTTP2/</loc>
+    <lastmod>2017-12-04T15:04:33.000Z</lastmod>
+    <data>
+        <display>
+        <title>HTTPS vs HTTP 1.1 vs HTTP 2</title>
+        <pubTime>2017-08-26T03:06:59.000Z</pubTime>
+        
+        <tag>HTTPS</tag>
+         
+        <tag>HTTP2</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="http://blueskykong.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/02/26/designbuilder/</loc>
+    <lastmod>2017-11-30T14:52:21.000Z</lastmod>
+    <data>
+        <display>
+        <title>设计模式之建造者模式</title>
+        <pubTime>2017-02-25T16:00:00.000Z</pubTime>
+        
+        <tag>设计模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://blueskykong.com/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/11/20/config-server1/</loc>
+    <lastmod>2017-11-21T01:25:29.000Z</lastmod>
+    <data>
+        <display>
+        <title>微服务之分布式配置中心Cloud Config</title>
+        <pubTime>2017-11-19T16:00:00.000Z</pubTime>
+        
+        <tag>Spring Cloud</tag>
+         
+         
+           
+             
+              <breadCrumb title="微服务" url="http://blueskykong.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/11/18/first-timeout/</loc>
+    <lastmod>2017-11-19T09:13:48.000Z</lastmod>
+    <data>
+        <display>
+        <title>Spring Cloud 服务第一次请求超时的优化</title>
+        <pubTime>2017-11-17T16:00:00.000Z</pubTime>
+        
+        <tag>Spring Cloud</tag>
+         
+        <tag>Ribbon</tag>
+         
+         
+           
+             
+              <breadCrumb title="微服务" url="http://blueskykong.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/08/30/Jerseyvsspringmvc/</loc>
+    <lastmod>2017-11-16T07:15:06.000Z</lastmod>
+    <data>
+        <display>
+        <title>Restful Layer of SpringMVC vs Jersey</title>
+        <pubTime>2017-08-29T16:00:00.000Z</pubTime>
+        
+        <tag>REST</tag>
+         
+        <tag>Jersey</tag>
+         
+        <tag>Spring Boot</tag>
+         
+         
+           
+             
+              <breadCrumb title="微服务" url="http://blueskykong.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/11/16/profile/</loc>
+    <lastmod>2017-11-16T07:11:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>微服务之配置服务器切换profile</title>
+        <pubTime>2017-11-15T16:00:00.000Z</pubTime>
+        
+        <tag>Spring Boot</tag>
+         
+        <tag>Docker</tag>
+         
+        <tag>Ops</tag>
+         
+        <tag>Maven</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ops" url="http://blueskykong.com/categories/Ops/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/11/13/gateway/</loc>
+    <lastmod>2017-11-14T03:15:20.000Z</lastmod>
+    <data>
+        <display>
+        <title>微服务网关netflix-zuul</title>
+        <pubTime>2017-11-12T16:00:00.000Z</pubTime>
+        
+        <tag>zuul</tag>
+         
+        <tag>gateway</tag>
+         
+         
+           
+             
+              <breadCrumb title="微服务" url="http://blueskykong.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/07/18/spring-cloud/</loc>
+    <lastmod>2017-11-14T02:44:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>Spring Cloud 入门</title>
+        <pubTime>2017-07-18T08:21:19.000Z</pubTime>
+        
+        <tag>Spring Cloud</tag>
+         
+         
+           
+             
+              <breadCrumb title="微服务" url="http://blueskykong.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/08/10/mongodb%E9%9B%86%E7%BE%A4%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2017-11-14T02:42:40.000Z</lastmod>
+    <data>
+        <display>
+        <title>mongodb 集群基础</title>
+        <pubTime>2017-08-10T12:11:59.000Z</pubTime>
+        
+        <tag>MongoDB</tag>
+         
+        <tag>Cluster</tag>
+         
+         
+           
+             
+              <breadCrumb title="中间件" url="http://blueskykong.com/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/09/04/ThreadLocal/</loc>
+    <lastmod>2017-11-14T02:40:13.000Z</lastmod>
+    <data>
+        <display>
+        <title>深入ThreadLocal</title>
+        <pubTime>2017-09-03T16:00:00.000Z</pubTime>
+        
+        <tag>Thread</tag>
+         
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="java" url="http://blueskykong.com/categories/java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/09/09/snowflake/</loc>
+    <lastmod>2017-11-14T02:39:35.000Z</lastmod>
+    <data>
+        <display>
+        <title>snowflake升级版全局id生成</title>
+        <pubTime>2017-09-08T16:00:00.000Z</pubTime>
+        
+        <tag>spring boot</tag>
+         
+        <tag>snowflake</tag>
+         
+         
+           
+             
+              <breadCrumb title="微服务" url="http://blueskykong.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/09/16/consul/</loc>
+    <lastmod>2017-11-14T02:38:31.000Z</lastmod>
+    <data>
+        <display>
+        <title>consul配置与实战</title>
+        <pubTime>2017-09-15T16:00:00.000Z</pubTime>
+        
+        <tag>consul</tag>
+         
+        <tag>cluster</tag>
+         
+         
+           
+             
+              <breadCrumb title="中间件" url="http://blueskykong.com/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/09/25/raft/</loc>
+    <lastmod>2017-11-14T02:38:14.000Z</lastmod>
+    <data>
+        <display>
+        <title>由Consul谈到Raft</title>
+        <pubTime>2017-09-25T08:06:59.000Z</pubTime>
+        
+        <tag>consul</tag>
+         
+        <tag>Cluster</tag>
+         
+        <tag>Consensus</tag>
+         
+         
+           
+             
+              <breadCrumb title="算法" url="http://blueskykong.com/categories/%E7%AE%97%E6%B3%95/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/09/29/rediscluster/</loc>
+    <lastmod>2017-11-14T02:36:51.000Z</lastmod>
+    <data>
+        <display>
+        <title>Redis Cluster深入与实践</title>
+        <pubTime>2017-09-28T16:00:00.000Z</pubTime>
+        
+        <tag>mq</tag>
+         
+        <tag>redis</tag>
+         
+         
+           
+             
+              <breadCrumb title="中间件" url="http://blueskykong.com/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/10/08/nsq/</loc>
+    <lastmod>2017-11-14T02:36:27.000Z</lastmod>
+    <data>
+        <display>
+        <title>消息中间件NSQ深入与实践</title>
+        <pubTime>2017-10-07T16:00:00.000Z</pubTime>
+        
+        <tag>Cluster</tag>
+         
+        <tag>mq</tag>
+         
+         
+           
+             
+              <breadCrumb title="中间件" url="http://blueskykong.com/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/11/10/apm1/</loc>
+    <lastmod>2017-11-10T10:01:05.000Z</lastmod>
+    <data>
+        <display>
+        <title>几种分布式调用链监控组件的实践与比较（一）实践</title>
+        <pubTime>2017-11-09T16:00:00.000Z</pubTime>
+        
+        <tag>APM</tag>
+         
+        <tag>zipkin</tag>
+         
+        <tag>micro-service</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ops" url="http://blueskykong.com/categories/Ops/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/11/02/dockermaven/</loc>
+    <lastmod>2017-11-08T03:14:57.000Z</lastmod>
+    <data>
+        <display>
+        <title>微服务部署之Maven插件构建Docker镜像</title>
+        <pubTime>2017-11-01T16:00:00.000Z</pubTime>
+        
+        <tag>Docker</tag>
+         
+        <tag>Ops</tag>
+         
+        <tag>Spring Cloud</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ops" url="http://blueskykong.com/categories/Ops/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>http://blueskykong.com/2017/02/19/designsingleton/</loc>
+    <lastmod>2017-11-05T13:41:48.000Z</lastmod>
+    <data>
+        <display>
+        <title>设计模式之单例模式</title>
+        <pubTime>2017-02-18T16:00:00.000Z</pubTime>
+        
+        <tag>设计模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://blueskykong.com/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/10/26/security4/</loc>
+    <lastmod>2017-10-26T13:13:51.000Z</lastmod>
+    <data>
+        <display>
+        <title>认证鉴权与API权限控制在微服务架构中的设计与实现（四）</title>
+        <pubTime>2017-10-25T16:00:00.000Z</pubTime>
+        
+        <tag>Spring Security</tag>
+         
+        <tag>OAuth2</tag>
+         
+         
+           
+             
+              <breadCrumb title="Security" url="http://blueskykong.com/categories/Security/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/10/24/security3/</loc>
+    <lastmod>2017-10-24T08:47:15.000Z</lastmod>
+    <data>
+        <display>
+        <title>认证鉴权与API权限控制在微服务架构中的设计与实现（三）</title>
+        <pubTime>2017-10-23T16:00:00.000Z</pubTime>
+        
+        <tag>Spring Security</tag>
+         
+        <tag>OAuth2</tag>
+         
+         
+           
+             
+              <breadCrumb title="Security" url="http://blueskykong.com/categories/Security/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/10/22/security2/</loc>
+    <lastmod>2017-10-24T08:45:51.000Z</lastmod>
+    <data>
+        <display>
+        <title>认证鉴权与API权限控制在微服务架构中的设计与实现（二）</title>
+        <pubTime>2017-10-21T16:00:00.000Z</pubTime>
+        
+        <tag>Spring Security</tag>
+         
+        <tag>OAuth2</tag>
+         
+         
+           
+             
+              <breadCrumb title="Security" url="http://blueskykong.com/categories/Security/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/01/12/designPattern1/</loc>
+    <lastmod>2017-10-17T07:48:30.000Z</lastmod>
+    <data>
+        <display>
+        <title>23种设计模式总览</title>
+        <pubTime>2017-01-11T16:00:00.000Z</pubTime>
+        
+        <tag>设计模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://blueskykong.com/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/10/06/lombok/</loc>
+    <lastmod>2017-10-07T08:47:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>Lombok使用与原理</title>
+        <pubTime>2017-10-05T16:00:00.000Z</pubTime>
+        
+        <tag>Lombok</tag>
+         
+         
+           
+             
+              <breadCrumb title="Utils" url="http://blueskykong.com/categories/Utils/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/07/10/REST%E4%B8%8EHTTP/</loc>
+    <lastmod>2017-09-17T13:49:37.000Z</lastmod>
+    <data>
+        <display>
+        <title>浅析REST与HTTP</title>
+        <pubTime>2017-07-10T08:06:59.000Z</pubTime>
+        
+        <tag>REST</tag>
+         
+        <tag>HTTP</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="http://blueskykong.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>http://blueskykong.com/2017/08/28/mac%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
+    <lastmod>2017-09-04T03:27:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>mac下快速进入当前目录iterm2</title>
+        <pubTime>2017-08-27T16:00:00.000Z</pubTime>
+        
+        <tag>mac</tag>
+         
+        <tag>utils</tag>
+         
+         
+           
+             
+              <breadCrumb title="Utils" url="http://blueskykong.com/categories/Utils/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/08/27/http2%E5%BA%94%E7%94%A8/</loc>
+    <lastmod>2017-09-04T03:27:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>HTTP 2实际应用</title>
+        <pubTime>2017-08-26T16:00:00.000Z</pubTime>
+        
+        <tag>HTTP2</tag>
+         
+        <tag>Java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="http://blueskykong.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+    
+</urlset>
