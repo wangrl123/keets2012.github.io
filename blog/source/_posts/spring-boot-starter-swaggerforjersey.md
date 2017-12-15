@@ -25,7 +25,7 @@ Spring Boot的自动化配置特性来实现快速的将swagger2引入spring boo
 
 ```xml
 <dependency>
-	<groupId>club.hacloud</groupId>
+	<groupId>com.blueskykong</groupId>
 	<artifactId>jersey-starter-swagger</artifactId>
 	<version>1.0.0.RELEASE</version>
 </dependency>
@@ -44,7 +44,6 @@ public class Bootstrap {
 
 }
 ```
-
 - JerseyConfig 中增加
 ```java
     @PostConstruct
