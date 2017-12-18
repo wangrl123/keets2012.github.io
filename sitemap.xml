@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blueskykong.com/2017/10/19/security1/</loc>
+    
+    <lastmod>2017-12-18T15:20:37.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blueskykong.com/2017/03/03/designfacade/</loc>
     
     <lastmod>2017-12-18T14:44:49.000Z</lastmod>
@@ -33,13 +40,6 @@
     <loc>http://blueskykong.com/2017/12/05/apm2/</loc>
     
     <lastmod>2017-12-06T01:27:55.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blueskykong.com/2017/10/19/security1/</loc>
-    
-    <lastmod>2017-12-05T05:39:24.000Z</lastmod>
     
   </url>
   
