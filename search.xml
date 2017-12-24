@@ -8,8 +8,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Java</tag>
         <tag>Spring</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -21,9 +21,9 @@
       </categories>
       <tags>
         <tag>zuul</tag>
-        <tag>gateway</tag>
-        <tag>Spring Security</tag>
         <tag>OAuth2</tag>
+        <tag>Spring Security</tag>
+        <tag>gateway</tag>
       </tags>
   </entry>
   <entry>
@@ -109,9 +109,9 @@
         <category>Ops</category>
       </categories>
       <tags>
+        <tag>Spring Cloud</tag>
         <tag>Docker</tag>
         <tag>Ops</tag>
-        <tag>Spring Cloud</tag>
       </tags>
   </entry>
   <entry>
@@ -122,8 +122,8 @@
         <category>Security</category>
       </categories>
       <tags>
-        <tag>Spring Security</tag>
         <tag>OAuth2</tag>
+        <tag>Spring Security</tag>
       </tags>
   </entry>
   <entry>
@@ -134,8 +134,8 @@
         <category>Security</category>
       </categories>
       <tags>
-        <tag>Spring Security</tag>
         <tag>OAuth2</tag>
+        <tag>Spring Security</tag>
       </tags>
   </entry>
   <entry>
@@ -146,8 +146,8 @@
         <category>Security</category>
       </categories>
       <tags>
-        <tag>Spring Security</tag>
         <tag>OAuth2</tag>
+        <tag>Spring Security</tag>
       </tags>
   </entry>
   <entry>
@@ -158,8 +158,8 @@
         <category>Security</category>
       </categories>
       <tags>
-        <tag>Spring Security</tag>
         <tag>OAuth2</tag>
+        <tag>Spring Security</tag>
       </tags>
   </entry>
   <entry>
@@ -352,8 +352,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Java</tag>
         <tag>Spring</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
