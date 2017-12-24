@@ -103,7 +103,7 @@
 <meta name="description" content="聚沙成塔！">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Aoho&#39;s Blog">
-<meta property="og:url" content="http://blueskykong.com/tags/spring-boot/index.html">
+<meta property="og:url" content="http://blueskykong.com/tags/Spring-Boot/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
 <meta property="og:description" content="聚沙成塔！">
 <meta name="twitter:card" content="summary">
@@ -136,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://blueskykong.com/tags/spring-boot/"/>
+  <link rel="canonical" href="http://blueskykong.com/tags/Spring-Boot/"/>
 
 
 
 
 
-  <title>标签: spring boot | Aoho's Blog</title>
+  <title>标签: Spring Boot | Aoho's Blog</title>
   
 
 
@@ -318,9 +318,37 @@
 
   <div id="posts" class="posts-collapse">
     <div class="collection-title">
-      <h1>spring boot<small>标签</small>
+      <h1>Spring Boot<small>标签</small>
       </h1>
     </div>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2017/11/16/profile/" itemprop="url">
+              
+                <span itemprop="name">微服务之配置服务器切换profile</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2017-11-16T00:00:00+08:00"
+              content="2017-11-16" >
+          11-16
+        </time>
+      </div>
+
+    </header>
+  </article>
+
 
     
       
@@ -343,6 +371,62 @@
               datetime="2017-09-09T00:00:00+08:00"
               content="2017-09-09" >
           09-09
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2017/09/02/spring-boot-starter-swaggerforjersey/" itemprop="url">
+              
+                <span itemprop="name">自制Jersey-Swagger的spring-boot-starter</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2017-09-02T00:00:00+08:00"
+              content="2017-09-02" >
+          09-02
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2017/08/30/Jerseyvsspringmvc/" itemprop="url">
+              
+                <span itemprop="name">Restful Layer of SpringMVC vs Jersey</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2017-08-30T00:00:00+08:00"
+              content="2017-08-30" >
+          08-30
         </time>
       </div>
 
@@ -953,76 +1037,6 @@
             input.addEventListener('keypress', function (event) {
               if (event.keyCode === 13) {
                 inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
-
-
-  
-
-  
-
-  
-
-  
-
-</body>
-</html>
-        inputEventFunction();
               }
             });
           }

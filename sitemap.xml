@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blueskykong.com/2017/09/09/snowflake/</loc>
+    
+    <lastmod>2017-12-24T08:37:31.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blueskykong.com/2017/12/14/aop/</loc>
     
     <lastmod>2017-12-24T08:35:10.000Z</lastmod>
@@ -124,13 +131,6 @@
     <loc>http://blueskykong.com/2017/09/04/ThreadLocal/</loc>
     
     <lastmod>2017-11-14T02:40:13.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blueskykong.com/2017/09/09/snowflake/</loc>
-    
-    <lastmod>2017-11-14T02:39:35.000Z</lastmod>
     
   </url>
   
