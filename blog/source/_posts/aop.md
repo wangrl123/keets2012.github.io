@@ -3,8 +3,8 @@ title: 深入理解Spring AOP的动态代理
 date: 2017-12-14 
 categories: java
 tags:
-- AOP
-- java
+- Spring
+- Java
 ---
 ## 1. Spring AOP
 Spring是一个轻型容器，Spring整个系列的最最核心的概念当属IoC、AOP。可见AOP是Spring框架中的核心之一，在应用中具有非常重要的作用，也是Spring其他组件的基础。AOP（Aspect Oriented Programming），即面向切面编程，可以说是OOP（Object Oriented Programming，面向对象编程）的补充和完善。OOP引入封装、继承、多态等概念来建立一种对象层次结构，用于模拟公共行为的一个集合。不过OOP允许开发者定义纵向的关系，但并不适合定义横向的关系，例如日志功能。

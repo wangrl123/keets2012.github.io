@@ -3,7 +3,7 @@ title: snowflake升级版全局id生成
 date: 2017-09-09
 categories: 微服务
 tags:
-- spring boot
+- Spring Boot
 - snowflake
 ---
 ## 1. 背景
