@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://blueskykong.com/2017/12/25/cloudnative/</loc>
+    <lastmod>2017-12-25T11:58:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>云原生架构概述</title>
+        <pubTime>2017-12-24T16:00:00.000Z</pubTime>
+        
+        <tag>micro-service</tag>
+         
+         
+           
+             
+              <breadCrumb title="微服务" url="http://blueskykong.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blueskykong.com/2017/04/22/ioc/</loc>
     <lastmod>2017-12-24T08:42:59.000Z</lastmod>
     <data>
