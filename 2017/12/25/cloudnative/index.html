@@ -113,7 +113,7 @@
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/%E5%8D%95%E4%BD%93.jpg">
 <meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/cloud%20structure.png">
 <meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/Microservices%20requirements%20%20.png">
-<meta property="og:updated_time" content="2017-12-25T12:03:01.000Z">
+<meta property="og:updated_time" content="2017-12-25T12:07:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="云原生架构概述">
 <meta name="twitter:description" content="1. 什么是云原生1.1 CNCF组织在讲云原生之前，我们先了解一下CNCF，即云原生计算基金会，2015年由谷歌牵头成立，基金会成员目前已有一百多企业与机构，包括亚马逊、微软。思科等巨头。  目前CNCF所托管的应用已达14个，下图为其公布的Cloud Native Landscape，给出了云原生生态的参考体系。 1.2 云原生CNCF给出了云原生应用的三大特征：  容器化封装：以容器为基础，">
@@ -495,7 +495,7 @@
 <p><img src="http://ovcjgn2x0.bkt.clouddn.com/%E5%8D%95%E4%BD%93.jpg" alt="monolithic" title="传统的单体架构"></p>
 <p>单体架构进行演化升级之后，过渡到SOA架构，即面向服务架构。近几年微服务架构（Micro-Service Archeticture）是最流行的架构风格，旨在通过将功能模块分解到各个独立的子系统中以实现解耦，它并没有一成不变的规定，而是需要根据业务来做设计。微服务架构是对SOA的传承，是SOA的具体实践方法。微服务架构中，每个微服务模块只是对简单、独立、明确的任务进行处理，通过REST API返回处理结果给外部。在微服务推广实践角度来看，微服务将整个系统进行拆分，拆分成更小的粒度，保持这些服务独立运行，应用容器化技术将微服务独立运行在容器中。过去设计架构时，是在内存中以参数或对象的方式实现粒度细化。微服务使用各个子服务控制模块的思想代替总线。不同的业务要求，服务控制模块至少包含服务的发布、注册、路由、代理功能。   </p>
 <p>容器化的出现，一定程度上带动了微服务架构。架构演化从单体式应用到分布式，再从分布式架构到云原生架构，微服务在其中有着不可或缺的角色。微服务带给我们很多开发和部署上的灵活性和技术多样性，但是也增加了服务调用的开销、分布式系事务、调试与服务治理方面的难题。</p>
-<p><img src="http://ovci9bs39.bkt.clouddn.com/cloud%20structure.png" alt="cloud structure" title="图1.1 Spring Cloud整体架构图">  </p>
+<p><img src="http://ovci9bs39.bkt.clouddn.com/cloud%20structure.png" alt="cloud structure" title="Spring Cloud整体架构图">  </p>
 <p>从上图Spring Cloud组件的架构可以看出在微服务架构中所必须的组件，包括：服务发现与注册、熔断机制、路由、全局锁、中心配置管理、控制总线、决策竞选、分布式会话和集群状态管理等基础组件。</p>
 <p><img src="http://ovci9bs39.bkt.clouddn.com/Microservices%20requirements%20%20.png" alt="scvsk8s" title="Spring Cloud VS Kubernetes"></p>
 <p>Spring Cloud和Kubernetes有很大的不同，Spring Cloud和Kubernetes处理了不同范围的微服务架构技术点，而且是用了不同的方法。Spring Cloud方法是试图解决在JVM中的微服务架构要点，而Kubernetes方法是试图让问题消失，为开发者在平台层解决。Spring Cloud在JVM中非常强大，Kubernetes管理那些JVM很强大。看起来各取所长，充分利用这两者的优势是自然而然的趋势了。</p>
