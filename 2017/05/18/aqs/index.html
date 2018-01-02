@@ -111,7 +111,7 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/263562-328067a54dfdb18f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/134">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/263562-fd3b56ad835e9f95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/263562-c520b712aec0a7e4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
-<meta property="og:updated_time" content="2018-01-01T14:18:06.000Z">
+<meta property="og:updated_time" content="2018-01-02T01:19:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发Lock之AQS（AbstractQueuedSynchronizer）详解">
 <meta name="twitter:description" content="1. J.U.C的lock包结构上一篇文章讲了并发编程的锁机制：synchronized和lock，主要介绍了Java并发编程中常用的锁机制。Lock是一个接口，而synchronized是Java中的关键字，synchronized是基于jvm实现。Lock锁可以被中断，支持定时锁等。Lock的实现类，可重入锁ReentrantLock，我们有讲到其具体用法。而谈到ReentrantLock，不">
@@ -440,7 +440,7 @@
 <h2 id="2-AQS介绍"><a href="#2-AQS介绍" class="headerlink" title="2. AQS介绍"></a>2. AQS介绍</h2><p>AQS是一个抽象类，主是是以继承的方式使用。AQS本身是没有实现任何同步接口的，它仅仅只是定义了同步状态的获取和释放的方法来供自定义的同步组件的使用。AQS抽象类包含如下几个方法：</p>
 <p>AQS定义两种资源共享方式：Exclusive（独占，只有一个线程能执行，如ReentrantLock）和Share（共享，多个线程可同时执行，如Semaphore/CountDownLatch）。共享模式时只用 Sync Queue, 独占模式有时只用 Sync Queue, 但若涉及 Condition, 则还有 Condition Queue。在子类的 tryAcquire, tryAcquireShared 中实现公平与非公平的区分。</p>
 <p>不同的自定义同步器争用共享资源的方式也不同。自定义同步器在实现时只需要实现共享资源state的获取与释放方式即可，至于具体线程等待队列的维护（如获取资源失败入队/唤醒出队等），AQS已经在顶层实现好了。</p>
-<p>整个 AQS 非为以下几部分:</p>
+<p>整个 AQS 分为以下几部分:</p>
 <ul>
 <li>Node 节点, 用于存放获取线程的节点, 存在于 Sync Queue, Condition Queue, 这些节点主要的区分在于 waitStatus 的值(下面会详细叙述)</li>
 <li>Condition Queue, 这个队列是用于独占模式中, 只有用到 Condition.awaitXX 时才会将 node加到 tail 上(PS: 在使用 Condition的前提是已经获取 Lock)</li>
