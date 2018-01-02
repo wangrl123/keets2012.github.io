@@ -111,7 +111,7 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/263562-328067a54dfdb18f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/134">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/263562-fd3b56ad835e9f95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/263562-c520b712aec0a7e4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
-<meta property="og:updated_time" content="2018-01-02T01:19:21.000Z">
+<meta property="og:updated_time" content="2018-01-02T04:12:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发Lock之AQS（AbstractQueuedSynchronizer）详解">
 <meta name="twitter:description" content="1. J.U.C的lock包结构上一篇文章讲了并发编程的锁机制：synchronized和lock，主要介绍了Java并发编程中常用的锁机制。Lock是一个接口，而synchronized是Java中的关键字，synchronized是基于jvm实现。Lock锁可以被中断，支持定时锁等。Lock的实现类，可重入锁ReentrantLock，我们有讲到其具体用法。而谈到ReentrantLock，不">
@@ -445,8 +445,8 @@
 <li>Node 节点, 用于存放获取线程的节点, 存在于 Sync Queue, Condition Queue, 这些节点主要的区分在于 waitStatus 的值(下面会详细叙述)</li>
 <li>Condition Queue, 这个队列是用于独占模式中, 只有用到 Condition.awaitXX 时才会将 node加到 tail 上(PS: 在使用 Condition的前提是已经获取 Lock)</li>
 <li>Sync Queue, 独占 共享的模式中均会使用到的存放 Node 的 CLH queue(主要特点是, 队列中总有一个 dummy 节点, 后继节点获取锁的条件由前继节点决定, 前继节点在释放 lock 时会唤醒sleep中的后继节点)</li>
-<li>ConditionObject, 用于独占的模式, 主要是线程释放lock, 加入 Condition Queue, 并进行相应的 signal 操作, 详情点击这里 Java 8 源码分析 Condition</li>
-<li>独占的获取lock (acquire, release), 例如 ReentrantLock 就是使用这种, 详情点击这里 Java 8 源码分析 ReentrantLock</li>
+<li>ConditionObject, 用于独占的模式, 主要是线程释放lock, 加入 Condition Queue, 并进行相应的 signal 操作</li>
+<li>独占的获取lock (acquire, release), 例如 ReentrantLock。</li>
 <li>共享的获取lock (acquireShared, releaseShared), 例如 ReeantrantReadWriteLock, Semaphore, CountDownLatch</li>
 </ul>
 <p>下面我们具体来分析一下AQS实现的源码。</p>
