@@ -118,9 +118,10 @@ cloud:
 
 ```xml
     <dependencies>
-        <dependency>
+
+	<dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-config-server</artifactId>
+            <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
 
         <dependency>
@@ -134,9 +135,9 @@ cloud:
             </exclusions>
         </dependency>
         <dependency>
-    		<groupId>org.springframework.boot</groupId>
-    		<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
+    	    <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+       	</dependency>
     </dependencies>
 ```
 
