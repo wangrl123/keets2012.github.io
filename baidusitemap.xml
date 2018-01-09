@@ -5,10 +5,10 @@
     
   <url>
     <loc>http://blueskykong.com/2018/01/09/rediscluster2/</loc>
-    <lastmod>2018-01-09T09:28:06.000Z</lastmod>
+    <lastmod>2018-01-09T11:25:50.000Z</lastmod>
     <data>
         <display>
-        <title>Redis Cluster深入与实践：续</title>
+        <title>Redis Cluster深入与实践（续）</title>
         <pubTime>2018-01-08T16:00:00.000Z</pubTime>
         
         <tag>mq</tag>
@@ -800,28 +800,6 @@
     
     
   <url>
-    <loc>http://blueskykong.com/2017/08/28/mac%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
-    <lastmod>2017-09-04T03:27:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>mac下快速进入当前目录iterm2</title>
-        <pubTime>2017-08-27T16:00:00.000Z</pubTime>
-        
-        <tag>mac</tag>
-         
-        <tag>utils</tag>
-         
-         
-           
-             
-              <breadCrumb title="Utils" url="http://blueskykong.com/categories/Utils/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://blueskykong.com/2017/08/27/http2%E5%BA%94%E7%94%A8/</loc>
     <lastmod>2017-09-04T03:27:54.000Z</lastmod>
     <data>
@@ -837,6 +815,28 @@
            
              
               <breadCrumb title="Note" url="http://blueskykong.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/08/28/mac%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
+    <lastmod>2017-09-04T03:27:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>mac下快速进入当前目录iterm2</title>
+        <pubTime>2017-08-27T16:00:00.000Z</pubTime>
+        
+        <tag>mac</tag>
+         
+        <tag>utils</tag>
+         
+         
+           
+             
+              <breadCrumb title="Utils" url="http://blueskykong.com/categories/Utils/"/>
           
         </display>
     </data>
