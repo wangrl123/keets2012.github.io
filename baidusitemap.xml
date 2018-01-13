@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://blueskykong.com/2017/07/10/REST%E4%B8%8EHTTP/</loc>
+    <lastmod>2018-01-13T13:12:45.000Z</lastmod>
+    <data>
+        <display>
+        <title>浅析REST与HTTP</title>
+        <pubTime>2017-07-09T16:00:00.000Z</pubTime>
+        
+        <tag>REST</tag>
+         
+        <tag>HTTP</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="http://blueskykong.com/categories/Note/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blueskykong.com/2018/01/09/rediscluster2/</loc>
     <lastmod>2018-01-09T11:25:50.000Z</lastmod>
     <data>
@@ -776,50 +798,6 @@
     </url>
 
     
-  <url>
-    <loc>http://blueskykong.com/2017/07/10/REST%E4%B8%8EHTTP/</loc>
-    <lastmod>2017-09-17T13:49:37.000Z</lastmod>
-    <data>
-        <display>
-        <title>浅析REST与HTTP</title>
-        <pubTime>2017-07-10T08:06:59.000Z</pubTime>
-        
-        <tag>REST</tag>
-         
-        <tag>HTTP</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="http://blueskykong.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
-  <url>
-    <loc>http://blueskykong.com/2017/08/27/http2%E5%BA%94%E7%94%A8/</loc>
-    <lastmod>2017-09-04T03:27:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>HTTP 2实际应用</title>
-        <pubTime>2017-08-26T16:00:00.000Z</pubTime>
-        
-        <tag>HTTP2</tag>
-         
-        <tag>Java</tag>
-         
-         
-           
-             
-              <breadCrumb title="Note" url="http://blueskykong.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
     
   <url>
     <loc>http://blueskykong.com/2017/08/28/mac%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
@@ -837,6 +815,28 @@
            
              
               <breadCrumb title="Utils" url="http://blueskykong.com/categories/Utils/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blueskykong.com/2017/08/27/http2%E5%BA%94%E7%94%A8/</loc>
+    <lastmod>2017-09-04T03:27:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>HTTP 2实际应用</title>
+        <pubTime>2017-08-26T16:00:00.000Z</pubTime>
+        
+        <tag>HTTP2</tag>
+         
+        <tag>Java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Note" url="http://blueskykong.com/categories/Note/"/>
           
         </display>
     </data>
