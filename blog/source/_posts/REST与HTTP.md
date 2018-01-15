@@ -1,6 +1,6 @@
 ---
 title: 浅析REST与HTTP
-date: 2017-07-10 16:06:59
+date: 2017-07-10
 categories: Note
 tags:
 - REST
