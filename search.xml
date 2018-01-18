@@ -8,8 +8,8 @@
         <category>中间件</category>
       </categories>
       <tags>
-        <tag>mq</tag>
         <tag>redis</tag>
+        <tag>mq</tag>
       </tags>
   </entry>
   <entry>
@@ -43,8 +43,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Spring</tag>
         <tag>Java</tag>
+        <tag>Spring</tag>
       </tags>
   </entry>
   <entry>
@@ -56,9 +56,9 @@
       </categories>
       <tags>
         <tag>zuul</tag>
+        <tag>gateway</tag>
         <tag>OAuth2</tag>
         <tag>Spring Security</tag>
-        <tag>gateway</tag>
       </tags>
   </entry>
   <entry>
@@ -228,8 +228,8 @@
         <category>中间件</category>
       </categories>
       <tags>
-        <tag>mq</tag>
         <tag>redis</tag>
+        <tag>mq</tag>
       </tags>
   </entry>
   <entry>
@@ -278,7 +278,7 @@
       </categories>
       <tags>
         <tag>Thread</tag>
-        <tag>java</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -328,8 +328,8 @@
         <category>Note</category>
       </categories>
       <tags>
-        <tag>HTTP2</tag>
         <tag>Java</tag>
+        <tag>HTTP2</tag>
       </tags>
   </entry>
   <entry>
@@ -409,8 +409,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Spring</tag>
         <tag>Java</tag>
+        <tag>Spring</tag>
       </tags>
   </entry>
   <entry>

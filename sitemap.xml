@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blueskykong.com/2017/09/04/ThreadLocal/</loc>
+    
+    <lastmod>2018-01-18T01:28:42.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blueskykong.com/2017/03/22/designstrategy/</loc>
     
     <lastmod>2018-01-16T12:24:56.000Z</lastmod>
@@ -184,13 +191,6 @@
   </url>
   
   <url>
-    <loc>http://blueskykong.com/2017/09/04/ThreadLocal/</loc>
-    
-    <lastmod>2017-11-14T02:40:13.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://blueskykong.com/2017/09/16/consul/</loc>
     
     <lastmod>2017-11-14T02:38:31.000Z</lastmod>
@@ -275,14 +275,14 @@
   </url>
   
   <url>
-    <loc>http://blueskykong.com/2017/08/28/mac%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
+    <loc>http://blueskykong.com/2017/08/27/http2%E5%BA%94%E7%94%A8/</loc>
     
     <lastmod>2017-09-04T03:27:54.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blueskykong.com/2017/08/27/http2%E5%BA%94%E7%94%A8/</loc>
+    <loc>http://blueskykong.com/2017/08/28/mac%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
     
     <lastmod>2017-09-04T03:27:54.000Z</lastmod>
     
