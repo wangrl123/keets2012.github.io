@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://blueskykong.com/2017/08/28/mac%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
+    <lastmod>2018-01-19T12:13:03.000Z</lastmod>
+    <data>
+        <display>
+        <title>mac下快速进入当前目录iterm2</title>
+        <pubTime>2017-08-27T16:00:00.000Z</pubTime>
+        
+        <tag>mac</tag>
+         
+        <tag>utils</tag>
+         
+         
+           
+             
+              <breadCrumb title="Utils" url="http://blueskykong.com/categories/Utils/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blueskykong.com/2017/09/04/ThreadLocal/</loc>
     <lastmod>2018-01-18T01:28:42.000Z</lastmod>
     <data>
@@ -835,28 +857,6 @@
            
              
               <breadCrumb title="Note" url="http://blueskykong.com/categories/Note/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blueskykong.com/2017/08/28/mac%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
-    <lastmod>2017-09-04T03:27:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>mac下快速进入当前目录iterm2</title>
-        <pubTime>2017-08-27T16:00:00.000Z</pubTime>
-        
-        <tag>mac</tag>
-         
-        <tag>utils</tag>
-         
-         
-           
-             
-              <breadCrumb title="Utils" url="http://blueskykong.com/categories/Utils/"/>
           
         </display>
     </data>
