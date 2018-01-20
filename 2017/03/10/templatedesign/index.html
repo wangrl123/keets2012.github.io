@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="REST,HTTP," />
+  <meta name="keywords" content="设计模式," />
 
 
 
@@ -100,17 +100,19 @@
 
 
 
-<meta name="description" content="幂等性Methods can also have the property of &amp;quot;idempotence&amp;quot; in that (aside from error or expiration issues) the side-effects of N &amp;gt; 0 identical requests is the same as for a single request.  安">
-<meta name="keywords" content="REST,HTTP">
+<meta name="description" content="模板方法模式的定义 模板方法模式是类的行为模式。准备一个抽象类，将部分逻辑以具体方法以及具体构造函数的形式实现，然后声明一些抽象方法来迫使子类实现剩余的逻辑。不同的子类可以以不同的方式实现这些抽象方法，从而对剩余的逻辑有不同的实现。这就是模板方法模式的用意。   上面对模板方法模式的定义其实已经很清晰了。完成一件事情，有固定的数个步骤，但是每个步骤根据对象的不同，而实现细节不同；就可以在父类中定义">
+<meta name="keywords" content="设计模式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅析REST与HTTP">
-<meta property="og:url" content="http://blueskykong.com/2017/07/10/REST与HTTP/index.html">
+<meta property="og:title" content="设计模式之模板方法模式">
+<meta property="og:url" content="http://blueskykong.com/2017/03/10/templatedesign/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="幂等性Methods can also have the property of &amp;quot;idempotence&amp;quot; in that (aside from error or expiration issues) the side-effects of N &amp;gt; 0 identical requests is the same as for a single request.  安">
-<meta property="og:updated_time" content="2018-01-13T13:12:45.000Z">
+<meta property="og:description" content="模板方法模式的定义 模板方法模式是类的行为模式。准备一个抽象类，将部分逻辑以具体方法以及具体构造函数的形式实现，然后声明一些抽象方法来迫使子类实现剩余的逻辑。不同的子类可以以不同的方式实现这些抽象方法，从而对剩余的逻辑有不同的实现。这就是模板方法模式的用意。   上面对模板方法模式的定义其实已经很清晰了。完成一件事情，有固定的数个步骤，但是每个步骤根据对象的不同，而实现细节不同；就可以在父类中定义">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/moduledesign.png">
+<meta property="og:updated_time" content="2018-01-20T15:24:21.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="浅析REST与HTTP">
-<meta name="twitter:description" content="幂等性Methods can also have the property of &amp;quot;idempotence&amp;quot; in that (aside from error or expiration issues) the side-effects of N &amp;gt; 0 identical requests is the same as for a single request.  安">
+<meta name="twitter:title" content="设计模式之模板方法模式">
+<meta name="twitter:description" content="模板方法模式的定义 模板方法模式是类的行为模式。准备一个抽象类，将部分逻辑以具体方法以及具体构造函数的形式实现，然后声明一些抽象方法来迫使子类实现剩余的逻辑。不同的子类可以以不同的方式实现这些抽象方法，从而对剩余的逻辑有不同的实现。这就是模板方法模式的用意。   上面对模板方法模式的定义其实已经很清晰了。完成一件事情，有固定的数个步骤，但是每个步骤根据对象的不同，而实现细节不同；就可以在父类中定义">
+<meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/moduledesign.png">
 
 
 
@@ -138,13 +140,13 @@
 
 
 
-  <link rel="canonical" href="http://blueskykong.com/2017/07/10/REST与HTTP/"/>
+  <link rel="canonical" href="http://blueskykong.com/2017/03/10/templatedesign/"/>
 
 
 
 
 
-  <title>浅析REST与HTTP | Aoho's Blog</title>
+  <title>设计模式之模板方法模式 | Aoho's Blog</title>
   
 
 
@@ -328,7 +330,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2017/07/10/REST与HTTP/">
+    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2017/03/10/templatedesign/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="aoho">
@@ -345,7 +347,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">浅析REST与HTTP</h1>
+          <h1 class="post-title" itemprop="name headline">设计模式之模板方法模式</h1>
         
 
         <div class="post-meta">
@@ -357,8 +359,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-10T00:00:00+08:00">
-                2017-07-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-10T00:00:00+08:00">
+                2017-03-10
               </time>
             
 
@@ -380,8 +382,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Note/" itemprop="url" rel="index">
-                    <span itemprop="name">Note</span>
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
                   </a>
                 </span>
 
@@ -399,8 +401,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/07/10/REST与HTTP/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/07/10/REST与HTTP/" itemprop="commentsCount"></span>
+                <a href="/2017/03/10/templatedesign/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/03/10/templatedesign/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -430,33 +432,48 @@
       
 
       
-        <h2 id="幂等性"><a href="#幂等性" class="headerlink" title="幂等性"></a>幂等性</h2><pre><code>Methods can also have the property of &quot;idempotence&quot; in that (aside from error or expiration issues) the side-effects of N &gt; 0 identical requests is the same as for a single request.
-</code></pre><ul>
-<li>安全操作与幂指相等特性（Safety /Idempotence）<br>HTTP 的 GET、HEAD 请求本质上应该是安全的调用，即：GET、HEAD 调用不会有任何的副作用，不会造成服务器端状态的改变。对于服务器来说，客户端对某一 URI 做 n 次的 GET、HAED 调用，其状态与没有做调用是一样的，不会发生任何的改变。</li>
-<li><p>HTTP 的 PUT、DELTE 调用，具有幂指相等特性 , 即：客户端对某一 URI 做 n 次的 PUT、DELTE 调用，其效果与做一次的调用是一样的。HTTP 的 GET、HEAD 方法也具有幂指相等特性。<br>HTTP 这些标准方法在原则上保证你的分布式系统具有这些特性，以帮助构建更加健壮的分布式系统。</p>
+        <h2 id="模板方法模式的定义"><a href="#模板方法模式的定义" class="headerlink" title="模板方法模式的定义"></a>模板方法模式的定义</h2><blockquote>
+<p>模板方法模式是类的行为模式。准备一个抽象类，将部分逻辑以具体方法以及具体构造函数的形式实现，然后声明一些抽象方法来迫使子类实现剩余的逻辑。不同的子类可以以不同的方式实现这些抽象方法，从而对剩余的逻辑有不同的实现。这就是模板方法模式的用意。</p>
+</blockquote>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/moduledesign.png" alt="moduledesign" title="模板方法模式"></p>
+<p>上面对模板方法模式的定义其实已经很清晰了。完成一件事情，有固定的数个步骤，但是每个步骤根据对象的不同，而实现细节不同；就可以在父类中定义一个完成该事情的总方法，按照完成事件需要的步骤去调用其每个步骤的实现方法。而每个步骤的具体实现，由子类完成。</p>
+<p>模板方法模式的适用场景：还是使用通知服务的例子。有三种通知方式：应用服务内部通知、短信和邮件三种方式。发送通知需要如下步骤：准备发送通知的内容、发送具体通知。这两步是算法的骨架，然而根据需要，可能使用三种方式中的任意一种，涉及具体细节。</p>
+<h2 id="模板方法模式的结构"><a href="#模板方法模式的结构" class="headerlink" title="模板方法模式的结构"></a>模板方法模式的结构</h2><p>这里涉及到两个角色：</p>
+<ul>
+<li><p>抽象模板(Abstract Template)角色。实现了模板方法，定义了算法的骨架。</p>
+<ul>
+<li>定义了一个或多个抽象操作，以便让子类实现。这些抽象操作叫做基本操作，它们是一个顶级逻辑的组成步骤。</li>
+<li>定义并实现了一个模板方法。这个模板方法一般是一个具体方法，它给出了一个顶级逻辑的骨架，而逻辑的组成步骤在相应的抽象操作中，推迟到子类实现。顶级逻辑也有可能调用一些具体方法。</li>
+</ul>
 </li>
-<li><p>当然作为设计的基础，几个必须的原则还是要遵守的：</p>
-<ol>
-<li>当标准合理的时候遵守标准。</li>
-<li>API应该对程序员友好，并且在浏览器地址栏容易输入。</li>
-<li>API应该简单，直观，容易使用的同时优雅。</li>
-<li>API应该具有足够的灵活性来支持上层ui。</li>
-<li>API设计权衡上述几个原则。</li>
-</ol>
-<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><p>http请求由三部分组成，分别是：请求行、消息报头、请求正文.</p>
-</li>
-<li><p>http 1.1/2</p>
-<p><a href="http://www.blogjava.net/yongboy/archive/2015/03/23/423751.html" target="_blank" rel="external">http://www.blogjava.net/yongboy/archive/2015/03/23/423751.html</a></p>
-</li>
-<li><p>HTTP/1.1，HTTP客户端无法重试非幂等请求，尤其在错误发生的时候，由于无法检测错误性质这会对重试带来不利的影响。</p>
-<ol>
-<li>HTTP/2不允许使用连接特定头部字段</li>
-<li>新增的5个头部</li>
-<li>推送机制的一些特性需求</li>
-<li>RST_STREAM等帧标志位的使用</li>
-</ol>
+<li><p>具体模板(Concrete Template)角色，实现抽象类中的抽象方法，完成完整的算法。</p>
+<ul>
+<li>实现父类所定义的一个或多个抽象方法，它们是一个顶级逻辑的组成步骤。</li>
+<li>每一个抽象模板角色都可以有任意多个具体模板角色与之对应，而每一个具体模板角色都可以给出这些抽象方法（也就是顶级逻辑的组成步骤）的不同实现，从而使得顶级逻辑的实现各不相同。</li>
+</ul>
 </li>
 </ul>
+<p>模板方法模式的优点：</p>
+<ul>
+<li>具体细节步骤实现定义在子类中，子类定义详细处理算法是不会改变算法整体结构。</li>
+<li>子类实现算法的某些细节，有助于算法的扩展。</li>
+<li>存在一种反向的控制结构，通过一个父类调用其子类的操作，通过子类对父类进行扩展增加新的行为，符合“开闭原则”。</li>
+</ul>
+<p>模板方法模式的不足：</p>
+<ul>
+<li>每个不同的实现都需要定义一个子类，会导致类的个数增加，系统更加庞大。</li>
+</ul>
+<h2 id="模板方法模式的实现"><a href="#模板方法模式的实现" class="headerlink" title="模板方法模式的实现"></a>模板方法模式的实现</h2><p>抽象模板角色类实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractNotify</span> </span>&#123;</div><div class="line">	<span class="comment">//模板方法</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">()</span> </span>&#123;</div><div class="line">		String text = assembleContent();</div><div class="line">		notice(text);</div><div class="line">	&#125;</div><div class="line">	<span class="comment">//基本方法，已经实现</span></div><div class="line">	<span class="function"><span class="keyword">private</span> String <span class="title">assembleContent</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="string">"content"</span>;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">    <span class="comment">// 通知方法的声明（由子类实现）</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">notice</span><span class="params">(String text)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>邮件通知具体模板实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MailNotify</span> <span class="keyword">extends</span> <span class="title">AbstractNotify</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">notice</span><span class="params">(String text)</span> </span>&#123;</div><div class="line">        <span class="comment">//相关的业务</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>短信通知具体模板实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SMSNotify</span> <span class="keyword">extends</span> <span class="title">AbstractNotify</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">notice</span><span class="params">(String text)</span> </span>&#123;</div><div class="line">        <span class="comment">//相关的业务</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>客户端进行调用短信通知策略：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        <span class="comment">//选择并创建需要使用的具体模板</span></div><div class="line">        AbstractNotify notify = <span class="keyword">new</span> SMSNotify();</div><div class="line">        <span class="comment">//SMS发送</span></div><div class="line">        notify.send();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>上面的实现中使用了JAVA的继承机制，在抽象类中定义一个模板方法，该方法引用了若干个抽象方法（由子类实现）或具体方法（子类可以覆盖重写）。模板方法模式是一种类的行为型模式，在它的结构图中只有类之间的继承关系，没有对象关联关系。模板方法模式是基于继承的代码复用基本技术，模板方法模式的结构和用法也是面向对象设计的核心之一。<br>在模板方法模式中，可以将相同的代码放在父类中，而将不同的方法实现放在不同的子类中。在模板方法模式中，我们需要准备一个抽象类，将部分逻辑以具体方法以及具体构造函数的形式实现，然后声明一些抽象方法来让子类实现剩余的逻辑。不同的子类可以以不同的方式实现这些抽象方法，从而对剩余的逻辑有不同的实现，这就是模板方法模式的用意。模板方法模式体现了面向对象的诸多重要思想，是一种使用频率较高的模式。</p>
+<p>上面的实现其实少了一个钩子方法，它在抽象类中不做事，或者是默认的事情，子类可以选择覆盖它。<br>最后，为了防止子类改变模板方法中的算法骨架，一般将模板方法声明为final</p>
+<h3 id="vs模版方法模式"><a href="#vs模版方法模式" class="headerlink" title="vs模版方法模式"></a>vs模版方法模式</h3><p>策略模式和模板方法都是用于封装算法，前者是利用组合和委托模型，而后者则是继承。从具体实现来看，策略模式与模版方法模式的区别仅仅是多了一个单独的封装类Context，它与模版方法模式的区别在于：在模版方法模式中，调用算法的主体在抽象的父类中，而在策略模式中，调用算法的主体则是封装到了封装类Context中，抽象策略Strategy一般是一个接口，目的只是为了定义规范，里面一般不包含逻辑。其实，这只是通用实现，而在实际编程中，因为各个具体策略实现类之间难免存在一些相同的逻辑，为了避免重复的代码，我们常常使用抽象类来担任Strategy的角色，在里面封装公共的代码，因此，在很多应用的场景中，在策略模式中一般会看到模版方法模式的影子。</p>
 
       
     </div>
@@ -510,7 +527,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://blueskykong.com/2017/07/10/REST与HTTP/" title="浅析REST与HTTP">http://blueskykong.com/2017/07/10/REST与HTTP/</a>
+      <a href="http://blueskykong.com/2017/03/10/templatedesign/" title="设计模式之模板方法模式">http://blueskykong.com/2017/03/10/templatedesign/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -526,9 +543,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/REST/" rel="tag"># REST</a>
-          
-            <a href="/tags/HTTP/" rel="tag"># HTTP</a>
+            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
           
         </div>
       
@@ -541,8 +556,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/18/aqs/" rel="next" title="并发Lock之AQS（AbstractQueuedSynchronizer）详解">
-                <i class="fa fa-chevron-left"></i> 并发Lock之AQS（AbstractQueuedSynchronizer）详解
+              <a href="/2017/03/03/designfacade/" rel="next" title="设计模式之外观模式">
+                <i class="fa fa-chevron-left"></i> 设计模式之外观模式
               </a>
             
           </div>
@@ -551,8 +566,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/18/spring-cloud/" rel="prev" title="Spring Cloud 入门">
-                Spring Cloud 入门 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/22/designstrategy/" rel="prev" title="设计模式之策略模式">
+                设计模式之策略模式 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -751,7 +766,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#幂等性"><span class="nav-number">1.</span> <span class="nav-text">幂等性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP"><span class="nav-number">2.</span> <span class="nav-text">HTTP</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模板方法模式的定义"><span class="nav-number">1.</span> <span class="nav-text">模板方法模式的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板方法模式的结构"><span class="nav-number">2.</span> <span class="nav-text">模板方法模式的结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板方法模式的实现"><span class="nav-number">3.</span> <span class="nav-text">模板方法模式的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vs模版方法模式"><span class="nav-number">4.1.</span> <span class="nav-text">vs模版方法模式</span></a></li></ol></li></ol></div>
             
 
           </div>
