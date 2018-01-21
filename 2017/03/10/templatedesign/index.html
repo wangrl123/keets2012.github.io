@@ -108,7 +108,7 @@
 <meta property="og:site_name" content="Aoho&#39;s Blog">
 <meta property="og:description" content="模板方法模式的定义 模板方法模式是类的行为模式。准备一个抽象类，将部分逻辑以具体方法以及具体构造函数的形式实现，然后声明一些抽象方法来迫使子类实现剩余的逻辑。不同的子类可以以不同的方式实现这些抽象方法，从而对剩余的逻辑有不同的实现。这就是模板方法模式的用意。   上面对模板方法模式的定义其实已经很清晰了。完成一件事情，有固定的数个步骤，但是每个步骤根据对象的不同，而实现细节不同；就可以在父类中定义">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/moduledesign.png">
-<meta property="og:updated_time" content="2018-01-20T15:24:21.000Z">
+<meta property="og:updated_time" content="2018-01-21T03:08:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式之模板方法模式">
 <meta name="twitter:description" content="模板方法模式的定义 模板方法模式是类的行为模式。准备一个抽象类，将部分逻辑以具体方法以及具体构造函数的形式实现，然后声明一些抽象方法来迫使子类实现剩余的逻辑。不同的子类可以以不同的方式实现这些抽象方法，从而对剩余的逻辑有不同的实现。这就是模板方法模式的用意。   上面对模板方法模式的定义其实已经很清晰了。完成一件事情，有固定的数个步骤，但是每个步骤根据对象的不同，而实现细节不同；就可以在父类中定义">
@@ -473,7 +473,11 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        <span class="comment">//选择并创建需要使用的具体模板</span></div><div class="line">        AbstractNotify notify = <span class="keyword">new</span> SMSNotify();</div><div class="line">        <span class="comment">//SMS发送</span></div><div class="line">        notify.send();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>上面的实现中使用了JAVA的继承机制，在抽象类中定义一个模板方法，该方法引用了若干个抽象方法（由子类实现）或具体方法（子类可以覆盖重写）。模板方法模式是一种类的行为型模式，在它的结构图中只有类之间的继承关系，没有对象关联关系。模板方法模式是基于继承的代码复用基本技术，模板方法模式的结构和用法也是面向对象设计的核心之一。<br>在模板方法模式中，可以将相同的代码放在父类中，而将不同的方法实现放在不同的子类中。在模板方法模式中，我们需要准备一个抽象类，将部分逻辑以具体方法以及具体构造函数的形式实现，然后声明一些抽象方法来让子类实现剩余的逻辑。不同的子类可以以不同的方式实现这些抽象方法，从而对剩余的逻辑有不同的实现，这就是模板方法模式的用意。模板方法模式体现了面向对象的诸多重要思想，是一种使用频率较高的模式。</p>
 <p>上面的实现其实少了一个钩子方法，它在抽象类中不做事，或者是默认的事情，子类可以选择覆盖它。<br>最后，为了防止子类改变模板方法中的算法骨架，一般将模板方法声明为final</p>
-<h3 id="vs模版方法模式"><a href="#vs模版方法模式" class="headerlink" title="vs模版方法模式"></a>vs模版方法模式</h3><p>策略模式和模板方法都是用于封装算法，前者是利用组合和委托模型，而后者则是继承。从具体实现来看，策略模式与模版方法模式的区别仅仅是多了一个单独的封装类Context，它与模版方法模式的区别在于：在模版方法模式中，调用算法的主体在抽象的父类中，而在策略模式中，调用算法的主体则是封装到了封装类Context中，抽象策略Strategy一般是一个接口，目的只是为了定义规范，里面一般不包含逻辑。其实，这只是通用实现，而在实际编程中，因为各个具体策略实现类之间难免存在一些相同的逻辑，为了避免重复的代码，我们常常使用抽象类来担任Strategy的角色，在里面封装公共的代码，因此，在很多应用的场景中，在策略模式中一般会看到模版方法模式的影子。</p>
+<h3 id="vs策略方法模式"><a href="#vs策略方法模式" class="headerlink" title="vs策略方法模式"></a>vs策略方法模式</h3><p>策略模式和模板方法都是用于封装算法，前者是利用组合和委托模型，而后者则是继承。从具体实现来看，策略模式与模版方法模式的区别仅仅是多了一个单独的封装类Context，它与模版方法模式的区别在于：在模版方法模式中，调用算法的主体在抽象的父类中，而在策略模式中，调用算法的主体则是封装到了封装类Context中，抽象策略Strategy一般是一个接口，目的只是为了定义规范，里面一般不包含逻辑。其实，这只是通用实现，而在实际编程中，因为各个具体策略实现类之间难免存在一些相同的逻辑，为了避免重复的代码，我们常常使用抽象类来担任Strategy的角色，在里面封装公共的代码，因此，在很多应用的场景中，在策略模式中一般会看到模版方法模式的影子。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="https://www.cnblogs.com/qq-361807535/p/6854191.html" target="_blank" rel="external">设计模式之 - 模板模式（Template Pattern）</a></li>
+<li><a href="https://www.cnblogs.com/java-my-life/archive/2012/05/14/2495235.html" target="_blank" rel="external">《JAVA与模式》之模板方法模式</a></li>
+</ol>
 
       
     </div>
@@ -766,7 +770,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模板方法模式的定义"><span class="nav-number">1.</span> <span class="nav-text">模板方法模式的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板方法模式的结构"><span class="nav-number">2.</span> <span class="nav-text">模板方法模式的结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板方法模式的实现"><span class="nav-number">3.</span> <span class="nav-text">模板方法模式的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vs模版方法模式"><span class="nav-number">4.1.</span> <span class="nav-text">vs模版方法模式</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模板方法模式的定义"><span class="nav-number">1.</span> <span class="nav-text">模板方法模式的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板方法模式的结构"><span class="nav-number">2.</span> <span class="nav-text">模板方法模式的结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板方法模式的实现"><span class="nav-number">3.</span> <span class="nav-text">模板方法模式的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vs策略方法模式"><span class="nav-number">4.1.</span> <span class="nav-text">vs策略方法模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.2.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
             
 
           </div>
