@@ -109,7 +109,7 @@
 <meta property="og:description" content="覆写远端的配置属性应用的配置源通常都是远端的Config Server服务器，默认情况下，本地的配置优先级低于远端配置仓库。如果想实现本地应用的系统变量和config文件覆盖远端仓库中的属性值，可以通过如下设置： 123456spring:  cloud:    config:      allowOverride: true      overrideNone: true      overri">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/locator.png">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/locatorconfig.jpg">
-<meta property="og:updated_time" content="2018-01-23T09:23:33.000Z">
+<meta property="og:updated_time" content="2018-01-23T09:25:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring Cloud 覆写远端的配置属性">
 <meta name="twitter:description" content="覆写远端的配置属性应用的配置源通常都是远端的Config Server服务器，默认情况下，本地的配置优先级低于远端配置仓库。如果想实现本地应用的系统变量和config文件覆盖远端仓库中的属性值，可以通过如下设置： 123456spring:  cloud:    config:      allowOverride: true      overrideNone: true      overri">
@@ -472,6 +472,7 @@
 <p>上述实现主要是根据<code>PropertySourceBootstrapProperties</code>中的属性，调整多个配置源的优先级。从其实现可以看到 <code>PropertySourceBootstrapProperties</code> 对象的是被直接初始化，使用的是默认的属性值而并未注入我们在配置文件中设置的。</p>
 <p>修复后的实现：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</div><div class="line">	<span class="keyword">private</span> PropertySourceBootstrapProperties remotePropertiesForOverriding;</div><div class="line"> 	<span class="meta">@Override</span></div><div class="line"> 	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getOrder</span><span class="params">()</span> </span>&#123;</div><div class="line"> 		<span class="keyword">return</span> <span class="keyword">this</span>.order;</div><div class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">insertPropertySources</span><span class="params">(MutablePropertySources propertySources,</span></span></div><div class="line"> 			CompositePropertySource composite) &#123;</div><div class="line"> 		MutablePropertySources incoming = <span class="keyword">new</span> MutablePropertySources();</div><div class="line"> 		incoming.addFirst(composite);</div><div class="line">		PropertySourceBootstrapProperties remoteProperties = remotePropertiesForOverriding == <span class="keyword">null</span></div><div class="line">				? <span class="keyword">new</span> PropertySourceBootstrapProperties()</div><div class="line">				: remotePropertiesForOverriding;</div></pre></td></tr></table></figure>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html" target="_blank" rel="external">Spring Cloud Edgware.RELEASE</a></p>
 
       
     </div>
@@ -563,6 +564,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/24/aj-vs-aop/" rel="prev" title="比较Spring AOP与AspectJ">
+                比较Spring AOP与AspectJ <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -674,7 +679,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archive/">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -760,7 +765,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#覆写远端的配置属性"><span class="nav-number">1.</span> <span class="nav-text">覆写远端的配置属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ConfigServicePropertySourceLocator"><span class="nav-number">2.1.</span> <span class="nav-text">ConfigServicePropertySourceLocator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PropertySourceBootstrapConfiguration"><span class="nav-number">2.2.</span> <span class="nav-text">PropertySourceBootstrapConfiguration</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#覆写远端的配置属性"><span class="nav-number">1.</span> <span class="nav-text">覆写远端的配置属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ConfigServicePropertySourceLocator"><span class="nav-number">2.1.</span> <span class="nav-text">ConfigServicePropertySourceLocator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PropertySourceBootstrapConfiguration"><span class="nav-number">2.2.</span> <span class="nav-text">PropertySourceBootstrapConfiguration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">2.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
             
 
           </div>
