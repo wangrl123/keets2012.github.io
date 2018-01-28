@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://blueskykong.com/2017/10/06/lombok/</loc>
+    <lastmod>2018-01-28T15:10:35.000Z</lastmod>
+    <data>
+        <display>
+        <title>Lombok使用与原理</title>
+        <pubTime>2017-10-05T16:00:00.000Z</pubTime>
+        
+        <tag>Lombok</tag>
+         
+         
+           
+             
+              <breadCrumb title="Utils" url="http://blueskykong.com/categories/Utils/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blueskykong.com/2018/01/23/config-server2/</loc>
     <lastmod>2018-01-24T10:51:58.000Z</lastmod>
     <data>
@@ -876,26 +896,6 @@
            
              
               <breadCrumb title="设计模式" url="http://blueskykong.com/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blueskykong.com/2017/10/06/lombok/</loc>
-    <lastmod>2017-10-07T08:47:52.000Z</lastmod>
-    <data>
-        <display>
-        <title>Lombok使用与原理</title>
-        <pubTime>2017-10-05T16:00:00.000Z</pubTime>
-        
-        <tag>Lombok</tag>
-         
-         
-           
-             
-              <breadCrumb title="Utils" url="http://blueskykong.com/categories/Utils/"/>
           
         </display>
     </data>
