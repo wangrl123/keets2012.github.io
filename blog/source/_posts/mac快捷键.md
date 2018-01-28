@@ -21,7 +21,6 @@ git clone https://github.com/peterldowns/iterm2-finder-tools.git
 ### 3. 添加快捷键
 服务->偏好设置->快捷键
 
-
 ![快捷键][shift]
 [shift]:http://ovci9bs39.bkt.clouddn.com/finder.png  "快捷键设置"
 

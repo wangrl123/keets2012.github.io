@@ -4,7 +4,7 @@ date: 2017-9-4
 categories: java
 tags:
 - Thread
-- java
+- Java
 ---
 ThreadLocal主要是提供线程内部的局部变量，在`每个`线程内随时随地可取，隔离其他线程。   
 
