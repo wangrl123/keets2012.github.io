@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blueskykong.com/2017/05/18/aqs/</loc>
+    
+    <lastmod>2018-01-30T05:20:16.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blueskykong.com/2017/10/06/lombok/</loc>
     
     <lastmod>2018-01-28T15:10:35.000Z</lastmod>
@@ -75,13 +82,6 @@
     <loc>http://blueskykong.com/2017/11/20/config-server1/</loc>
     
     <lastmod>2018-01-04T12:13:04.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blueskykong.com/2017/05/18/aqs/</loc>
-    
-    <lastmod>2018-01-02T04:12:50.000Z</lastmod>
     
   </url>
   
