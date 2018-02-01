@@ -100,20 +100,20 @@
 
 
 
-<meta name="description" content="本文翻译自博客Comparing Spring AOP and AspectJ  介绍如今有多个可用的AOP库，这些组件需要回答一系列的问题：  是否与我现有的应用兼容？ 我在哪实现AOP？ 集成到我的应用是否很快？ 性能开销是多少？  本文中，我们将会着重回答这些问题，并介绍两款Java最流行的AOP框架：Spring AOP 和 AspectJ。 AOP概念在我们开始之前，让我们对术语和核心">
+<meta name="description" content="本文翻译自博客Comparing Spring AOP and AspectJ  介绍如今有多个可用的AOP库，在使用这些组件之前需要回答一系列的问题：  是否与我现有的应用兼容？ 我在哪实现AOP？ 集成到我的应用是否很快？ 性能开销是多少？  本文中，我们将会着重回答这些问题，并介绍两款Java最流行的AOP框架：Spring AOP 和 AspectJ。 AOP概念在我们开始之前，让我们对">
 <meta name="keywords" content="Java,Spring">
 <meta property="og:type" content="article">
 <meta property="og:title" content="比较Spring AOP与AspectJ">
 <meta property="og:url" content="http://blueskykong.com/2018/01/24/aj-vs-aop/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="本文翻译自博客Comparing Spring AOP and AspectJ  介绍如今有多个可用的AOP库，这些组件需要回答一系列的问题：  是否与我现有的应用兼容？ 我在哪实现AOP？ 集成到我的应用是否很快？ 性能开销是多少？  本文中，我们将会着重回答这些问题，并介绍两款Java最流行的AOP框架：Spring AOP 和 AspectJ。 AOP概念在我们开始之前，让我们对术语和核心">
+<meta property="og:description" content="本文翻译自博客Comparing Spring AOP and AspectJ  介绍如今有多个可用的AOP库，在使用这些组件之前需要回答一系列的问题：  是否与我现有的应用兼容？ 我在哪实现AOP？ 集成到我的应用是否很快？ 性能开销是多少？  本文中，我们将会着重回答这些问题，并介绍两款Java最流行的AOP框架：Spring AOP 和 AspectJ。 AOP概念在我们开始之前，让我们对">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/springaop-process.png">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/joinpoint.jpg">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/aj-vs-aop.jpg">
-<meta property="og:updated_time" content="2018-01-24T07:55:08.000Z">
+<meta property="og:updated_time" content="2018-02-01T15:01:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="比较Spring AOP与AspectJ">
-<meta name="twitter:description" content="本文翻译自博客Comparing Spring AOP and AspectJ  介绍如今有多个可用的AOP库，这些组件需要回答一系列的问题：  是否与我现有的应用兼容？ 我在哪实现AOP？ 集成到我的应用是否很快？ 性能开销是多少？  本文中，我们将会着重回答这些问题，并介绍两款Java最流行的AOP框架：Spring AOP 和 AspectJ。 AOP概念在我们开始之前，让我们对术语和核心">
+<meta name="twitter:description" content="本文翻译自博客Comparing Spring AOP and AspectJ  介绍如今有多个可用的AOP库，在使用这些组件之前需要回答一系列的问题：  是否与我现有的应用兼容？ 我在哪实现AOP？ 集成到我的应用是否很快？ 性能开销是多少？  本文中，我们将会着重回答这些问题，并介绍两款Java最流行的AOP框架：Spring AOP 和 AspectJ。 AOP概念在我们开始之前，让我们对">
 <meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/springaop-process.png">
 
 
@@ -437,7 +437,7 @@
         <blockquote>
 <p>本文翻译自博客<a href="http://www.baeldung.com/spring-aop-vs-aspectj" target="_blank" rel="external">Comparing Spring AOP and AspectJ</a></p>
 </blockquote>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>如今有多个可用的AOP库，这些组件需要回答一系列的问题：</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>如今有多个可用的AOP库，在使用这些组件之前需要回答一系列的问题：</p>
 <ul>
 <li>是否与我现有的应用兼容？</li>
 <li>我在哪实现AOP？</li>
