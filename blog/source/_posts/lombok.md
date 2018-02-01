@@ -235,11 +235,10 @@ lombok 主要通过注解生效，自jdk5引入注解，由两种解析方式。
 - Pluggable Annotation Processing API   
 lombok使用这种方式实现，基于JSR 269，自JDK6加入，作为apt的替代方案，它解决了apt的两个问题，javac在执行的时候会调用实现了该API的程序，这样我们就可以对编译器做一些增强，这时javac执行的过程如下：
 
-![pap](http://ovcjgn2x0.bkt.clouddn.com/pap.png "javac执行流程")
+![papflow](http://ovcjgn2x0.bkt.clouddn.com/pap.png "javac执行流程")
 
 ## 5. 总结
 这篇文章主要讲解了lombok的入门与使用。介绍了一些常用的lombok注解，大大简化了我们的开发工作和代码的简洁性。当然，lombok不支持多种参数构造器的重载，工具毕竟是工具，我感觉并不会有非常完美适合每个人的工具。最后，我个人还是很推荐这款插件的，毕竟我很懒，😆。
-
 
 ----
 ### 参考

@@ -20,12 +20,12 @@ AQS定义两种资源共享方式：Exclusive（独占，只有一个线程能�
 
 整个 AQS 分为以下几部分:
 
-- Node 节点, 用于存放获取线程的节点, 存在于 Sync Queue, Condition Queue, 这些节点主要的区分在于 waitStatus 的值(下面会详细叙述)
-- Condition Queue, 这个队列是用于独占模式中, 只有用到 Condition.awaitXX 时才会将 node加到 tail 上(PS: 在使用 Condition的前提是已经获取 Lock)
-- Sync Queue, 独占 共享的模式中均会使用到的存放 Node 的 CLH queue(主要特点是, 队列中总有一个 dummy 节点, 后继节点获取锁的条件由前继节点决定, 前继节点在释放 lock 时会唤醒sleep中的后继节点)
-- ConditionObject, 用于独占的模式, 主要是线程释放lock, 加入 Condition Queue, 并进行相应的 signal 操作
-- 独占的获取lock (acquire, release), 例如 ReentrantLock。
-- 共享的获取lock (acquireShared, releaseShared), 例如 ReeantrantReadWriteLock, Semaphore, CountDownLatch
+- Node 节点， 用于存放获取线程的节点， 存在于 Sync Queue, Condition Queue, 这些节点主要的区分在于 waitStatus 的值(下面会详细叙述)
+- Condition Queue， 这个队列是用于独占模式中，只有用到 Condition.awaitXX 时才会将 node加到 tail 上(PS: 在使用 Condition的前提是已经获取 Lock)
+- Sync Queue， 独占共享的模式中均会使用到的存放 Node 的 CLH queue(主要特点是队列中总有一个 dummy 节点，后继节点获取锁的条件由前继节点决定，前继节点在释放 lock 时会唤醒sleep中的后继节点)
+- ConditionObject，用于独占的模式，主要是线程释放lock，加入Condition Queue， 并进行相应的 signal 操作
+- 独占的获取lock (acquire  release) 例如 ReentrantLock。
+- 共享的获取lock (acquireShared releaseShared)。 例如 ReeantrantReadWriteLock, Semaphore, CountDownLatch
 
 下面我们具体来分析一下AQS实现的源码。
 ## 3. 内部类 Node
