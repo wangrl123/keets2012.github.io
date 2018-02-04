@@ -108,7 +108,7 @@
 <meta property="og:site_name" content="Aoho&#39;s Blog">
 <meta property="og:description" content="1. 背景介绍1.1 需要解决的问题本文来源于项目需要，项目所使用微服务框架为Spring Cloud，微服务之间的调用基于HTTP 1.X协议，上一篇文章 HTTPS vs HTTP 1.1 vs HTTP 2，介绍了http2 和http1.1的相关知识，也列出了http1.1局限性，链路不能复用、数据不加密、头信息过多等等。为此，笔者在想能不能将feign client的调用基于http2协">
 <meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/browser%20for%20http2.png">
-<meta property="og:updated_time" content="2017-09-04T03:27:54.000Z">
+<meta property="og:updated_time" content="2018-02-04T13:41:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HTTP 2实际应用">
 <meta name="twitter:description" content="1. 背景介绍1.1 需要解决的问题本文来源于项目需要，项目所使用微服务框架为Spring Cloud，微服务之间的调用基于HTTP 1.X协议，上一篇文章 HTTPS vs HTTP 1.1 vs HTTP 2，介绍了http2 和http1.1的相关知识，也列出了http1.1局限性，链路不能复用、数据不加密、头信息过多等等。为此，笔者在想能不能将feign client的调用基于http2协">
@@ -446,13 +446,13 @@
 <li>org.mortbay.jetty.alpn:alpn-boot:8.1.8.v20160420</li>
 </ul>
 </li>
-<li><p>create a servlet container bean</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@Bean   </div><div class="line">UndertowEmbeddedServletContainerFactory embeddedServletContainerFactory() &#123;      </div><div class="line">   		UndertowEmbeddedServletContainerFactory factory = new    	UndertowEmbeddedServletContainerFactory();   </div><div class="line">   	factory.addBuilderCustomizers(   </div><div class="line">           	builder -&gt; builder.setServerOption(UndertowOptions.ENABLE_HTTP2,    	true));   </div><div class="line">   	return factory;   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>start your server with alpn<br>为了启动服务，需要带上 -Xbootclasspath 参数来包括alpn 。因为alpn 有可能在jdk中没有。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-Xbootclasspath/p:/home/harrie/.m2/repository/org/mortbay/jetty/alpn/alpn-boot/8.1.8.v20160420/alpn-boot-8.1.8.v20160420.jar</div></pre></td></tr></table></figure>
-</li>
+<li>create a servlet container bean</li>
 </ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@Bean   </div><div class="line">UndertowEmbeddedServletContainerFactory embeddedServletContainerFactory() &#123;      </div><div class="line">   		UndertowEmbeddedServletContainerFactory factory = new    	UndertowEmbeddedServletContainerFactory();   </div><div class="line">   	factory.addBuilderCustomizers(   </div><div class="line">           	builder -&gt; builder.setServerOption(UndertowOptions.ENABLE_HTTP2,    	true));   </div><div class="line">   	return factory;   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>start your server with alpn<br>为了启动服务，需要带上 -Xbootclasspath 参数来包括alpn 。因为alpn 有可能在jdk中没有。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-Xbootclasspath/p:/home/harrie/.m2/repository/org/mortbay/jetty/alpn/alpn-boot/8.1.8.v20160420/alpn-boot-8.1.8.v20160420.jar</div></pre></td></tr></table></figure>
 <h3 id="2-2-客户端"><a href="#2-2-客户端" class="headerlink" title="2.2 客户端"></a>2.2 客户端</h3><blockquote>
 <p>Currently Java HTTP/2 clients are scarce. According to this wiki Netty and OkHttp are the only two implementations supported by Spring. To switch HTTP-client in RestTemplate you have to call the constructor with a different ClientHttpRequestFactory (either Netty4ClientHttpRequestFactory or OkHttpClientHttpRequestFactory). </p>
 </blockquote>
