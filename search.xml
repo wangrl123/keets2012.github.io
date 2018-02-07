@@ -31,8 +31,8 @@
         <category>中间件</category>
       </categories>
       <tags>
-        <tag>redis</tag>
         <tag>mq</tag>
+        <tag>redis</tag>
       </tags>
   </entry>
   <entry>
@@ -251,8 +251,8 @@
         <category>中间件</category>
       </categories>
       <tags>
-        <tag>redis</tag>
         <tag>mq</tag>
+        <tag>redis</tag>
       </tags>
   </entry>
   <entry>
@@ -351,8 +351,8 @@
         <category>Note</category>
       </categories>
       <tags>
-        <tag>Java</tag>
         <tag>HTTP2</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
