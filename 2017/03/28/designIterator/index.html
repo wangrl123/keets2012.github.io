@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Spring Cloud," />
+  <meta name="keywords" content="设计模式," />
 
 
 
@@ -100,20 +100,20 @@
 
 
 
-<meta name="description" content="覆写远端的配置属性应用的配置源通常都是远端的Config Server服务器，默认情况下，本地的配置优先级低于远端配置仓库。如果想实现本地应用的系统变量和config文件覆盖远端仓库中的属性值，可以通过如下设置： 123456spring:  cloud:    config:      allowOverride: true      overrideNone: true      overri">
-<meta name="keywords" content="Spring Cloud">
+<meta name="description" content="迭代子模式又叫游标(Cursor)模式，是对象的行为模式。 迭代子模式的定义迭代子模式可以顺序地访问一个聚集中的元素而不必暴露聚集的内部表象。我们常见的集合有很多种类，其顶层数据存储和组织方式的不同导致了我们在对数据进行遍历的时候存在一些差异，迭代器模式就是通过实现某种统一的方式来实现对不同的集合的遍历，同时又不暴露出其底层的数据存储和组织方式。 例如，如果没有使用Iterator，遍历一个数组的">
+<meta name="keywords" content="设计模式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring Cloud 覆写远端的配置属性">
-<meta property="og:url" content="http://blueskykong.com/2018/01/23/config-server2/index.html">
+<meta property="og:title" content="设计模式之迭代子模式">
+<meta property="og:url" content="http://blueskykong.com/2017/03/28/designIterator/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="覆写远端的配置属性应用的配置源通常都是远端的Config Server服务器，默认情况下，本地的配置优先级低于远端配置仓库。如果想实现本地应用的系统变量和config文件覆盖远端仓库中的属性值，可以通过如下设置： 123456spring:  cloud:    config:      allowOverride: true      overrideNone: true      overri">
-<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/locator.png">
-<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/locatorconfig.jpg">
-<meta property="og:updated_time" content="2018-01-24T10:51:58.000Z">
+<meta property="og:description" content="迭代子模式又叫游标(Cursor)模式，是对象的行为模式。 迭代子模式的定义迭代子模式可以顺序地访问一个聚集中的元素而不必暴露聚集的内部表象。我们常见的集合有很多种类，其顶层数据存储和组织方式的不同导致了我们在对数据进行遍历的时候存在一些差异，迭代器模式就是通过实现某种统一的方式来实现对不同的集合的遍历，同时又不暴露出其底层的数据存储和组织方式。 例如，如果没有使用Iterator，遍历一个数组的">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/iteratorconstruct.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/iterator.jpg">
+<meta property="og:updated_time" content="2018-02-08T07:50:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring Cloud 覆写远端的配置属性">
-<meta name="twitter:description" content="覆写远端的配置属性应用的配置源通常都是远端的Config Server服务器，默认情况下，本地的配置优先级低于远端配置仓库。如果想实现本地应用的系统变量和config文件覆盖远端仓库中的属性值，可以通过如下设置： 123456spring:  cloud:    config:      allowOverride: true      overrideNone: true      overri">
-<meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/locator.png">
+<meta name="twitter:title" content="设计模式之迭代子模式">
+<meta name="twitter:description" content="迭代子模式又叫游标(Cursor)模式，是对象的行为模式。 迭代子模式的定义迭代子模式可以顺序地访问一个聚集中的元素而不必暴露聚集的内部表象。我们常见的集合有很多种类，其顶层数据存储和组织方式的不同导致了我们在对数据进行遍历的时候存在一些差异，迭代器模式就是通过实现某种统一的方式来实现对不同的集合的遍历，同时又不暴露出其底层的数据存储和组织方式。 例如，如果没有使用Iterator，遍历一个数组的">
+<meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/iteratorconstruct.jpg">
 
 
 
@@ -141,13 +141,13 @@
 
 
 
-  <link rel="canonical" href="http://blueskykong.com/2018/01/23/config-server2/"/>
+  <link rel="canonical" href="http://blueskykong.com/2017/03/28/designIterator/"/>
 
 
 
 
 
-  <title>Spring Cloud 覆写远端的配置属性 | Aoho's Blog</title>
+  <title>设计模式之迭代子模式 | Aoho's Blog</title>
   
 
 
@@ -331,7 +331,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2018/01/23/config-server2/">
+    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2017/03/28/designIterator/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="aoho">
@@ -348,7 +348,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spring Cloud 覆写远端的配置属性</h1>
+          <h1 class="post-title" itemprop="name headline">设计模式之迭代子模式</h1>
         
 
         <div class="post-meta">
@@ -360,8 +360,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-23T00:00:00+08:00">
-                2018-01-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-28T00:00:00+08:00">
+                2017-03-28
               </time>
             
 
@@ -383,8 +383,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/微服务/" itemprop="url" rel="index">
-                    <span itemprop="name">微服务</span>
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
                   </a>
                 </span>
 
@@ -402,8 +402,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2018/01/23/config-server2/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/01/23/config-server2/" itemprop="commentsCount"></span>
+                <a href="/2017/03/28/designIterator/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/03/28/designIterator/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -433,46 +433,58 @@
       
 
       
-        <h2 id="覆写远端的配置属性"><a href="#覆写远端的配置属性" class="headerlink" title="覆写远端的配置属性"></a>覆写远端的配置属性</h2><p>应用的配置源通常都是远端的Config Server服务器，默认情况下，本地的配置优先级低于远端配置仓库。如果想实现本地应用的系统变量和config文件覆盖远端仓库中的属性值，可以通过如下设置：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="attr">spring:</span></div><div class="line"><span class="attr">  cloud:</span></div><div class="line"><span class="attr">    config:</span></div><div class="line"><span class="attr">      allowOverride:</span> <span class="literal">true</span></div><div class="line"><span class="attr">      overrideNone:</span> <span class="literal">true</span></div><div class="line"><span class="attr">      overrideSystemProperties:</span> <span class="literal">false</span></div></pre></td></tr></table></figure>
+        <p>迭代子模式又叫游标(Cursor)模式，是对象的行为模式。</p>
+<h2 id="迭代子模式的定义"><a href="#迭代子模式的定义" class="headerlink" title="迭代子模式的定义"></a>迭代子模式的定义</h2><p>迭代子模式可以顺序地访问一个聚集中的元素而不必暴露聚集的内部表象。我们常见的集合有很多种类，其顶层数据存储和组织方式的不同导致了我们在对数据进行遍历的时候存在一些差异，迭代器模式就是通过实现某种统一的方式来实现对不同的集合的遍历，同时又不暴露出其底层的数据存储和组织方式。</p>
+<p>例如，如果没有使用Iterator，遍历一个数组的方法是使用索引： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;array.size(); i++) &#123; </div><div class="line">	get(i)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>而访问一个链表（LinkedList）又必须使用while循环： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span>((e=e.next())!=<span class="keyword">null</span>) &#123; </div><div class="line">	 e.data()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上两种方法客户端都必须事先知道集合的内部结构，访问代码和集合本身是紧耦合，无法将访问逻辑从集合类和客户端代码中分离出来，每一种集合对应一种遍历方法，客户端代码无法复用。 </p>
+<p>更恐怖的是，如果以后需要把ArrayList更换为LinkedList，则原来的客户端代码必须全部重写。 </p>
+<p>为解决以上问题，Iterator模式总是用同一种逻辑来遍历集合： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(Iterator it = yourCollection.iterater(); it.hasNext(); ) </div><div class="line">&#123; ... &#125;</div></pre></td></tr></table></figure>
+<p>客户端自身不维护遍历集合的”指针”，所有的内部状态（如当前元素位置，是否有下一个元素）都由<code>Iterator</code>来维护，而这个<code>Iterator</code>由集合类通过工厂方法生成，因此，它知道如何遍历整个集合。客户端从不直接和集合类打交道，它总是控制Iterator，向它发送”向前”，”向后”，”取当前元素”的命令，就可以间接遍历整个集合。</p>
+<h2 id="迭代子模式的结构"><a href="#迭代子模式的结构" class="headerlink" title="迭代子模式的结构"></a>迭代子模式的结构</h2><p>迭代模式中有如下的角色：<br><img src="http://ovcjgn2x0.bkt.clouddn.com/iteratorconstruct.jpg" alt="iteratorconstruct" title="迭代子模式的结构"></p>
 <ul>
-<li>overrideNone：当allowOverride为true时，overrideNone设置为true，外部的配置优先级更低，而且不能覆盖任何存在的属性源。默认为false</li>
-<li>allowOverride：标识overrideSystemProperties属性是否启用。默认为true，设置为false意为禁止用户的设置</li>
-<li>overrideSystemProperties：用来标识外部配置是否能够覆盖系统属性，默认为true</li>
+<li>迭代器角色（Iterator）: 负责定义访问和遍历元素的接口。</li>
+<li>具体迭代器角色（Concrete Iterator）：实现迭代器接口，并要记录遍历中的当前位置。</li>
+<li>容器角色(Container):  负责提供创建具体迭代器角色的接口。</li>
+<li>具体容器角色（Concrete Container）：实现创建具体迭代器角色的接口， 这个具体迭代器角色与该容器的结构相关。</li>
 </ul>
-<p>客户端通过如上配置，可以实现本地配置优先级更高，且不能被覆盖。由于我们基于的Spring Cloud当前版本是<code>Edgware.RELEASE</code>，上面的设置并不能起作用，而是使用了<code>PropertySourceBootstrapProperties</code>中的默认值。具体情况见issue：<code>https://github.com/spring-cloud/spring-cloud-commons/pull/250</code>，我们在下面分析时会讲到具体的bug源。</p>
-<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><h3 id="ConfigServicePropertySourceLocator"><a href="#ConfigServicePropertySourceLocator" class="headerlink" title="ConfigServicePropertySourceLocator"></a>ConfigServicePropertySourceLocator</h3><p>覆写远端的配置属性归根结底与客户端的启动时获取配置有关，在获取到配置之后如何处理？我们看一下spring cloud config中的资源获取类<code>ConfigServicePropertySourceLocator</code>的类图。</p>
-<p><img src="http://ovcjgn2x0.bkt.clouddn.com/locator.png" alt="ConfigServicePropertySourceLocator" title="ConfigServicePropertySourceLocator类图"></p>
-<p><code>ConfigServicePropertySourceLocator</code>实质是一个属性资源定位器，其主要方法是<code>locate(Environment environment)</code>。首先用当前运行应用的环境的application、profile和label替换configClientProperties中的占位符并初始化RestTemplate，然后遍历labels数组直到获取到有效的配置信息，最后还会根据是否快速失败进行重试。主要流程如下：</p>
-<p><img src="http://ovcjgn2x0.bkt.clouddn.com/locatorconfig.jpg" alt="locate" title="locate处理流程"></p>
-<p><code>locate(Environment environment)</code>调用<code>getRemoteEnvironment(restTemplate, properties, label, state)</code>方法通过http的方式获取远程服务器上的配置数据。实现也很简单，显示替换请求路径path中占位符，然后进行头部headers组装，组装好了就可以发送请求，最后返回结果。<br>在上面的实现中，我们看到获取到的配置信息存放在<code>CompositePropertySource</code>，那是如何使用它的呢？这边补充另一个重要的类是PropertySourceBootstrapConfiguration，它实现了ApplicationContextInitializer接口，该接口会在应用上下文刷新之前<code>refresh()</code>被回调，从而执行初始化操作，应用启动后的调用栈如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SpringApplicationBuilder.run() -&gt; SpringApplication.run() -&gt; SpringApplication.createAndRefreshContext() -&gt; SpringApplication.applyInitializers() -&gt; PropertySourceBootstrapConfiguration.initialize()</div></pre></td></tr></table></figure>
-<h3 id="PropertySourceBootstrapConfiguration"><a href="#PropertySourceBootstrapConfiguration" class="headerlink" title="PropertySourceBootstrapConfiguration"></a>PropertySourceBootstrapConfiguration</h3><p>而上述<code>ConfigServicePropertySourceLocator</code>的locate方法会在initialize中被调用，从而保证上下文在刷新之前能够拿到必要的配置信息。具体看一下initialize方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PropertySourceBootstrapConfiguration</span> <span class="keyword">implements</span></span></div><div class="line">		<span class="title">ApplicationContextInitializer</span>&lt;<span class="title">ConfigurableApplicationContext</span>&gt;, <span class="title">Ordered</span> &#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> order = Ordered.HIGHEST_PRECEDENCE + <span class="number">10</span>;</div><div class="line"></div><div class="line">	<span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</div><div class="line">	<span class="keyword">private</span> List&lt;PropertySourceLocator&gt; propertySourceLocators = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">(ConfigurableApplicationContext applicationContext)</span> </span>&#123;</div><div class="line">		CompositePropertySource composite = <span class="keyword">new</span> CompositePropertySource(</div><div class="line">				BOOTSTRAP_PROPERTY_SOURCE_NAME);</div><div class="line">		<span class="comment">//对propertySourceLocators数组进行排序，根据默认的AnnotationAwareOrderComparator</span></div><div class="line">		AnnotationAwareOrderComparator.sort(<span class="keyword">this</span>.propertySourceLocators);</div><div class="line">		<span class="keyword">boolean</span> empty = <span class="keyword">true</span>;</div><div class="line">		<span class="comment">//获取运行的环境上下文</span></div><div class="line">		ConfigurableEnvironment environment = applicationContext.getEnvironment();</div><div class="line">		<span class="keyword">for</span> (PropertySourceLocator locator : <span class="keyword">this</span>.propertySourceLocators) &#123;</div><div class="line">			<span class="comment">//遍历this.propertySourceLocators</span></div><div class="line">			PropertySource&lt;?&gt; source = <span class="keyword">null</span>;</div><div class="line">			source = locator.locate(environment);</div><div class="line">			<span class="keyword">if</span> (source == <span class="keyword">null</span>) &#123;</div><div class="line">				<span class="keyword">continue</span>;</div><div class="line">			&#125;</div><div class="line">			logger.info(<span class="string">"Located property source: "</span> + source);</div><div class="line">			<span class="comment">//将source添加到PropertySource的链表中</span></div><div class="line">			composite.addPropertySource(source);</div><div class="line">			empty = <span class="keyword">false</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="comment">//只有source不为空的情况，才会设置到environment中</span></div><div class="line">		<span class="keyword">if</span> (!empty) &#123;</div><div class="line">			<span class="comment">//返回Environment的可变形式，可进行的操作如addFirst、addLast</span></div><div class="line">			MutablePropertySources propertySources = environment.getPropertySources();</div><div class="line">			String logConfig = environment.resolvePlaceholders(<span class="string">"$&#123;logging.config:&#125;"</span>);</div><div class="line">			LogFile logFile = LogFile.get(environment);</div><div class="line">			<span class="keyword">if</span> (propertySources.contains(BOOTSTRAP_PROPERTY_SOURCE_NAME)) &#123;</div><div class="line">				<span class="comment">//移除bootstrapProperties</span></div><div class="line">				propertySources.remove(BOOTSTRAP_PROPERTY_SOURCE_NAME);</div><div class="line">			&#125;</div><div class="line">			<span class="comment">//根据config server覆写的规则，设置propertySources</span></div><div class="line">			insertPropertySources(propertySources, composite);</div><div class="line">			reinitializeLoggingSystem(environment, logConfig, logFile);</div><div class="line">			setLogLevels(environment);</div><div class="line">			<span class="comment">//处理多个active profiles的配置信息</span></div><div class="line">			handleIncludedProfiles(environment);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>下面我们看一下，在<code>initialize</code>方法中进行了哪些操作。</p>
+<h2 id="迭代子模式的实现"><a href="#迭代子模式的实现" class="headerlink" title="迭代子模式的实现"></a>迭代子模式的实现</h2><p>迭代器接口实现，定义了获取第一个节点的方法，前一个节点和后一个节点，以及判断是否有下一个节点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Iterator</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">first</span><span class="params">()</span></span>;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">previous</span><span class="params">()</span></span>;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">next</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>具体实现迭代器，实现上述接口定义的方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span></span>&#123;</div><div class="line">    <span class="keyword">private</span> List&lt;Object&gt; list;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> index = <span class="number">0</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyIterator</span><span class="params">(List&lt;Object&gt; list)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.list = list;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">previous</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>((<span class="keyword">this</span>.index - <span class="number">1</span>) &lt; <span class="number">0</span>)&#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.list.get(--index);</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">next</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>((<span class="keyword">this</span>.index + <span class="number">1</span>) &gt;= <span class="keyword">this</span>.list.size())&#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.list.get(++index);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.index &lt; (<span class="keyword">this</span>.list.size() - <span class="number">1</span>))&#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">first</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.list.size() &lt;= <span class="number">0</span>)&#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.list.get(<span class="number">0</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>容器定义，定义了两个抽象方法，用来设置具体的迭代器实现以及注入容器中的元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Container</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Iterator <span class="title">iterator</span><span class="params">()</span></span>;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(Object obj)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>具体的容器类基于List，实现抽象方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyContainer</span> <span class="keyword">extends</span> <span class="title">Container</span></span>&#123;</div><div class="line">    <span class="keyword">private</span> List&lt;Object&gt; list;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyContainer</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.list = <span class="keyword">new</span> ArrayList&lt;Object&gt;();</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(Object obj)</span></span>&#123;</div><div class="line">        <span class="keyword">this</span>.list.add(obj);</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Iterator <span class="title">iterator</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> MyIterator(list);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>客户端测试类。设置元素，并使用迭代器进行遍历。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClientTest</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line"></div><div class="line">		<span class="comment">//创建一个自定义容器，直接使用ArrayList的实现</span></div><div class="line">		Container strContainer = <span class="keyword">new</span> MyContainer();</div><div class="line">		strContainer.put(<span class="string">"001"</span>);</div><div class="line">		strContainer.put(<span class="string">"002"</span>);</div><div class="line"></div><div class="line">		Iterator myIterator = strContainer.iterator();</div><div class="line"></div><div class="line">		<span class="comment">//使用迭代器遍历</span></div><div class="line">		System.out.println(myIterator.first());</div><div class="line">		<span class="keyword">while</span> (myIterator.hasNext()) &#123;</div><div class="line">			System.out.println(myIterator.next());</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/iterator.jpg" alt="iterator" title="类图"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Iterator模式是用于遍历集合类的标准访问方法。它可以把访问逻辑从不同类型的集合类中抽象出来，从而避免向客户端暴露集合的内部结构。 </p>
+<p>适用场景：</p>
 <ul>
-<li>根据默认的 AnnotationAwareOrderComparator 排序规则对propertySourceLocators数组进行排序</li>
-<li>获取运行的环境上下文ConfigurableEnvironment</li>
-<li>遍历propertySourceLocators时<ul>
-<li>调用 locate 方法，传入获取的上下文environment</li>
-<li>将source添加到PropertySource的链表中</li>
-<li>设置source是否为空的标识标量empty</li>
+<li>访问一个聚合对象的内容而无须暴露它的内部表示。</li>
+<li>需要为聚合对象提供多种遍历方式。</li>
+<li>为遍历不同的聚合结构提供一个统一的接口。</li>
 </ul>
-</li>
-<li>source不为空的情况，才会设置到environment中<ul>
-<li>返回Environment的可变形式，可进行的操作如addFirst、addLast</li>
-<li>移除propertySources中的bootstrapProperties</li>
-<li>根据config server覆写的规则，设置propertySources</li>
-<li>处理多个active profiles的配置信息</li>
+<p>优点：</p>
+<ul>
+<li>它支持以不同的方式遍历一个聚合对象。</li>
+<li>迭代器简化了聚合类。在同一个聚合上可以有多个遍历。</li>
+<li>在迭代器模式中，增加新的聚合类和迭代器类都很方便，无须修改原有代码。</li>
+<li>系统需要访问一个聚合对象的内容而无需暴露它的内部表示。</li>
 </ul>
-</li>
+<p>缺点：</p>
+<ul>
+<li>由于迭代器模式将存储数据和遍历数据的职责分离，增加新的聚合类需要对应增加新的迭代器类，类的个数成对增加，这在一定程度上增加了系统的复杂性。</li>
+<li>迭代器模式在遍历的同时更改迭代器所在的集合结构会导致出现异常。所以使用foreach语句只能在对集合进行遍历，不能在遍历的同时更改集合中的元素。</li>
 </ul>
-<p>初始化方法<code>initialize</code>处理时，先将所有PropertySourceLocator类型的对象的<code>locate</code>方法遍历，然后将各种方式得到的属性值放到CompositePropertySource中，最后调用<code>insertPropertySources(propertySources, composite)</code>方法设置到Environment中。Spring Cloud Context中提供了覆写远端属性的<code>PropertySourceBootstrapProperties</code>，利用该配置类进行判断属性源的优先级。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">insertPropertySources</span><span class="params">(MutablePropertySources propertySources,</span></span></div><div class="line">		CompositePropertySource composite) &#123;</div><div class="line">	MutablePropertySources incoming = <span class="keyword">new</span> MutablePropertySources();</div><div class="line">	incoming.addFirst(composite);</div><div class="line">	PropertySourceBootstrapProperties remoteProperties = <span class="keyword">new</span> PropertySourceBootstrapProperties();</div><div class="line">	<span class="keyword">new</span> RelaxedDataBinder(remoteProperties, <span class="string">"spring.cloud.config"</span>)</div><div class="line">			.bind(<span class="keyword">new</span> PropertySourcesPropertyValues(incoming));</div><div class="line">	<span class="comment">//如果不允许本地覆写</span></div><div class="line">	<span class="keyword">if</span> (!remoteProperties.isAllowOverride() || (!remoteProperties.isOverrideNone()</div><div class="line">			&amp;&amp; remoteProperties.isOverrideSystemProperties())) &#123;</div><div class="line">		propertySources.addFirst(composite);</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="comment">//overrideNone为true，外部配置优先级最低</span></div><div class="line">	<span class="keyword">if</span> (remoteProperties.isOverrideNone()) &#123;</div><div class="line">		propertySources.addLast(composite);</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">if</span> (propertySources</div><div class="line">			.contains(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)) &#123;</div><div class="line">		<span class="comment">//根据overrideSystemProperties，设置外部配置的优先级</span></div><div class="line">		<span class="keyword">if</span> (!remoteProperties.isOverrideSystemProperties()) &#123;</div><div class="line">			propertySources.addAfter(</div><div class="line">					StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME,</div><div class="line">					composite);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> &#123;</div><div class="line">			propertySources.addBefore(</div><div class="line">					StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME,</div><div class="line">					composite);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span> &#123;</div><div class="line">		propertySources.addLast(composite);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上述实现主要是根据<code>PropertySourceBootstrapProperties</code>中的属性，调整多个配置源的优先级。从其实现可以看到 <code>PropertySourceBootstrapProperties</code> 对象的是被直接初始化，使用的是默认的属性值而并未注入我们在配置文件中设置的。</p>
-<p>修复后的实现：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</div><div class="line"><span class="keyword">private</span> PropertySourceBootstrapProperties remotePropertiesForOverriding;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">insertPropertySources</span><span class="params">(MutablePropertySources propertySources, CompositePropertySource composite)</span> </span>&#123;</div><div class="line">        MutablePropertySources incoming = <span class="keyword">new</span> MutablePropertySources();</div><div class="line">  	incoming.addFirst(composite);</div><div class="line"> 	PropertySourceBootstrapProperties remoteProperties = remotePropertiesForOverriding == <span class="keyword">null</span> ? <span class="keyword">new</span> PropertySourceBootstrapProperties() : remotePropertiesForOverriding;</div><div class="line">        ...</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html" target="_blank" rel="external">Spring Cloud Edgware.RELEASE</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="https://www.cnblogs.com/JAYIT/p/5081695.html" target="_blank" rel="external">java设计模式—-迭代子模式</a></li>
+<li><a href="https://www.cnblogs.com/xcsn/p/7499521.html" target="_blank" rel="external">Head First设计模式之迭代器模式</a></li>
+</ol>
 
       
     </div>
@@ -526,7 +538,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://blueskykong.com/2018/01/23/config-server2/" title="Spring Cloud 覆写远端的配置属性">http://blueskykong.com/2018/01/23/config-server2/</a>
+      <a href="http://blueskykong.com/2017/03/28/designIterator/" title="设计模式之迭代子模式">http://blueskykong.com/2017/03/28/designIterator/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -542,7 +554,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Spring-Cloud/" rel="tag"># Spring Cloud</a>
+            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
           
         </div>
       
@@ -555,8 +567,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/09/rediscluster2/" rel="next" title="Redis Cluster深入与实践（续）">
-                <i class="fa fa-chevron-left"></i> Redis Cluster深入与实践（续）
+              <a href="/2017/03/25/designchain/" rel="next" title="设计模式之责任链模式">
+                <i class="fa fa-chevron-left"></i> 设计模式之责任链模式
               </a>
             
           </div>
@@ -565,8 +577,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/01/24/aj-vs-aop/" rel="prev" title="比较Spring AOP与AspectJ">
-                比较Spring AOP与AspectJ <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/22/ioc/" rel="prev" title="深入理解Spring IoC（控制反转）">
+                深入理解Spring IoC（控制反转） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -765,7 +777,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#覆写远端的配置属性"><span class="nav-number">1.</span> <span class="nav-text">覆写远端的配置属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ConfigServicePropertySourceLocator"><span class="nav-number">2.1.</span> <span class="nav-text">ConfigServicePropertySourceLocator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PropertySourceBootstrapConfiguration"><span class="nav-number">2.2.</span> <span class="nav-text">PropertySourceBootstrapConfiguration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">2.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#迭代子模式的定义"><span class="nav-number">1.</span> <span class="nav-text">迭代子模式的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迭代子模式的结构"><span class="nav-number">2.</span> <span class="nav-text">迭代子模式的结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迭代子模式的实现"><span class="nav-number">3.</span> <span class="nav-text">迭代子模式的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
             
 
           </div>
