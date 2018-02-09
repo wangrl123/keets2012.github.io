@@ -100,18 +100,18 @@
 
 
 
-<meta name="description" content="本文作者黄迪璇，文章节选自其即将出版的《Spring Cloud组件源码解析与高级应用》 一书。  前言Eureka 作为一个服务注册中心，Eureka Server必然是可以通过集群的方式进行部署，但是分布式系统中一个很关键的点就是数据的一致性，多节点部署的Eureka Server必然涉及到不同节点之间的注册表信息的一致性，在CAP中，Eureka 注重的满足了AP，对C只满足的弱一致性(最">
+<meta name="description" content="本文作者cangwu，文章节选自其即将出版的《Spring Cloud组件源码解析与高级应用》 一书。  前言Eureka 作为一个服务注册中心，Eureka Server必然是可以通过集群的方式进行部署，但是分布式系统中一个很关键的点就是数据的一致性，多节点部署的Eureka Server必然涉及到不同节点之间的注册表信息的一致性，在CAP中，Eureka 注重的满足了AP，对C只满足的弱一致">
 <meta name="keywords" content="Spring Cloud">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Eureka Server之间的注册表信息同步">
 <meta property="og:url" content="http://blueskykong.com/2018/02/09/eureka-instance-registry/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="本文作者黄迪璇，文章节选自其即将出版的《Spring Cloud组件源码解析与高级应用》 一书。  前言Eureka 作为一个服务注册中心，Eureka Server必然是可以通过集群的方式进行部署，但是分布式系统中一个很关键的点就是数据的一致性，多节点部署的Eureka Server必然涉及到不同节点之间的注册表信息的一致性，在CAP中，Eureka 注重的满足了AP，对C只满足的弱一致性(最">
+<meta property="og:description" content="本文作者cangwu，文章节选自其即将出版的《Spring Cloud组件源码解析与高级应用》 一书。  前言Eureka 作为一个服务注册中心，Eureka Server必然是可以通过集群的方式进行部署，但是分布式系统中一个很关键的点就是数据的一致性，多节点部署的Eureka Server必然涉及到不同节点之间的注册表信息的一致性，在CAP中，Eureka 注重的满足了AP，对C只满足的弱一致">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/InstanceRegistry.png">
-<meta property="og:updated_time" content="2018-02-09T01:45:41.000Z">
+<meta property="og:updated_time" content="2018-02-09T02:49:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Eureka Server之间的注册表信息同步">
-<meta name="twitter:description" content="本文作者黄迪璇，文章节选自其即将出版的《Spring Cloud组件源码解析与高级应用》 一书。  前言Eureka 作为一个服务注册中心，Eureka Server必然是可以通过集群的方式进行部署，但是分布式系统中一个很关键的点就是数据的一致性，多节点部署的Eureka Server必然涉及到不同节点之间的注册表信息的一致性，在CAP中，Eureka 注重的满足了AP，对C只满足的弱一致性(最">
+<meta name="twitter:description" content="本文作者cangwu，文章节选自其即将出版的《Spring Cloud组件源码解析与高级应用》 一书。  前言Eureka 作为一个服务注册中心，Eureka Server必然是可以通过集群的方式进行部署，但是分布式系统中一个很关键的点就是数据的一致性，多节点部署的Eureka Server必然涉及到不同节点之间的注册表信息的一致性，在CAP中，Eureka 注重的满足了AP，对C只满足的弱一致">
 <meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/InstanceRegistry.png">
 
 
@@ -433,7 +433,7 @@
 
       
         <blockquote>
-<p>本文作者黄迪璇，文章节选自其即将出版的《Spring Cloud组件源码解析与高级应用》 一书。</p>
+<p>本文作者cangwu，文章节选自其即将出版的《Spring Cloud组件源码解析与高级应用》 一书。</p>
 </blockquote>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Eureka 作为一个服务注册中心，Eureka Server必然是可以通过集群的方式进行部署，但是分布式系统中一个很关键的点就是数据的一致性，多节点部署的Eureka Server必然涉及到不同节点之间的注册表信息的一致性，在CAP中，Eureka 注重的满足了AP，对C只满足的弱一致性(最终一致性)，牺牲了强一致性保证了高可用性，但是Eureka Sever中依然有方式保证节点之间的注册表的信息的一致性。</p>
 <h2 id="注册表类结构"><a href="#注册表类结构" class="headerlink" title="注册表类结构"></a>注册表类结构</h2><p>首先我们来看一下面一张类图</p>
