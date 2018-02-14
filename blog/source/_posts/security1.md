@@ -2,7 +2,6 @@
 title: 认证鉴权与API权限控制在微服务架构中的设计与实现（一） 
 date: 2017-10-19
 categories: Security
-top: 100
 tags:
 - Spring Security
 - OAuth2

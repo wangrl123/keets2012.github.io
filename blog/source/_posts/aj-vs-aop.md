@@ -9,7 +9,7 @@ tags:
 > 本文翻译自博客[Comparing Spring AOP and AspectJ](http://www.baeldung.com/spring-aop-vs-aspectj)
 
 ## 介绍
-如今有多个可用的AOP库，这些组件需要回答一系列的问题：
+如今有多个可用的AOP库，在使用这些组件之前需要回答一系列的问题：
 
 - 是否与我现有的应用兼容？
 - 我在哪实现AOP？

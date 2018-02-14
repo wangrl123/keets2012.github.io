@@ -9,5 +9,4 @@ layout: page-about
 
 最后，本站所有内容均代表个人观点，与本人雇主及其他团体无关。
 
-微信号：aoho2012   
-个人邮箱：aoho002#gmail.com 欢迎交流与讨论。
+邮箱：aoho002#gmail.com 欢迎交流与讨论。

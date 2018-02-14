@@ -1,5 +1,5 @@
-title: 分类
+title: 归档
 date: 2017-6-22 12:39:04
-type: "categories"
+type: "archives"
 comments: false
 ---

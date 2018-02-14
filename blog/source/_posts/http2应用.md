@@ -31,6 +31,7 @@ The next candidate is undertow. It seems almost too easy, but it works. Because 
 	- org.springframework.boot:spring-boot-starter-undertow
 	- org.mortbay.jetty.alpn:alpn-boot:8.1.8.v20160420
 2. create a servlet container bean
+
 ```
 	@Bean   
 	UndertowEmbeddedServletContainerFactory embeddedServletContainerFactory() {      
@@ -42,6 +43,7 @@ The next candidate is undertow. It seems almost too easy, but it works. Because 
 ```
 3. start your server with alpn
 为了启动服务，需要带上 -Xbootclasspath 参数来包括alpn 。因为alpn 有可能在jdk中没有。
+
 ```
 -Xbootclasspath/p:/home/harrie/.m2/repository/org/mortbay/jetty/alpn/alpn-boot/8.1.8.v20160420/alpn-boot-8.1.8.v20160420.jar
 ```
