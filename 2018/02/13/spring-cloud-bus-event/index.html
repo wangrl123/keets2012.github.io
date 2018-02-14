@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="mac,utils," />
+  <meta name="keywords" content="Spring Cloud," />
 
 
 
@@ -100,20 +100,20 @@
 
 
 
-<meta name="description" content="win环境下，有直接在文件浏览的地址上，直接输入cmd，即可打开cmd命令框。笔者在macOS下，也想实现这样的功能，网上查了一下，可以成功实践。 1. 添加服务1git clone https://github.com/peterldowns/iterm2-finder-tools.git 进入 iterm2-finder-tools文件夹，运行iTerm.workflow。安装服务栏。 2.">
-<meta name="keywords" content="mac,utils">
+<meta name="description" content="年前最后一篇博客更新，提前祝大家新年快乐（还有情人节）！ 下面进入正题。Spring Cloud Bus用轻量级的消息代理将分布式系统的节点连接起来。这可以用来广播状态的该表（比如配置的改变）或者其他关联的指令。一个关键的想法是，总线就像是一个分布式Actuator，用于Spring Boot应用程序的扩展，但它也可以用作应用程序之间的通信通道。Spring Cloud提供了AMQP 传输的代理和">
+<meta name="keywords" content="Spring Cloud">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mac下快速进入当前目录iterm2">
-<meta property="og:url" content="http://blueskykong.com/2017/08/28/mac快捷键/index.html">
+<meta property="og:title" content="Spring Cloud Bus中的事件的订阅与发布（一）">
+<meta property="og:url" content="http://blueskykong.com/2018/02/13/spring-cloud-bus-event/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="win环境下，有直接在文件浏览的地址上，直接输入cmd，即可打开cmd命令框。笔者在macOS下，也想实现这样的功能，网上查了一下，可以成功实践。 1. 添加服务1git clone https://github.com/peterldowns/iterm2-finder-tools.git 进入 iterm2-finder-tools文件夹，运行iTerm.workflow。安装服务栏。 2.">
-<meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/finder.png">
-<meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/real-pic.png">
-<meta property="og:updated_time" content="2018-01-19T12:13:03.000Z">
+<meta property="og:description" content="年前最后一篇博客更新，提前祝大家新年快乐（还有情人节）！ 下面进入正题。Spring Cloud Bus用轻量级的消息代理将分布式系统的节点连接起来。这可以用来广播状态的该表（比如配置的改变）或者其他关联的指令。一个关键的想法是，总线就像是一个分布式Actuator，用于Spring Boot应用程序的扩展，但它也可以用作应用程序之间的通信通道。Spring Cloud提供了AMQP 传输的代理和">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/event-source.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/bus-event.png">
+<meta property="og:updated_time" content="2018-02-14T01:31:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mac下快速进入当前目录iterm2">
-<meta name="twitter:description" content="win环境下，有直接在文件浏览的地址上，直接输入cmd，即可打开cmd命令框。笔者在macOS下，也想实现这样的功能，网上查了一下，可以成功实践。 1. 添加服务1git clone https://github.com/peterldowns/iterm2-finder-tools.git 进入 iterm2-finder-tools文件夹，运行iTerm.workflow。安装服务栏。 2.">
-<meta name="twitter:image" content="http://ovci9bs39.bkt.clouddn.com/finder.png">
+<meta name="twitter:title" content="Spring Cloud Bus中的事件的订阅与发布（一）">
+<meta name="twitter:description" content="年前最后一篇博客更新，提前祝大家新年快乐（还有情人节）！ 下面进入正题。Spring Cloud Bus用轻量级的消息代理将分布式系统的节点连接起来。这可以用来广播状态的该表（比如配置的改变）或者其他关联的指令。一个关键的想法是，总线就像是一个分布式Actuator，用于Spring Boot应用程序的扩展，但它也可以用作应用程序之间的通信通道。Spring Cloud提供了AMQP 传输的代理和">
+<meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/event-source.jpg">
 
 
 
@@ -141,13 +141,13 @@
 
 
 
-  <link rel="canonical" href="http://blueskykong.com/2017/08/28/mac快捷键/"/>
+  <link rel="canonical" href="http://blueskykong.com/2018/02/13/spring-cloud-bus-event/"/>
 
 
 
 
 
-  <title>mac下快速进入当前目录iterm2 | Aoho's Blog</title>
+  <title>Spring Cloud Bus中的事件的订阅与发布（一） | Aoho's Blog</title>
   
 
 
@@ -331,7 +331,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2017/08/28/mac快捷键/">
+    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2018/02/13/spring-cloud-bus-event/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="aoho">
@@ -348,7 +348,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">mac下快速进入当前目录iterm2</h1>
+          <h1 class="post-title" itemprop="name headline">Spring Cloud Bus中的事件的订阅与发布（一）</h1>
         
 
         <div class="post-meta">
@@ -360,8 +360,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-28T00:00:00+08:00">
-                2017-08-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-13T00:00:00+08:00">
+                2018-02-13
               </time>
             
 
@@ -383,8 +383,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Utils/" itemprop="url" rel="index">
-                    <span itemprop="name">Utils</span>
+                  <a href="/categories/微服务/" itemprop="url" rel="index">
+                    <span itemprop="name">微服务</span>
                   </a>
                 </span>
 
@@ -402,8 +402,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/08/28/mac快捷键/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/08/28/mac快捷键/" itemprop="commentsCount"></span>
+                <a href="/2018/02/13/spring-cloud-bus-event/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/02/13/spring-cloud-bus-event/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -433,16 +433,42 @@
       
 
       
-        <p>win环境下，有直接在文件浏览的地址上，直接输入cmd，即可打开cmd命令框。<br>笔者在macOS下，也想实现这样的功能，网上查了一下，可以成功实践。</p>
-<h3 id="1-添加服务"><a href="#1-添加服务" class="headerlink" title="1. 添加服务"></a>1. 添加服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/peterldowns/iterm2-finder-tools.git</div></pre></td></tr></table></figure>
-<p>进入 iterm2-finder-tools文件夹，运行iTerm.workflow。安装服务栏。</p>
-<h3 id="2-使用服务"><a href="#2-使用服务" class="headerlink" title="2. 使用服务"></a>2. 使用服务</h3><p>在工作文件夹上右键，弹出窗口中找到服务一栏，将鼠标放置其上，在弹出窗口中找到 Open iTerm一栏，单击即可。</p>
-<h3 id="3-添加快捷键"><a href="#3-添加快捷键" class="headerlink" title="3. 添加快捷键"></a>3. 添加快捷键</h3><p>服务-&gt;偏好设置-&gt;快捷键</p>
-<p><img src="http://ovci9bs39.bkt.clouddn.com/finder.png" alt="快捷键" title="快捷键设置"></p>
-<p>笔者设置了control+command+L。大家可以根据自己的喜好进行设置快捷键。</p>
-<p><img src="http://ovci9bs39.bkt.clouddn.com/real-pic.png" alt="效果" title="实现展示"></p>
-<hr>
-<p>参考：<br><a href="http://blog.csdn.net/u014632633/article/details/72769832" target="_blank" rel="external"> Mac在Finder中当前目录下打开iTerm2</a></p>
+        <p><strong>年前最后一篇博客更新，提前祝大家新年快乐（还有情人节）！</strong></p>
+<p>下面进入正题。Spring Cloud Bus用轻量级的消息代理将分布式系统的节点连接起来。这可以用来广播状态的该表（比如配置的改变）或者其他关联的指令。一个关键的想法是，总线就像是一个分布式Actuator，用于Spring Boot应用程序的扩展，但它也可以用作应用程序之间的通信通道。Spring Cloud提供了AMQP 传输的代理和Kafka启动Starters，对具有相同的基本功能集的其他传输组件的支持，也在未来的规划中。</p>
+<h2 id="Spring-Cloud-Bus"><a href="#Spring-Cloud-Bus" class="headerlink" title="Spring Cloud Bus"></a>Spring Cloud Bus</h2><p><code>Spring Cloud Bus</code>是在<code>Spring Cloud Stream</code>的基础上进行的封装，对于指定主题的消息的发布与订阅是通过<code>Spring Cloud Stream</code>的具体binder实现。因此引入的依赖可以是<code>spring-cloud-starter-bus-amqp</code>和<code>spring-cloud-starter-bus-kafka</code>其中的一种，分别对应于binder的两种实现。根据上一节的基础应用，我们总结出<code>Spring Cloud Bus</code>的主要功能如下两点：</p>
+<ul>
+<li>对指定主题<code>springCloudBus</code>的消息订阅与发布。</li>
+<li>事件监听，包括刷新事件、环境变更事件、远端应用的ack事件以及本地服务端发送事件等。</li>
+</ul>
+<p>下面我们以这两方面作为主线，进行<code>Spring Cloud Bus</code>的源码分析。本文主要针对事件的订阅户发布。</p>
+<h2 id="事件的订阅与发布"><a href="#事件的订阅与发布" class="headerlink" title="事件的订阅与发布"></a>事件的订阅与发布</h2><h3 id="事件驱动模型"><a href="#事件驱动模型" class="headerlink" title="事件驱动模型"></a>事件驱动模型</h3><p>这部分需要读者首先了解下Spring的事件驱动模型。我们在这边简单介绍下设计的主要概念，帮助大家易于理解后面的内容。<br><img src="http://ovcjgn2x0.bkt.clouddn.com/event-source.jpg" alt="event-source" title="事件驱动模型"></p>
+<p>Spring的事件驱动模型由三部分组成：</p>
+<ul>
+<li>事件：ApplicationEvent，继承自JDK的EventObject，所有事件将继承它，并通过source得到事件源。</li>
+<li>事件发布者：ApplicationEventPublisher及ApplicationEventMulticaster接口，使用这个接口，我们的Service就拥有了发布事件的能力。</li>
+<li>事件订阅者：ApplicationListener，继承自JDK的EventListener，所有监听器将继承它。</li>
+</ul>
+<h3 id="事件的定义"><a href="#事件的定义" class="headerlink" title="事件的定义"></a>事件的定义</h3><p>Spring的事件驱动模型的事件定义均继承自<code>ApplicationEvent</code>，<code>Spring Cloud Bus</code>中有多个事件类，这些事件类都继承了一个重要的抽象类<code>RemoteApplicationEvent</code>，我们看一下事件类的类图：</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/bus-event.png" alt="bus-event" title="各种事件的定义"></p>
+<p>涉及的事件类有：代表了对特定事件确认的事件<code>AckRemoteApplicationEvent</code>、环境变更的事件<code>EnvironmentChangeRemoteApplicationEvent</code>、刷新事件<code>RefreshRemoteApplicationEvent</code>、发送事件 <code>SentApplicationEvent</code>、以及未知事件<code>UnknownRemoteApplicationEvent</code>。下面我们分别看一下这些事件的定义。</p>
+<h4 id="抽象基类：RemoteApplicationEvent"><a href="#抽象基类：RemoteApplicationEvent" class="headerlink" title="抽象基类：RemoteApplicationEvent"></a>抽象基类：RemoteApplicationEvent</h4><p>通过上面的类图，我们知道<code>RemoteApplicationEvent</code>是其他事件类的基类，定义了事件对象的公共属性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@JsonTypeInfo</span>(use = JsonTypeInfo.Id.NAME, property = <span class="string">"type"</span>) <span class="comment">//序列化时使用子类的名称作为type</span></div><div class="line"><span class="meta">@JsonIgnoreProperties</span>(<span class="string">"source"</span>) <span class="comment">//序列化时，忽略 source</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">RemoteApplicationEvent</span> <span class="keyword">extends</span> <span class="title">ApplicationEvent</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object TRANSIENT_SOURCE = <span class="keyword">new</span> Object();</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String originService;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String destinationService;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String id;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="title">RemoteApplicationEvent</span><span class="params">(Object source, String originService,</span></span></div><div class="line">			String destinationService) &#123;</div><div class="line">		<span class="keyword">super</span>(source);</div><div class="line">		<span class="keyword">this</span>.originService = originService;</div><div class="line">		<span class="keyword">if</span> (destinationService == <span class="keyword">null</span>) &#123;</div><div class="line">			destinationService = <span class="string">"**"</span>;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="keyword">if</span> (!<span class="string">"**"</span>.equals(destinationService)) &#123;</div><div class="line">			<span class="keyword">if</span> (StringUtils.countOccurrencesOf(destinationService, <span class="string">":"</span>) &lt;= <span class="number">1</span></div><div class="line">					&amp;&amp; !StringUtils.endsWithIgnoreCase(destinationService, <span class="string">":**"</span>)) &#123;</div><div class="line">				<span class="comment">//destination的所有实例</span></div><div class="line">				destinationService = destinationService + <span class="string">":**"</span>;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">this</span>.destinationService = destinationService;</div><div class="line">		<span class="keyword">this</span>.id = UUID.randomUUID().toString();</div><div class="line">	&#125;</div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在<code>RemoteApplicationEvent</code>中定义了主要的三个通用属性事件的来源originService、事件的目的服务destinationService和随机生成的全局id。通过其构造方法可知，destinationService可以使用通配符的形式{serviceId}:{appContextId}，两个变量都省略的话，则通知到所有服务的所有实例。只省略appContextId时，则对应的destinationService为相应serviceId的所有实例。另外，注解<code>@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = &quot;type&quot;)</code>对应于序列化时，使用子类的名称作为type；而<code>@JsonIgnoreProperties(&quot;source&quot;)</code>表示序列化时，忽略source属性，source定义在JDK中的<code>EventObject</code>。</p>
+<h4 id="EnvironmentChangeRemoteApplicationEvent"><a href="#EnvironmentChangeRemoteApplicationEvent" class="headerlink" title="EnvironmentChangeRemoteApplicationEvent"></a>EnvironmentChangeRemoteApplicationEvent</h4><p>用于动态更新服务实例的环境属性，我们在基础应用中更新<code>cloud.version</code>属性时，关联到该事件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EnvironmentChangeRemoteApplicationEvent</span> <span class="keyword">extends</span> <span class="title">RemoteApplicationEvent</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, String&gt; values;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">EnvironmentChangeRemoteApplicationEvent</span><span class="params">(Object source, String originService,</span></span></div><div class="line">			String destinationService, Map&lt;String, String&gt; values) &#123;</div><div class="line">		<span class="keyword">super</span>(source, originService, destinationService);</div><div class="line">		<span class="keyword">this</span>.values = values;</div><div class="line">	&#125;</div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到，<code>EnvironmentChangeRemoteApplicationEvent</code>事件类的实现很简单。定义了Map类型的成员变量，key对应于环境变量名，而value对应更新后的值。</p>
+<h4 id="RefreshRemoteApplicationEvent"><a href="#RefreshRemoteApplicationEvent" class="headerlink" title="RefreshRemoteApplicationEvent"></a>RefreshRemoteApplicationEvent</h4><p>刷新远端应用配置的事件，用于接收远端刷新的请求。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RefreshRemoteApplicationEvent</span> <span class="keyword">extends</span> <span class="title">RemoteApplicationEvent</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">RefreshRemoteApplicationEvent</span><span class="params">(Object source, String originService,</span></span></div><div class="line">			String destinationService) &#123;</div><div class="line">		<span class="keyword">super</span>(source, originService, destinationService);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>继承自抽象事件类<code>RemoteApplicationEvent</code>，没有特别的成员属性。</p>
+<h4 id="AckRemoteApplicationEvent"><a href="#AckRemoteApplicationEvent" class="headerlink" title="AckRemoteApplicationEvent"></a>AckRemoteApplicationEvent</h4><p>确认远端应用事件，该事件表示一个特定的<code>RemoteApplicationEvent</code>事件被确认。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AckRemoteApplicationEvent</span> <span class="keyword">extends</span> <span class="title">RemoteApplicationEvent</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String ackId;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String ackDestinationService;</div><div class="line">	<span class="keyword">private</span> Class&lt;? extends RemoteApplicationEvent&gt; event;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">AckRemoteApplicationEvent</span><span class="params">(Object source, String originService,</span></span></div><div class="line">			String destinationService, String ackDestinationService, String ackId,</div><div class="line">			Class&lt;? extends RemoteApplicationEvent&gt; type) &#123;</div><div class="line">		<span class="keyword">super</span>(source, originService, destinationService);</div><div class="line">		<span class="keyword">this</span>.ackDestinationService = ackDestinationService;</div><div class="line">		<span class="keyword">this</span>.ackId = ackId;</div><div class="line">		<span class="keyword">this</span>.event = type;</div><div class="line">	&#125;</div><div class="line">	...</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setEventName</span><span class="params">(String eventName)</span> </span>&#123;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			event = (Class&lt;? extends RemoteApplicationEvent&gt;) Class.forName(eventName);</div><div class="line">		&#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">			event = UnknownRemoteApplicationEvent.class;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>该事件类在<code>RemoteApplicationEvent</code>基础上，定义了成员属性ackId、ackDestinationService和event。<br>ackId和ackDestinationService，分别表示确认的时间的id和对应的目标服务。event对应事件类型，确认事件能够确认的必然是<code>RemoteApplicationEvent</code>的子类，因此event属性设值时需要进行检查，如果转换出现异常，则定义为未知的事件类型。这些事件可以被任何需要统计总线事件响应的应用程序来监听。 它们的行为与普通的远程应用程序事件相似，即如果目标服务与本地服务ID匹配，则应用程序会在其上下文中触发该事件。</p>
+<h4 id="SentApplicationEvent"><a href="#SentApplicationEvent" class="headerlink" title="SentApplicationEvent"></a>SentApplicationEvent</h4><p>发送应用事件，表示系统中的某个地方发送了一个远端事件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@JsonTypeInfo</span>(use = JsonTypeInfo.Id.NAME, property = <span class="string">"type"</span>)</div><div class="line"><span class="meta">@JsonIgnoreProperties</span>(<span class="string">"source"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SentApplicationEvent</span> <span class="keyword">extends</span> <span class="title">ApplicationEvent</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object TRANSIENT_SOURCE = <span class="keyword">new</span> Object();</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String originService;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String destinationService;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String id;</div><div class="line">	<span class="keyword">private</span> Class&lt;? extends RemoteApplicationEvent&gt; type;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="title">SentApplicationEvent</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="comment">// for serialization libs like jackson</span></div><div class="line">		<span class="keyword">this</span>(TRANSIENT_SOURCE, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, RemoteApplicationEvent.class);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SentApplicationEvent</span><span class="params">(Object source, String originService,</span></span></div><div class="line">			String destinationService, String id,</div><div class="line">			Class&lt;? extends RemoteApplicationEvent&gt; type) &#123;</div><div class="line">		<span class="keyword">super</span>(source);</div><div class="line">		<span class="keyword">this</span>.originService = originService;</div><div class="line">		<span class="keyword">this</span>.type = type;</div><div class="line">		<span class="keyword">if</span> (destinationService == <span class="keyword">null</span>) &#123;</div><div class="line">			destinationService = <span class="string">"*"</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (!destinationService.contains(<span class="string">":"</span>)) &#123;</div><div class="line">			<span class="comment">// All instances of the destination unless specifically requested</span></div><div class="line">			destinationService = destinationService + <span class="string">":**"</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">this</span>.destinationService = destinationService;</div><div class="line">		<span class="keyword">this</span>.id = id;</div><div class="line">	&#125;</div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到该事件类继承自<code>ApplicationEvent</code>，它本身并不是一个<code>RemoteApplicationEvent</code>事件，所以不会通过总线发送，而是在本地生成（多为响应远端事件）。想要审计远端事件的应用可以监听该事件，并且所有的<code>AckRemoteApplicationEvent</code>事件中的id来源于相应的<code>SentApplicationEvent</code>中定义的id。在其定义的成员属性中，相比于远端应用事件多了一个事件类型type，该类型限定于<code>RemoteApplicationEvent</code>的子类。</p>
+<h4 id="UnknownRemoteApplicationEvent"><a href="#UnknownRemoteApplicationEvent" class="headerlink" title="UnknownRemoteApplicationEvent"></a>UnknownRemoteApplicationEvent</h4><p>未知的远端应用事件，也是<code>RemoteApplicationEvent</code>事件类的子类。该事件类与之前的<code>SentApplicationEvent</code>、<code>AckRemoteApplicationEvent</code>有关，当序列化时遇到事件的类型转换异常，则自动构造成一个未知的远端应用事件。</p>
+<p><strong>事件监听器以及消息的订阅与发布待后续更新。。</strong></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://cloud.spring.io/spring-cloud-static/spring-cloud-bus/1.3.3.RELEASE/single/spring-cloud-bus.html" target="_blank" rel="external">Spring Cloud Bus-v1.3.3</a></p>
 
       
     </div>
@@ -496,7 +522,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://blueskykong.com/2017/08/28/mac快捷键/" title="mac下快速进入当前目录iterm2">http://blueskykong.com/2017/08/28/mac快捷键/</a>
+      <a href="http://blueskykong.com/2018/02/13/spring-cloud-bus-event/" title="Spring Cloud Bus中的事件的订阅与发布（一）">http://blueskykong.com/2018/02/13/spring-cloud-bus-event/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -512,9 +538,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/mac/" rel="tag"># mac</a>
-          
-            <a href="/tags/utils/" rel="tag"># utils</a>
+            <a href="/tags/Spring-Cloud/" rel="tag"># Spring Cloud</a>
           
         </div>
       
@@ -527,8 +551,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/27/http2应用/" rel="next" title="HTTP 2实际应用">
-                <i class="fa fa-chevron-left"></i> HTTP 2实际应用
+              <a href="/2018/02/09/eureka-instance-registry/" rel="next" title="Eureka Server之间的注册表信息同步">
+                <i class="fa fa-chevron-left"></i> Eureka Server之间的注册表信息同步
               </a>
             
           </div>
@@ -536,10 +560,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/30/Jerseyvsspringmvc/" rel="prev" title="Restful Layer of SpringMVC vs Jersey">
-                Restful Layer of SpringMVC vs Jersey <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -737,7 +757,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-添加服务"><span class="nav-number">1.</span> <span class="nav-text">1. 添加服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-使用服务"><span class="nav-number">2.</span> <span class="nav-text">2. 使用服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-添加快捷键"><span class="nav-number">3.</span> <span class="nav-text">3. 添加快捷键</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Cloud-Bus"><span class="nav-number">1.</span> <span class="nav-text">Spring Cloud Bus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件的订阅与发布"><span class="nav-number">2.</span> <span class="nav-text">事件的订阅与发布</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#事件驱动模型"><span class="nav-number">2.1.</span> <span class="nav-text">事件驱动模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件的定义"><span class="nav-number">2.2.</span> <span class="nav-text">事件的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#抽象基类：RemoteApplicationEvent"><span class="nav-number">2.2.1.</span> <span class="nav-text">抽象基类：RemoteApplicationEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EnvironmentChangeRemoteApplicationEvent"><span class="nav-number">2.2.2.</span> <span class="nav-text">EnvironmentChangeRemoteApplicationEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RefreshRemoteApplicationEvent"><span class="nav-number">2.2.3.</span> <span class="nav-text">RefreshRemoteApplicationEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AckRemoteApplicationEvent"><span class="nav-number">2.2.4.</span> <span class="nav-text">AckRemoteApplicationEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SentApplicationEvent"><span class="nav-number">2.2.5.</span> <span class="nav-text">SentApplicationEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UnknownRemoteApplicationEvent"><span class="nav-number">2.2.6.</span> <span class="nav-text">UnknownRemoteApplicationEvent</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">2.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
             
 
           </div>
