@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="设计模式," />
+  <meta name="keywords" content="Java,Spring," />
 
 
 
@@ -100,19 +100,22 @@
 
 
 
-<meta name="description" content="责任链模式是一种对象的行为模式。 责任链模式定义责任链模式：避免请求发送者与接收者耦合在一起，让多个对象都有可能接收请求，将这些对象连接成一条链，并且沿着这条链传递请求，直到有对象处理它为止。 在责任链模式里，很多的对象由每一个对象对其下家的引用而联接起来形成一条链。请求在这个链上传递，直到链上的某一个对象决定处理此请求。发出这个请求的客户端并不知道链上的哪一个对象最终处理这个请求，这使得系统可以">
-<meta name="keywords" content="设计模式">
+<meta name="description" content="正月初七，新年第一篇。 事件驱动模型简介事件驱动模型通常也被理解成观察者或者发布/订阅模型。  是一种对象间的一对多的关系； 当目标发送改变（发布），观察者（订阅者）就可以接收到改变； 观察者如何处理，目标无需干涉，它们之间的关系是松耦合的。   事件驱动模型的例子很多，如生活中的红绿灯，以及我们在微服务中用到的配置中心，当有配置提交时出发具体的应用实例更新Spring上下文环境。 Spring的">
+<meta name="keywords" content="Java,Spring">
 <meta property="og:type" content="article">
-<meta property="og:title" content="设计模式之责任链模式">
-<meta property="og:url" content="http://blueskykong.com/2017/03/25/designchain/index.html">
+<meta property="og:title" content="Spring中的事件驱动模型（一）">
+<meta property="og:url" content="http://blueskykong.com/2018/02/22/spring-event-sourcing/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="责任链模式是一种对象的行为模式。 责任链模式定义责任链模式：避免请求发送者与接收者耦合在一起，让多个对象都有可能接收请求，将这些对象连接成一条链，并且沿着这条链传递请求，直到有对象处理它为止。 在责任链模式里，很多的对象由每一个对象对其下家的引用而联接起来形成一条链。请求在这个链上传递，直到链上的某一个对象决定处理此请求。发出这个请求的客户端并不知道链上的哪一个对象最终处理这个请求，这使得系统可以">
-<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/handlerchain.png">
-<meta property="og:updated_time" content="2018-02-05T14:22:00.000Z">
+<meta property="og:description" content="正月初七，新年第一篇。 事件驱动模型简介事件驱动模型通常也被理解成观察者或者发布/订阅模型。  是一种对象间的一对多的关系； 当目标发送改变（发布），观察者（订阅者）就可以接收到改变； 观察者如何处理，目标无需干涉，它们之间的关系是松耦合的。   事件驱动模型的例子很多，如生活中的红绿灯，以及我们在微服务中用到的配置中心，当有配置提交时出发具体的应用实例更新Spring上下文环境。 Spring的">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/event-source.jpg">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/eventobject.png">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/ApplicationListener.png">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/EventPublisher.png">
+<meta property="og:updated_time" content="2018-02-22T09:43:21.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="设计模式之责任链模式">
-<meta name="twitter:description" content="责任链模式是一种对象的行为模式。 责任链模式定义责任链模式：避免请求发送者与接收者耦合在一起，让多个对象都有可能接收请求，将这些对象连接成一条链，并且沿着这条链传递请求，直到有对象处理它为止。 在责任链模式里，很多的对象由每一个对象对其下家的引用而联接起来形成一条链。请求在这个链上传递，直到链上的某一个对象决定处理此请求。发出这个请求的客户端并不知道链上的哪一个对象最终处理这个请求，这使得系统可以">
-<meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/handlerchain.png">
+<meta name="twitter:title" content="Spring中的事件驱动模型（一）">
+<meta name="twitter:description" content="正月初七，新年第一篇。 事件驱动模型简介事件驱动模型通常也被理解成观察者或者发布/订阅模型。  是一种对象间的一对多的关系； 当目标发送改变（发布），观察者（订阅者）就可以接收到改变； 观察者如何处理，目标无需干涉，它们之间的关系是松耦合的。   事件驱动模型的例子很多，如生活中的红绿灯，以及我们在微服务中用到的配置中心，当有配置提交时出发具体的应用实例更新Spring上下文环境。 Spring的">
+<meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/event-source.jpg">
 
 
 
@@ -140,13 +143,13 @@
 
 
 
-  <link rel="canonical" href="http://blueskykong.com/2017/03/25/designchain/"/>
+  <link rel="canonical" href="http://blueskykong.com/2018/02/22/spring-event-sourcing/"/>
 
 
 
 
 
-  <title>设计模式之责任链模式 | Aoho's Blog</title>
+  <title>Spring中的事件驱动模型（一） | Aoho's Blog</title>
   
 
 
@@ -330,7 +333,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2017/03/25/designchain/">
+    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2018/02/22/spring-event-sourcing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="aoho">
@@ -347,7 +350,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">设计模式之责任链模式</h1>
+          <h1 class="post-title" itemprop="name headline">Spring中的事件驱动模型（一）</h1>
         
 
         <div class="post-meta">
@@ -359,8 +362,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-25T00:00:00+08:00">
-                2017-03-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-22T00:00:00+08:00">
+                2018-02-22
               </time>
             
 
@@ -382,8 +385,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -401,8 +404,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/03/25/designchain/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/03/25/designchain/" itemprop="commentsCount"></span>
+                <a href="/2018/02/22/spring-event-sourcing/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/02/22/spring-event-sourcing/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -432,41 +435,47 @@
       
 
       
-        <p>责任链模式是一种对象的行为模式。</p>
-<h2 id="责任链模式定义"><a href="#责任链模式定义" class="headerlink" title="责任链模式定义"></a>责任链模式定义</h2><p>责任链模式：避免请求发送者与接收者耦合在一起，让多个对象都有可能接收请求，将这些对象连接成一条链，并且沿着这条链传递请求，直到有对象处理它为止。</p>
-<p>在责任链模式里，很多的对象由每一个对象对其下家的引用而联接起来形成一条链。请求在这个链上传递，直到链上的某一个对象决定处理此请求。发出这个请求的客户端并不知道链上的哪一个对象最终处理这个请求，这使得系统可以在不影响客户端的情况下动态地重新组织链和分配责任。比如servlet中的filter，有多层，当然，这个在Spring Security使用的更加淋漓尽致。</p>
-<p>在责任链模式中发出请求的客户端并不知道这当中的哪个对象最终处理这个请求，这样系统的更改可以在不影响客户端的情况下动态的重新组织和分配责任。</p>
-<h2 id="责任链模式的结构"><a href="#责任链模式的结构" class="headerlink" title="责任链模式的结构"></a>责任链模式的结构</h2><p><img src="http://ovcjgn2x0.bkt.clouddn.com/handlerchain.png" alt="handlerchain" title="责任链模式"></p>
-<p>责任链模式中，主要的角色有Handler和ConcreteHandler：</p>
+        <p>正月初七，新年第一篇。</p>
+<h2 id="事件驱动模型简介"><a href="#事件驱动模型简介" class="headerlink" title="事件驱动模型简介"></a>事件驱动模型简介</h2><p>事件驱动模型通常也被理解成观察者或者发布/订阅模型。</p>
 <ul>
-<li><code>Handler</code>定义一个处理请求的接口；</li>
-<li><code>ConcreteHandler</code>具体处理类，处理它所负责的请求，可访问它的后继者。如果可以处理该请求，就处理，否则就将该请求转发给它的后继者。</li>
+<li>是一种对象间的一对多的关系；</li>
+<li>当目标发送改变（发布），观察者（订阅者）就可以接收到改变；</li>
+<li>观察者如何处理，目标无需干涉，它们之间的关系是松耦合的。</li>
 </ul>
-<h2 id="责任链模式的实现"><a href="#责任链模式的实现" class="headerlink" title="责任链模式的实现"></a>责任链模式的实现</h2><p>抽象类Handler，具体的实现都要继承该抽象类。定义了继任者，以及处理请求的方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Data</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Handler</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">protected</span> Handler successor;<span class="comment">//继任者</span></div><div class="line">    <span class="comment">//处理请求</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleRequest</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>第一个继任者，num小于10则处理，否则继续传递。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteHandler1</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleRequest</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (num &gt;= <span class="number">0</span> &amp;&amp; num &lt; <span class="number">10</span>) &#123;</div><div class="line">            System.out.println(<span class="keyword">this</span>.getClass() + <span class="string">"  处理请求  "</span> + num);</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (successor != <span class="keyword">null</span>) &#123;</div><div class="line">            successor.handleRequest(num);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>第二个继任者，处理10到20的num。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteHandler2</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleRequest</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (num &gt;= <span class="number">10</span> &amp;&amp; num &lt; <span class="number">20</span>) &#123;</div><div class="line">            System.out.println(<span class="keyword">this</span>.getClass() + <span class="string">"  处理请求  "</span> + num);</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (successor != <span class="keyword">null</span>) &#123;</div><div class="line">            successor.handleRequest(num);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>第三个继任者，处理20到30的num。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteHandler3</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleRequest</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (num &gt;= <span class="number">20</span> &amp;&amp; num &lt; <span class="number">30</span>) &#123;</div><div class="line">            System.out.println(<span class="keyword">this</span>.getClass() + <span class="string">"  处理请求  "</span> + num);</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (successor != <span class="keyword">null</span>) &#123;</div><div class="line">            successor.handleRequest(num);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>客户端示例代码。调用链为：1-&gt;2-&gt;3。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDemo</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Handler handler1 = <span class="keyword">new</span> ConcreteHandler1();</div><div class="line">        Handler handler2 = <span class="keyword">new</span> ConcreteHandler2();</div><div class="line">        Handler handler3 = <span class="keyword">new</span> ConcreteHandler3();</div><div class="line"></div><div class="line">        <span class="comment">//设置责任链的前驱和后继</span></div><div class="line">        handler1.setSuccessor(handler2);</div><div class="line">        handler2.setSuccessor(handler3);</div><div class="line"></div><div class="line">        handler1.handleRequest(<span class="number">15</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文主要介绍了行为模式的责任链模式。在看到一些文章处理很多<code>if...else...</code>语句时，也会用责任链模式处理，将条件判断分散到各个实现类中，并且这些处理类的优先处理顺序可以随意的设定，并且如果想要添加新的 handler 类也是十分简单的，这符合开放闭合原则。不过需要注意避免责任链中出现循环引用。优缺点总结如下：</p>
-<p>优点：</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/event-source.jpg" alt="event-source" title="事件驱动模型"></p>
+<p>事件驱动模型的例子很多，如生活中的红绿灯，以及我们在微服务中用到的配置中心，当有配置提交时出发具体的应用实例更新Spring上下文环境。</p>
+<h2 id="Spring的事件机制"><a href="#Spring的事件机制" class="headerlink" title="Spring的事件机制"></a>Spring的事件机制</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>Spring的事件驱动模型由三部分组成：</p>
 <ul>
-<li>降低耦合度。它将请求的发送者和接收者解耦。</li>
-<li>简化了对象。使得对象不需要知道链的结构。增加新的请求处理类很方便。</li>
-<li>增强给对象指派职责的灵活性。通过改变链内的成员或者调动它们的次序，允许动态地新增或者删除责任。</li>
+<li>事件：ApplicationEvent，继承自JDK的EventObject，所有事件将继承它，并通过source得到事件源。</li>
+<li>事件发布者：ApplicationEventPublisher及ApplicationEventMulticaster接口，使用这个接口，我们的Service就拥有了发布事件的能力。</li>
+<li>事件订阅者：ApplicationListener，继承自JDK的EventListener，所有监听器将继承它。</li>
 </ul>
-<p>不足之处：</p>
+<h3 id="Spring事件驱动过程"><a href="#Spring事件驱动过程" class="headerlink" title="Spring事件驱动过程"></a>Spring事件驱动过程</h3><h4 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h4><p>Spring 默认对 ApplicationEvent 事件提供了如下实现：</p>
 <ul>
-<li>不能保证请求一定被接收。</li>
-<li>系统性能将受到一定影响，可能会造成循环调用。可能不容易观察运行时的特征，有碍于除错。</li>
+<li>ContextStoppedEvent：ApplicationContext停止后触发的事件；</li>
+<li>ContextRefreshedEvent：ApplicationContext初始化或刷新完成后触发的事件；</li>
+<li>ContextClosedEvent：ApplicationContext关闭后触发的事件。如web容器关闭时自动会触发Spring容器的关闭，如果是普通java应用，需要调用<code>ctx.registerShutdownHook()</code>注册虚拟机关闭时的钩子才行；</li>
+<li>ContextStartedEvent：ApplicationContext启动后触发的事件；</li>
 </ul>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/eventobject.png" alt="eventobject" title="事件"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationEvent</span> <span class="keyword">extends</span> <span class="title">EventObject</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">7099057708183571937L</span>;</div><div class="line">    <span class="comment">//事件发生的时间</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">long</span> timestamp = System.currentTimeMillis();</div><div class="line">	<span class="comment">//创建一个新的ApplicationEvent事件</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ApplicationEvent</span><span class="params">(Object source)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(source);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">long</span> <span class="title">getTimestamp</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.timestamp;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>事件基类<code>ApplicationEvent</code>，所有的具体事件都会继承该抽象事件类。</p>
+<h4 id="事件监听者"><a href="#事件监听者" class="headerlink" title="事件监听者"></a>事件监听者</h4><p><img src="http://ovcjgn2x0.bkt.clouddn.com/ApplicationListener.png" alt="ApplicationListener" title="事件监听"><br><code>ApplicationListener</code>继承自JDK的<code>EventListener</code>，JDK要求所有监听器将继承它。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@FunctionalInterface</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ApplicationListener</span>&lt;<span class="title">E</span> <span class="keyword">extends</span> <span class="title">ApplicationEvent</span>&gt; <span class="keyword">extends</span> <span class="title">EventListener</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(E var1)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>提供了onApplicationEvent方法，用以处理<code>ApplicationEvent</code>，不过对于具体事件的处理需要进行判断。而<code>GenericApplicationListener</code>和<code>SmartApplicationListener</code>提供了关于事件更多的元数据信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SourceFilteringListener</span> <span class="keyword">implements</span> <span class="title">GenericApplicationListener</span>, <span class="title">SmartApplicationListener</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Object source;</div><div class="line"></div><div class="line">	<span class="meta">@Nullable</span></div><div class="line">	<span class="keyword">private</span> GenericApplicationListener delegate;</div><div class="line"></div><div class="line">	<span class="comment">//为特定事件源创建SourceFilteringListener，并传入代理的监听器类</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SourceFilteringListener</span><span class="params">(Object source, ApplicationListener&lt;?&gt; delegate)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.source = source;</div><div class="line">		<span class="keyword">this</span>.delegate = (delegate <span class="keyword">instanceof</span> GenericApplicationListener ?</div><div class="line">				(GenericApplicationListener) delegate : <span class="keyword">new</span> GenericApplicationListenerAdapter(delegate));</div><div class="line">	&#125;</div><div class="line">	<span class="comment">//....省略部分代码</span></div><div class="line">	</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getOrder</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> (<span class="keyword">this</span>.delegate != <span class="keyword">null</span> ? <span class="keyword">this</span>.delegate.getOrder() : Ordered.LOWEST_PRECEDENCE);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">//过滤之后实际处理事件</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onApplicationEventInternal</span><span class="params">(ApplicationEvent event)</span> </span>&#123;</div><div class="line">		<span class="comment">//...</span></div><div class="line">		<span class="keyword">this</span>.delegate.onApplicationEvent(event);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>SourceFilteringListener</code>是<code>ApplicationListener</code>的装饰器类，过滤特定的事件源。只会注入其事件对应的代理监听器，还提供了按照顺序触发监听器等功能。<br>在启动的时候会加载一部分 <code>ApplicationListener</code>。Spring Context加载初始化完成（refresh）后会再次检测应用中的 <code>ApplicationListener</code>，并且注册，此时会将我们实现的 <code>ApplicationListener</code> 就会加入到 <code>SimpleApplicationEventMulticaster</code> 维护的 Listener 集合中。<br>Spring也支持直接注解的形式进行事件监听<code>@EventListener(Event.class)</code>。</p>
+<h4 id="事件发布"><a href="#事件发布" class="headerlink" title="事件发布"></a>事件发布</h4><p><img src="http://ovcjgn2x0.bkt.clouddn.com/EventPublisher.png" alt="EventPublisher" title="发布事件"><br><code>ApplicationContext</code>接口继承了<code>ApplicationEventPublisher</code>，并在<code>AbstractApplicationContext</code>实现了具体代码，实际执行是委托给<code>ApplicationEventMulticaster</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@FunctionalInterface</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ApplicationEventPublisher</span> </span>&#123;</div><div class="line">	<span class="comment">//通知所有的注册该事件的应用，事件可以是框架事件如RequestHandledEvent或者特定的应用事件。</span></div><div class="line">    <span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">publishEvent</span><span class="params">(ApplicationEvent event)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.publishEvent((Object)event);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">publishEvent</span><span class="params">(Object var1)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>实际的执行是委托给，读者有兴趣可以看一下<code>AbstractApplicationContext</code>中这部分的逻辑。下面我们具体看一下<code>ApplicationEventMulticaster</code>接口中定义的方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ApplicationEventMulticaster</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">//增加监听者</span></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">addApplicationListener</span><span class="params">(ApplicationListener&lt;?&gt; listener)</span></span>;</div><div class="line">	<span class="comment">//...</span></div><div class="line"></div><div class="line">	<span class="comment">//移除监听者</span></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">removeApplicationListener</span><span class="params">(ApplicationListener&lt;?&gt; listener)</span></span>;</div><div class="line">	<span class="comment">//...</span></div><div class="line">	</div><div class="line">	<span class="comment">//广播特定事件给监听者</span></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">multicastEvent</span><span class="params">(ApplicationEvent event, @Nullable ResolvableType eventType)</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>AbstractApplicationContext</code>中定义了对监听者的操作维护，如增加和删除，并提供了将特定事件进行广播的方法。下面看一下具体实现类<code>SimpleApplicationEventMulticaster</code>。<code>ApplicationContext</code>自动到本地容器里找一个<code>ApplicationEventMulticaster</code>实现，如果没有则会使用默认的<code>SimpleApplicationEventMulticaster</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleApplicationEventMulticaster</span> <span class="keyword">extends</span> <span class="title">AbstractApplicationEventMulticaster</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Nullable</span></div><div class="line">	<span class="keyword">private</span> Executor taskExecutor;</div><div class="line"></div><div class="line">	<span class="comment">//...</span></div><div class="line">	</div><div class="line">	<span class="comment">//用给定的beanFactory创建SimpleApplicationEventMulticaster</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SimpleApplicationEventMulticaster</span><span class="params">(BeanFactory beanFactory)</span> </span>&#123;</div><div class="line">		setBeanFactory(beanFactory);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">multicastEvent</span><span class="params">(<span class="keyword">final</span> ApplicationEvent event, @Nullable ResolvableType eventType)</span> </span>&#123;</div><div class="line">		ResolvableType type = (eventType != <span class="keyword">null</span> ? eventType : resolveDefaultEventType(event));</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">final</span> ApplicationListener&lt;?&gt; listener : getApplicationListeners(event, type)) &#123;</div><div class="line">			Executor executor = getTaskExecutor();</div><div class="line">			<span class="keyword">if</span> (executor != <span class="keyword">null</span>) &#123;</div><div class="line">				executor.execute(() -&gt; invokeListener(listener, event));</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">else</span> &#123;</div><div class="line">				invokeListener(listener, event);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">//注入给定事件的给定监听器</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">invokeListener</span><span class="params">(ApplicationListener&lt;?&gt; listener, ApplicationEvent event)</span> </span>&#123;</div><div class="line">		ErrorHandler errorHandler = getErrorHandler();</div><div class="line">		<span class="keyword">if</span> (errorHandler != <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="keyword">try</span> &#123;</div><div class="line">				doInvokeListener(listener, event);</div><div class="line">			&#125;</div><div class="line">			...</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> &#123;</div><div class="line">			doInvokeListener(listener, event);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@SuppressWarnings</span>(&#123;<span class="string">"unchecked"</span>, <span class="string">"rawtypes"</span>&#125;)</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doInvokeListener</span><span class="params">(ApplicationListener listener, ApplicationEvent event)</span> </span>&#123;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			listener.onApplicationEvent(event);</div><div class="line">		&#125;</div><div class="line">		<span class="comment">//...</span></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在<code>multicastEvent</code>方法中，executor不为空的情况下，可以看到是支持异步发布事件。发布事件时只需要调用<code>ApplicationContext</code>中的<code>publishEvent</code>方法即可进行事件的发布。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文主要介绍了Spring中的事件驱动模型相关概念。首先介绍事件驱动模型，也可以说是观察者模式，在我们的日常生活中和应用开发中有很多应用。随后重点篇幅介绍了Spring的事件机制，Spring的事件驱动模型由事件、发布者和订阅者三部分组成，结合Spring的源码分析了这三部分的定义与实现。笔者将会在下一篇文章，结合具体例子以及Spring Cloud Config中的实现进行实战讲解。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
-<li><a href="http://blog.csdn.net/lmb55/article/details/51052866" target="_blank" rel="external">话设计模式—责任链模式</a></li>
-<li><a href="https://www.jianshu.com/p/d22f4e5408f5" target="_blank" rel="external">设计模式之责任链模式</a></li>
+<li><a href="http://jinnianshilongnian.iteye.com/blog/1902886" target="_blank" rel="external">事件驱动模型简介</a></li>
+<li><a href="http://zhangh.tk/2017/08/14/Spring%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9E%8B%E4%B8%8E%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/" target="_blank" rel="external">Spring事件驱动模型与观察者模式</a></li>
 </ol>
 
       
@@ -521,7 +530,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://blueskykong.com/2017/03/25/designchain/" title="设计模式之责任链模式">http://blueskykong.com/2017/03/25/designchain/</a>
+      <a href="http://blueskykong.com/2018/02/22/spring-event-sourcing/" title="Spring中的事件驱动模型（一）">http://blueskykong.com/2018/02/22/spring-event-sourcing/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -537,7 +546,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
           
         </div>
       
@@ -550,8 +561,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/22/designstrategy/" rel="next" title="设计模式之策略模式">
-                <i class="fa fa-chevron-left"></i> 设计模式之策略模式
+              <a href="/2018/02/14/2017summary/" rel="next" title="我的2017">
+                <i class="fa fa-chevron-left"></i> 我的2017
               </a>
             
           </div>
@@ -559,10 +570,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/28/designIterator/" rel="prev" title="设计模式之迭代子模式">
-                设计模式之迭代子模式 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -760,7 +767,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#责任链模式定义"><span class="nav-number">1.</span> <span class="nav-text">责任链模式定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#责任链模式的结构"><span class="nav-number">2.</span> <span class="nav-text">责任链模式的结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#责任链模式的实现"><span class="nav-number">3.</span> <span class="nav-text">责任链模式的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#事件驱动模型简介"><span class="nav-number">1.</span> <span class="nav-text">事件驱动模型简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring的事件机制"><span class="nav-number">2.</span> <span class="nav-text">Spring的事件机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">2.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring事件驱动过程"><span class="nav-number">2.2.</span> <span class="nav-text">Spring事件驱动过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#事件"><span class="nav-number">2.2.1.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事件监听者"><span class="nav-number">2.2.2.</span> <span class="nav-text">事件监听者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事件发布"><span class="nav-number">2.2.3.</span> <span class="nav-text">事件发布</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
             
 
           </div>
