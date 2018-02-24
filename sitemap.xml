@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blueskykong.com/2017/04/03/designMediate/</loc>
+    
+    <lastmod>2018-02-24T16:11:19.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blueskykong.com/2017/02/22/designproxy/</loc>
     
     <lastmod>2018-02-23T09:46:07.000Z</lastmod>
@@ -33,13 +40,6 @@
     <loc>http://blueskykong.com/2018/02/13/spring-cloud-bus-event/</loc>
     
     <lastmod>2018-02-14T01:31:43.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blueskykong.com/2017/04/03/designMediate/</loc>
-    
-    <lastmod>2018-02-13T06:01:35.000Z</lastmod>
     
   </url>
   

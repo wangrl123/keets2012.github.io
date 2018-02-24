@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://blueskykong.com/2017/04/03/designMediate/</loc>
+    <lastmod>2018-02-24T16:11:19.000Z</lastmod>
+    <data>
+        <display>
+        <title>设计模式之中介者模式</title>
+        <pubTime>2017-04-02T16:00:00.000Z</pubTime>
+        
+        <tag>设计模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://blueskykong.com/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blueskykong.com/2017/02/22/designproxy/</loc>
     <lastmod>2018-02-23T09:46:07.000Z</lastmod>
     <data>
@@ -78,26 +98,6 @@
            
              
               <breadCrumb title="微服务" url="http://blueskykong.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blueskykong.com/2017/04/03/designMediate/</loc>
-    <lastmod>2018-02-13T06:01:35.000Z</lastmod>
-    <data>
-        <display>
-        <title>设计模式之中介者模式</title>
-        <pubTime>2017-04-02T16:00:00.000Z</pubTime>
-        
-        <tag>设计模式</tag>
-         
-         
-           
-             
-              <breadCrumb title="设计模式" url="http://blueskykong.com/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
           
         </display>
     </data>
