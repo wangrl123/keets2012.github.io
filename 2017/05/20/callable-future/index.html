@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="consul,cluster," />
+  <meta name="keywords" content="java," />
 
 
 
@@ -100,21 +100,19 @@
 
 
 
-<meta name="description" content="上一篇提到，项目用的分布式服务发现与注册组件是consul，这篇文章主要来讲下consul组件在项目中的应用以及相关介绍。本文以官方文档为主要参考consul文档。 1. consul介绍consul是一个服务管理软件，主要功能如下：  支持多数据中心下，分布式高可用的，服务发现和配置共享。 consul支持健康检查，允许存储键值对。 一致性协议采用Raft算法,用来保证服务的高可用。 成员管理和">
-<meta name="keywords" content="consul,cluster">
+<meta name="description" content="Java异步编程接口：Callable和Future本文主要讲解平时开发中常用的异步编程的接口：Callable和Future。 创建线程的2种方式，一种是直接继承Thread，另外一种就是实现Runnable接口。这2种方式都有一个缺陷就是：在执行完任务之后无法获取执行结果。如果需要获取执行结果，就必须通过共享变量或者使用线程通信的方式来达到效果，这样使用起来就比较麻烦。自从Java 1.5开始">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="consul配置与实战">
-<meta property="og:url" content="http://blueskykong.com/2017/09/16/consul/index.html">
+<meta property="og:title" content="Java异步编程接口：Callable和Future">
+<meta property="og:url" content="http://blueskykong.com/2017/05/20/callable-future/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="上一篇提到，项目用的分布式服务发现与注册组件是consul，这篇文章主要来讲下consul组件在项目中的应用以及相关介绍。本文以官方文档为主要参考consul文档。 1. consul介绍consul是一个服务管理软件，主要功能如下：  支持多数据中心下，分布式高可用的，服务发现和配置共享。 consul支持健康检查，允许存储键值对。 一致性协议采用Raft算法,用来保证服务的高可用。 成员管理和">
-<meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/raft%E7%AE%97%E6%B3%95.png">
-<meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/consul.png">
-<meta property="og:image" content="http://ovci9bs39.bkt.clouddn.com/demoui.png">
-<meta property="og:updated_time" content="2017-11-14T02:38:31.000Z">
+<meta property="og:description" content="Java异步编程接口：Callable和Future本文主要讲解平时开发中常用的异步编程的接口：Callable和Future。 创建线程的2种方式，一种是直接继承Thread，另外一种就是实现Runnable接口。这2种方式都有一个缺陷就是：在执行完任务之后无法获取执行结果。如果需要获取执行结果，就必须通过共享变量或者使用线程通信的方式来达到效果，这样使用起来就比较麻烦。自从Java 1.5开始">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/callable.png">
+<meta property="og:updated_time" content="2018-02-26T08:57:41.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="consul配置与实战">
-<meta name="twitter:description" content="上一篇提到，项目用的分布式服务发现与注册组件是consul，这篇文章主要来讲下consul组件在项目中的应用以及相关介绍。本文以官方文档为主要参考consul文档。 1. consul介绍consul是一个服务管理软件，主要功能如下：  支持多数据中心下，分布式高可用的，服务发现和配置共享。 consul支持健康检查，允许存储键值对。 一致性协议采用Raft算法,用来保证服务的高可用。 成员管理和">
-<meta name="twitter:image" content="http://ovci9bs39.bkt.clouddn.com/raft%E7%AE%97%E6%B3%95.png">
+<meta name="twitter:title" content="Java异步编程接口：Callable和Future">
+<meta name="twitter:description" content="Java异步编程接口：Callable和Future本文主要讲解平时开发中常用的异步编程的接口：Callable和Future。 创建线程的2种方式，一种是直接继承Thread，另外一种就是实现Runnable接口。这2种方式都有一个缺陷就是：在执行完任务之后无法获取执行结果。如果需要获取执行结果，就必须通过共享变量或者使用线程通信的方式来达到效果，这样使用起来就比较麻烦。自从Java 1.5开始">
+<meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/callable.png">
 
 
 
@@ -142,13 +140,13 @@
 
 
 
-  <link rel="canonical" href="http://blueskykong.com/2017/09/16/consul/"/>
+  <link rel="canonical" href="http://blueskykong.com/2017/05/20/callable-future/"/>
 
 
 
 
 
-  <title>consul配置与实战 | Aoho's Blog</title>
+  <title>Java异步编程接口：Callable和Future | Aoho's Blog</title>
   
 
 
@@ -332,7 +330,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2017/09/16/consul/">
+    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2017/05/20/callable-future/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="aoho">
@@ -349,7 +347,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">consul配置与实战</h1>
+          <h1 class="post-title" itemprop="name headline">Java异步编程接口：Callable和Future</h1>
         
 
         <div class="post-meta">
@@ -361,8 +359,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-16T00:00:00+08:00">
-                2017-09-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-20T00:00:00+08:00">
+                2017-05-20
               </time>
             
 
@@ -384,8 +382,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/中间件/" itemprop="url" rel="index">
-                    <span itemprop="name">中间件</span>
+                  <a href="/categories/并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">并发编程</span>
                   </a>
                 </span>
 
@@ -403,8 +401,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/09/16/consul/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/09/16/consul/" itemprop="commentsCount"></span>
+                <a href="/2017/05/20/callable-future/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/05/20/callable-future/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -434,80 +432,57 @@
       
 
       
-        <p>上一篇提到，项目用的分布式服务发现与注册组件是consul，这篇文章主要来讲下consul组件在项目中的应用以及相关介绍。本文以官方文档为主要参考<a href="https://www.consul.io/docs/internals/" target="_blank" rel="external">consul文档</a>。</p>
-<h2 id="1-consul介绍"><a href="#1-consul介绍" class="headerlink" title="1. consul介绍"></a>1. consul介绍</h2><p>consul是一个服务管理软件，主要功能如下：</p>
+        <h1 id="Java异步编程接口：Callable和Future"><a href="#Java异步编程接口：Callable和Future" class="headerlink" title="Java异步编程接口：Callable和Future"></a>Java异步编程接口：Callable和Future</h1><p>本文主要讲解平时开发中常用的异步编程的接口：Callable和Future。</p>
+<p>创建线程的2种方式，一种是直接继承Thread，另外一种就是实现Runnable接口。这2种方式都有一个缺陷就是：在执行完任务之后无法获取执行结果。如果需要获取执行结果，就必须通过共享变量或者使用线程通信的方式来达到效果，这样使用起来就比较麻烦。<br>自从Java 1.5开始，就提供了<code>Callable</code>和<code>Future</code>，通过它们可以在任务执行完毕之后得到任务执行结果。</p>
+<h2 id="Callable"><a href="#Callable" class="headerlink" title="Callable"></a>Callable</h2><p><code>Callable</code>接口的定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Callable</span>&lt;<span class="title">V</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="function">V <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>Callable</code>中定义了 <code>call()</code> 方法计算结果，或者当不能执行的时候抛出异常，可以看到返回值的类型是通过传入的泛型决定。</p>
+<p><code>Callable</code>并不像<code>Runnable</code>那样通过Thread的start方法就能启动实现类的run方法，所以它通常利用<code>ExecutorService</code>的submit方法去启动call方法自执行任务，而<code>ExecutorService</code>的submit又返回一个Future类型的结果，因此Callable通常也与Future一起使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ExecutorService pool = Executors.newCachedThreadPool();</div><div class="line">    Future&lt;String&gt; future = pool.submit(<span class="keyword">new</span> Callable &#123;</div><div class="line">          <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">()</span></span>&#123;</div><div class="line">             <span class="comment">//your operations</span></div><div class="line">          &#125;</div><div class="line">   &#125;);</div></pre></td></tr></table></figure>
+<h3 id="vs-Runnable"><a href="#vs-Runnable" class="headerlink" title="vs Runnable"></a>vs Runnable</h3><p><code>Runnable</code>与<code>Callable</code>不同点：</p>
 <ol>
-<li>支持多数据中心下，分布式高可用的，服务发现和配置共享。</li>
-<li>consul支持健康检查，允许存储键值对。</li>
-<li>一致性协议采用<code>Raft</code>算法,用来保证服务的高可用。</li>
-<li>成员管理和消息广播采用<code>GOSSIP</code>协议，支持ACL访问控制。</li>
+<li><code>Runnable</code>不返回任务执行结果，<code>Callable</code>可返回任务执行结果；</li>
+<li><code>Callable</code>在任务无法计算结果时抛出异常，而<code>Runnable</code>不能；</li>
+<li>Callable支持泛型，Runnable不支持；</li>
+<li><code>Runnable</code>任务可直接由Thread的start方法或<code>ExecutorService</code>的submit方法去执行。</li>
 </ol>
-<h3 id="1-1-服务注册与发现"><a href="#1-1-服务注册与发现" class="headerlink" title="1.1 服务注册与发现"></a>1.1 服务注册与发现</h3><p>服务注册是一个服务将其位置信息在“中心注册节点”注册的过程。该服务一般会将它的主机IP地址以及端口号进行注册，有时也会有服务访问的认证信息，使用协议，版本号，以及关于环境的一些细节信息。<br>而服务发现可以让一个应用或者组件发现其运行环境以及其它应用或组件的信息。用户配置一个服务发现工具就可以将实际容器跟运行配置分离开。常见配置信息包括：ip、端口号、名称等。   </p>
-<p>在传统情况下，当出现服务存在于多个主机节点上时，都会使用静态配置的方法来实现服务信息的注册。<br>而当在一个复杂的系统里，需要较强的可扩展性时，服务被频繁替换时，为避免服务中断，动态的服务注册和发现就很重要。<br>服务注册与发现的组件有很多，如Zookeeper、Etcd等。既可用于服务间的协调，同时又可用于服务的注册。</p>
-<h3 id="1-2-Consensus-Protocol-Raft"><a href="#1-2-Consensus-Protocol-Raft" class="headerlink" title="1.2 Consensus Protocol - Raft"></a>1.2 Consensus Protocol - Raft</h3><p> Consul使用Consensus协议Raft提供一致性（Consistency）。本文只是简单介绍在consul中的一致性，后面专门一篇写raft。</p>
-<p> <img src="http://ovci9bs39.bkt.clouddn.com/raft%E7%AE%97%E6%B3%95.png" alt="raft算法" title="raft算法"></p>
-<p> 首先，Raft是一种基于Paxos的Consensus算法。相比于Paxos，Raft设计采用了较少的状态，并且是一种更简单、更易于理解的算法。<br>只有Server节点参与Raft，且是peer set的一员。所有的Client节点只是转发请求到Server。这种设计的考虑是，当更多的成员加入到peer set中时，quorum的规模也会增加。可能会导致性能问题是等待quorum个节点log entry。<br> 启动Consul时，单个consul节点需要以bootstrap模式运行，该模式运行自我选举为leader。一旦Leader被选出来，其他Server可以添加Peer set中，保持一致性和安全性。最终一些Server添加到集群，bootstrap模式需要禁用。<br> 因为所有Server都是Peer set中的成员，它们都知道谁是Leader。当一个RPC请求到达某个非Leader Server节点，请求就会被转发到Leader。如果RPC是一种query类型，这意味着它是只读的，Leader会基于FSM当前生成相应的结果，如果RPC是一种transaction类型，即修改状态，Leader产生一个新的日志条目，并基于Raft算法进行管理。一旦日志条目应用于有限状态机，transaction完成。<br> 由于Raft的replication性质，性能对网络延迟是非常敏感的。为此，每个数据中心选择独立的Leader和维护一个不关联的peer set。数据按照数据中心进行划分，所以每个Leader只负责在相应数据中心的数据。当接收到一个远程数据中心的请求时，请求会被转发到相应的Leader。这种设计在不牺牲一致性的情况实现较低延迟交易和更高的可用性。<br>虽然所有日志副本的写入都是基于Raft，读取更灵活。但为了支持开发人员可能需要的各种权衡，Consul支持3种不同的一致性模式。</p>
+<h2 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h2><p>Future保存异步计算的结果,可以在我们执行任务时去做其他工作，并提供了以下几个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Future</span>&lt;<span class="title">V</span>&gt; </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">cancel</span><span class="params">(<span class="keyword">boolean</span> mayInterruptIfRunning)</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isCancelled</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isDone</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="function">V <span class="title">get</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException, ExecutionException</span>;</div><div class="line"></div><div class="line">    <span class="function">V <span class="title">get</span><span class="params">(<span class="keyword">long</span> timeout, TimeUnit unit)</span></span></div><div class="line">        <span class="keyword">throws</span> InterruptedException, ExecutionException, TimeoutException;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ul>
-<li>Default，Raft采用Leader租赁模式，提供了一个时间窗口，在该时间段内，Leader角色是稳定的。</li>
-<li>consistent，无条件一致性</li>
-<li>stale，这种模式允许在任何Server节点执行读取操作，无论它是不是Leader。</li>
+<li>cancel(boolean mayInterruptIfRunning)：试图取消执行的任务，参数为true时直接中断正在执行的任务，否则直到当前任务执行完成，成功取消后返回true，否则返回false</li>
+<li>isCancel()：判断任务是否在正常执行完前被取消的，如果是则返回true</li>
+<li>isDone()：判断任务是否已完成</li>
+<li>get()：等待计算结果的返回，如果计算被取消了则抛出</li>
+<li>get(long timeout,TimeUtil unit)：设定计算结果的返回时间，如果在规定时间内没有返回计算结果则抛出TimeOutException</li>
 </ul>
-<h3 id="1-3-Group-Membership-Protocol-Gossip"><a href="#1-3-Group-Membership-Protocol-Gossip" class="headerlink" title="1.3 Group Membership Protocol - Gossip"></a>1.3 Group Membership Protocol - Gossip</h3><p>Consul使用gossip协议管理成员关系、广播消息到整个集群。详情可参考<a href="https://www.serf.io/" target="_blank" rel="external">Serf library</a>。<br> Consul利用两个不同的gossip pool。局域网(LAN Pool)和广域网(WAN Pool)。<br> 每个Consul数据中心都有一个包含所有成员（Server和Client）的LAN gossip pool。LAN Pool有如下几个目的：</p>
+<p>使用Future的好处：</p>
 <ul>
-<li>首先，成员关系允许Client自动发现Server节点，减少所需的配置量。</li>
-<li>其次，分布式故障检测允许的故障检测的工作在某几个Server几点执行，而不是集中整个集群所有节点上。</li>
-<li>最后，gossip允许可靠和快速的事件广播，如Leader选举。</li>
+<li>获取任务的结果，判断任务是否完成，中断任务</li>
+<li>Future的get方法很好的替代的了Thread.join或Thread,join(long millis)</li>
+<li>Future的get方法可以判断程序代码(任务)的执行是否超时</li>
 </ul>
-<p>WAN Pool是全局唯一的，无论属于哪一个数据中心，所有Server应该加入到WAN Pool。由WAN Pool提供会员信息让Server可节电执行跨数据中心的请求。集成中故障检测允许Consul妥善处理整个数据中心失去连接，或在远程数据中心只是单个的Server节点。<br>所有这些功能都是通过利用Serf提供。从用户角度来看，它是作为一个嵌入式库提供这些功能。但其被Consul屏蔽，用户无需关心。作为开发人员可以去了解这个库是如何利用。</p>
-<h3 id="1-4-Session会话"><a href="#1-4-Session会话" class="headerlink" title="1.4 Session会话"></a>1.4 Session会话</h3><p>上一篇文章<a href="http://hacloud.club/2017/09/09/snowflake/" target="_blank" rel="external">snowflake升级版全局id生成</a>中使用到了consul的KV存储。<br>Consul提供session会话机制，可以用于构建分布式锁。session可以绑定到节点、健康检查、KV数据，目的是提供细粒度锁。<br>KV存储和会话的集成是使用会话的主要场景。必须在使用之前创建一个会话，然后使用它的ID。KV API支持acquire和release操作，acquire操作类似CAS操作，只有当锁空闲时才会返回成功。当成功时，某个normal标识会更新，也会递增LockIndex，当然也会更新session的信息。<br>如果在acquire操作时，与session相关的锁已经持有，那么LockIndex就不会递增，但是key值会更新，这就允许锁的当前持有者无需重新获得锁就可以更新key的内容。<br> 一旦获得锁，所需要经release操作来释放（使用相同的session）。Release操作也类似于CAS操作。如果给定的session无效，那么请求会失败。需要特别注意的是，无需经过session的创建者，lock也是可以被释放的。这种设计是允许操作者干预来终止会话，在需要的时候。如上所述，会话无效也将导致所有被持有的锁被释放或删除。当锁被释放时，LockIndex不会变化，但是session会被清空，并且ModifyIndex递增。这些语义允许元组（Key，LockIndex，Session）作为一个独特的“序列”。这个序列可以被传递和用于验证请求是否属于当前的锁持有者。因为每次acquire 都会导致LockIndex递增，即使同一会话中重新获取锁，该序列能够检测到陈旧的请求。同样，如果会话失效，相应的LockIndex将为空。<br>要清楚的是，这种锁系统是纯粹的咨询。并不是强制Client必须获取锁再能执行操作作。任何客户端都可以在未获得锁的情况下读取、写入和删除Key操作。它不是Consul用于保护系统的方法。</p>
-<h2 id="2-consul架构"><a href="#2-consul架构" class="headerlink" title="2. consul架构"></a>2. consul架构</h2><p>上面介绍了consul的技术内幕。现在来讲讲consul的架构。</p>
-<p><img src="http://ovci9bs39.bkt.clouddn.com/consul.png" alt="consul" title="consul"></p>
-<p>拆解开这个体系，从每一个组件开始了解。首先，可以看到有两个数据中心，分别标记为“one”和“two”。Consul是支持多数据中心一流，并且是常用业务场景。   </p>
-<p>每个数据中心都是由Server和client组成。建议有3~5台Server，基于故障处理和性能的平衡之策。如果增加越多的机器，则Consensus会越来越慢。对client没有限制，可以很容易地扩展到成千上万或数万。<br>同一个数据中心的所有节点都要加入Gossip协议。这意味着gossip pool包含给定数据中心的所有节点。有以下目的：首先，没有必要为client配置服务器地址参数；发现是自动完成的。第二，节点故障检测的工作不是放置在服务器上，而是分布式的。这使故障检测比心跳机制更可扩展性。第三，可用来作为消息层通知重要的事件，如leader选举。  </p>
-<p>每个数据中心的服务器都是属于一个Raft peer。这意味着，他们一起工作，选出一个的Leader，Leader server是有额外的职责。负责处理所有的查询和事务。事务也必须通过Consensus协议复制到所有的伙伴。由于这一要求，当非Leader Server接收到一个RPC请求，会转发到集群的leader。   </p>
-<p>Server节点也是作为WAN gossip pool的一部分。这个pool是与LAN gossip pool是不同的，它为具有更高延迟的网络响应做了优化，并且可能包括其他consul集群的server节点。设计WANpool的目的是让数据中心能够以low-touch的方式发现彼此。将一个新的数据中心加入现有的WAN Gossip是很容易的。因为池中的所有Server都是可控制的，这也使跨数据中心的要求。当一个Serfer接收到不同的数据中心的要求时，它把这个请求转发给相应数据中心的任一Server。然后，接收到请求的Server可能会转发给Leader。<br>多个数据中心之间是低耦合，但由于故障检测、连接缓存复用、跨数据中心要求快速和可靠的响应。</p>
-<h2 id="3-consul部署"><a href="#3-consul部署" class="headerlink" title="3. consul部署"></a>3. consul部署</h2><h3 id="3-1-docker安装"><a href="#3-1-docker安装" class="headerlink" title="3.1 docker安装"></a>3.1 docker安装</h3><p><code>docker</code>安装很简单，笔者这边是基于docker-compose的配置文件，只需要本地安装好docker和docker-compose，docker-compose.yml如下：   </p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="attr">version:</span> <span class="string">'3'</span></div><div class="line"><span class="attr">services:</span></div><div class="line"><span class="attr">  consul:</span></div><div class="line"><span class="attr">    image:</span> <span class="string">consul</span></div><div class="line"><span class="attr">    ports:</span></div><div class="line"><span class="bullet">     -</span> <span class="string">"8500:8500"</span></div><div class="line"><span class="bullet">     -</span> <span class="string">"8600:8600"</span></div><div class="line"><span class="bullet">     -</span> <span class="string">"8300:8300"</span></div></pre></td></tr></table></figure>
-<p>拉取consul得最新image，进行端口映射，暴露对外的端口8500，8300.</p>
-<h3 id="3-2-软件安装"><a href="#3-2-软件安装" class="headerlink" title="3.2 软件安装"></a>3.2 软件安装</h3><ol>
-<li>从官网下载罪行的consul安装包，<a href="https://www.consul.io/downloads.html。" target="_blank" rel="external">https://www.consul.io/downloads.html。</a></li>
-<li>解压consul_0.6.4_darwin_amd64.zip。</li>
-<li>将解压后的二进制文件consul拷贝到/usr/local/bin下。</li>
-<li>写配置文件。<br>服务注册的配置文件如下:</li>
+<h3 id="FutureTask"><a href="#FutureTask" class="headerlink" title="FutureTask"></a>FutureTask</h3><p><code>FutureTask</code>实现了<code>RunnableFuture&lt;V&gt;</code>接口，关于该接口看一下其定义：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">RunnableFuture</span>&lt;<span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">Runnable</span>, <span class="title">Future</span>&lt;<span class="title">V</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>RunnableFuture</code>同时继承了<code>Runnable</code>和<code>Future</code>，接口中定义的<code>run</code>方法，将计算的结果设置到Future除非计算被取消。所以它既可以作为Runnable被线程执行，又可以作为Future得到Callable的返回值。</p>
+<p><code>FutureTask</code>可以直接提交给<code>Executor</code>执行，当然也可以调用线程直接执行<code>FutureTask.run()</code>。</p>
+<p><code>FutureTask</code>是一个可取消的异步计算，<code>FutureTask</code> 实现了Future的基本方法，提供start和cancel 操作，可以查询计算是否已经完成，并且可以获取计算的结果。<br>结果只可以在计算完成之后获取，get方法会阻塞当计算没有完成的时候，一旦计算已经完成， 那么计算就不能再次启动或是取消。</p>
+<h2 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2><p>示例场景：有一个耗时的操作，操作完后会返回一个结果（不管是正常结果还是异常），程序如果想拥有比较好的性能不可能由线程去等待操作的完成，而是应该采用listener模式。jdk并发包里的Future代表了未来的某个结果，当我们向线程池中提交任务的时候会返回该对象。<br>提交一个<code>Callable</code>对象给线程池时，将得到一个Future对象，并且它和传入的Callable有相同的结果类型声明。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FutureTest</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Throwable, ExecutionException </span>&#123;</div><div class="line">        ExecutorService executor = Executors.newFixedThreadPool(<span class="number">2</span>);</div><div class="line">        <span class="comment">//Java8 的lambada表达式，参数为Callable&lt;T&gt; task</span></div><div class="line">        Future&lt;String&gt; f = executor.submit(() -&gt; &#123;</div><div class="line">            System.out.println(<span class="string">"task started!"</span>);</div><div class="line">            Thread.sleep(<span class="number">1000</span>);</div><div class="line">            <span class="keyword">return</span> <span class="string">"worker task finished!"</span>;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        System.out.println(<span class="string">"Future is ready: "</span> + f.isDone());</div><div class="line">        <span class="comment">//此处阻塞main线程</span></div><div class="line">        System.out.println(f.get());</div><div class="line">        executor.shutdown();</div><div class="line">        System.out.println(<span class="string">"main thread is finished！"</span>);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">//FutureTask的写法</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Throwable, ExecutionException </span>&#123;</div><div class="line">        FutureTask&lt;String&gt; f = <span class="keyword">new</span> FutureTask&lt;&gt;(() -&gt; &#123;</div><div class="line">            System.out.println(<span class="string">"task started!"</span>);</div><div class="line">            Thread.sleep(<span class="number">1000</span>);</div><div class="line">            <span class="keyword">return</span> <span class="string">"worker task finished!"</span>;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        Thread thread = <span class="keyword">new</span> Thread(f);</div><div class="line">        thread.start();</div><div class="line"></div><div class="line">        System.out.println(<span class="string">"Future is ready: "</span> + f.isDone());</div><div class="line">        <span class="comment">//此处阻塞main线程</span></div><div class="line">        System.out.println(f.get());</div><div class="line">        System.out.println(<span class="string">"main thread is finished！"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Future is ready: false</div><div class="line">task started!</div><div class="line">worker task finished!</div><div class="line">main thread is finished！</div></pre></td></tr></table></figure>
+<p>如果想获得耗时操作的结果，可以通过get方法获取，但是该方法会阻塞当前线程，我们可以在做完剩下的某些工作的时候调用get方法试图去获取结果，也可以调用非阻塞的方法isDone来确定操作是否完成。过程如下：</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/callable.png" alt=""></p>
+<p> Future代表了线程执行完以后的结果，可以通过future获得执行的结果。但是jdk1.8之前的Future不支持，并不能实现真正的异步，需要阻塞的获取结果，或者不断的轮询。通常我们希望当线程执行完一些耗时的任务后，能够自动的通知我们结果，很遗憾这在原生jdk1.8之前<br> 是不支持的，但是我们可以通过第三方的库实现真正的异步回调。如Guava何Netty中都有提供，读者可以自己进行扩展，下面我们看一下JDK8中的实现。</p>
+<h3 id="Java8-CompletableFuture"><a href="#Java8-CompletableFuture" class="headerlink" title="Java8 CompletableFuture"></a>Java8 CompletableFuture</h3><p> 虽然Future以及相关使用方法提供了异步执行任务的能力，但是对于结果的获取却是很不方便，只能通过阻塞或者轮询的方式得到任务的结果。阻塞的方式显然和我们的异步编程的初衷相违背，轮询的方式又会耗费无谓的CPU资源，而且也不能及时地得到计算结果。<br> CompletableFuture类实现了CompletionStage和Future接口，所以你还是可以像以前一样通过阻塞或者轮询的方式获得结果，尽管这种方式不推荐使用。这里使用CompletableFuture实现异步的操作.</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Java8PromiseTest</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Throwable, ExecutionException </span>&#123;</div><div class="line">        ExecutorService executor = Executors.newFixedThreadPool(<span class="number">2</span>);</div><div class="line">        <span class="comment">//jdk1.8，通过调用给定的Supplier，异步完成executor中的task</span></div><div class="line">        CompletableFuture&lt;String&gt; future = CompletableFuture.supplyAsync(() -&gt; &#123;</div><div class="line"></div><div class="line">            System.out.println(<span class="string">"task started!"</span>);</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="comment">//模拟耗时操作</span></div><div class="line">                Thread.sleep(<span class="number">2000</span>);</div><div class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="string">"worker task is finished!"</span>;</div><div class="line">        &#125;, executor);</div><div class="line"></div><div class="line">        <span class="comment">//采用lambada的实现方式</span></div><div class="line">        future.thenAccept(e -&gt; &#123;</div><div class="line">            System.out.printf(<span class="string">"%s ok"</span>, e);</div><div class="line">            executor.shutdown();</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        System.out.println(<span class="string">"main thread is finished！"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">task started!</div><div class="line">main thread is finished！</div><div class="line">worker task is finished! ok</div></pre></td></tr></table></figure>
+<p><code>supplyAsync</code>方法以Supplier<u>函数式接口类型为参数,CompletableFuture的计算结果类型为U。<code>thenAccept</code>方法是CompletableFuture提供的一种处理结果的方法，只对结果执行Action,而不返回新的计算值，因此计算值为Void。</u></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文主要介绍了异步编程经常使用的Callable、Future以及FutureTask。运行Callable任务可以拿到一个Future对象，Future 表示异步计算的结果。它提供了检查计算是否完成的方法，以等待计算的完成，并获取计算的结果。计算完成后只能使用 get 方法来获取结果，如果线程没有执行完，Future.get()方法可能会阻塞当前线程的执行；如果线程出现异常，<code>Future.get()</code>会抛出异常。<br>取消由cancel 方法来执行。isDone确定任务是正常完成还是被取消了。一旦计算完成，就不能再取消计算。如果为了可取消性而使用 Future 但又不提供可用的结果，则可以声明<code>Future&lt;?&gt;</code> 形式类型、并返回 null 作为底层任务的结果。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="http://blog.csdn.net/tangyongzhe/article/details/49851769" target="_blank" rel="external">java异步编程</a></li>
+<li><a href="http://www.importnew.com/17572.html" target="_blank" rel="external">Java并发编程：Callable、Future和FutureTask</a></li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;service&quot;: &#123;</div><div class="line">    &quot;name&quot;: &quot;redis&quot;,</div><div class="line">    &quot;tags&quot;: [&quot;master&quot;],</div><div class="line">    &quot;address&quot;: &quot;1192.168.1.100&quot;,</div><div class="line">    &quot;port&quot;: 8000,</div><div class="line">    &quot;enableTagOverride&quot;: false,</div><div class="line">    &quot;check&quot;: &#123;  </div><div class="line">    	&quot;id&quot;: &quot;redis&quot;,  </div><div class="line">   	 	&quot;name&quot;: &quot;redis on port 8000&quot;,  </div><div class="line">    	&quot;tcp&quot;: &quot;localhost:8000&quot;,  </div><div class="line">    	&quot;interval&quot;: &quot;10s&quot;,  </div><div class="line">    	&quot;timeout&quot;: &quot;1s&quot;  </div><div class="line">  &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如上配置注册了Redis的8000端口，并带有tcp的health check。</p>
-<p>节点的配置文件：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="string">&#123;</span></div><div class="line"><span class="attr">  "datacenter":</span> <span class="string">"east-cn"</span><span class="string">,</span></div><div class="line"><span class="attr">  "data_dir":</span> <span class="string">"/opt/consul"</span><span class="string">,</span></div><div class="line"><span class="attr">  "log_level":</span> <span class="string">"INFO"</span><span class="string">,</span></div><div class="line"><span class="attr">  "node_name":</span> <span class="string">"redis"</span><span class="string">,</span></div><div class="line"><span class="attr">  "server":</span> <span class="literal">true</span><span class="string">,</span></div><div class="line"><span class="attr">  "addresses":</span> <span class="string">&#123;</span></div><div class="line"><span class="attr">    "https":</span> <span class="string">"192.168.1.100"</span></div><div class="line">  <span class="string">&#125;,</span></div><div class="line"><span class="attr">  "ports":</span> <span class="string">&#123;</span></div><div class="line"><span class="attr">    "https":</span> <span class="number">0</span></div><div class="line">  <span class="string">&#125;,</span></div><div class="line"><span class="attr">  "ui":</span> <span class="literal">true</span><span class="string">,</span></div><div class="line"><span class="attr">  "retry-join":</span> <span class="string">[</span></div><div class="line"><span class="string">]</span></div><div class="line"><span class="string">&#125;</span></div></pre></td></tr></table></figure>
-<p>当加载配置选项时，consul是按照词典顺序从所有配置文件或目录中加载。比如，<code>a.json</code>会先于<code>e.json</code>处理。后面设定的配置选项会合并到前面的配置集合中，如果存在重复的配置选项则会覆盖。当然，在某些情况下，比如事件处理程序，后面处理程序会追加到现有的配置选项中，形成事件处理程序列表。</p>
-<h3 id="3-3-启动"><a href="#3-3-启动" class="headerlink" title="3.3 启动"></a>3.3 启动</h3><p>具体启动文档见<a href="https://www.consul.io/docs/agent/options.html#configuration_files" target="_blank" rel="external">configuration</a>。<br>如:</p>
-<pre><code class="bash">consul agent -server -config-dir /etc/consul.d -<span class="built_in">bind</span>=192.168.1.100
-    -config-dir /etc/consul.d
-</code></pre>
-<ul>
-<li><p>config-dir<br>需要加载的配置文件目录，consul将加载目录下所有后缀为“.json”的文件，加载顺序为字母顺序，文件中配置选项合并方式如config-file。该参数可以多次配置。目录中的子目录是不会加载的。</p>
-</li>
-<li><p>data-dir<br>此目录是为Agent存放state数据的。是所有Agent需要的，该目录应该存放在持久存储中（reboot不会丢失），对于server角色的Agent是很关键的,需要记录集群状态。并且该目录是支持文件锁。</p>
-</li>
-<li><p>server<br>设置Agent是server模式还是client模式。Consul agent有两种运行模式：Server和Client。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上 的应用服务无关。Consule Server模式agent节点用于采用raft算法维护Consul集群的状态，官方建议每个Consul Cluster至少有3个或以上的运行在Server mode的Agent，Client节点不限。</p>
-</li>
-</ul>
-<p>其他常用的还有：</p>
-<ul>
-<li><p>client<br>将绑定到client接口的地址，可以是HTTP、DNS、RPC服务器。默认为“127.0.0.1”，只允许回路连接。RPC地址会被其他的consul命令使用，比如consul members，查询agent列表</p>
-</li>
-<li><p>node<br>节点在集群的名字，在集群中必须是唯一的。默认为节点的Hostname。</p>
-</li>
-<li><p>bootstrap<br>设置服务是否为“bootstrap”模式。如果数据中心只有1个server agent，那么需要设置该参数。从技术上来讲，处于bootstrap模式的服务器是可以选择自己作为Raft Leader的。在consul集群中，只有一个节点可以配置该参数，如果有多个参数配置该参数，那么难以保证一致性。</p>
-</li>
-<li><p>bind<br>用于集群内部通信的IP地址，与集群中其他节点互连可通。默认为“0.0.0.0”，consul将使用第一个有效的私有IPv4地址。如果指定“[::]”，consul将使用第一个有效的公共IPv6地址。使用TCP和UDP通信。注意防火墙，避免无法通信。</p>
-</li>
-</ul>
-<h3 id="3-4-结果"><a href="#3-4-结果" class="headerlink" title="3.4 结果"></a>3.4 结果</h3><p>在开启了<code>&quot;ui&quot;: true</code>server主机上，如<a href="http://192.168.1.100:8500/ui查看注册中心的服务。" target="_blank" rel="external">http://192.168.1.100:8500/ui查看注册中心的服务。</a><br>demo ui如下：</p>
-<p><img src="http://ovci9bs39.bkt.clouddn.com/demoui.png" alt="consului" title="consul demo UI"></p>
-<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>本文介绍了consul的一些内幕及consul配置相关，并对项目中的一些实际配置进行展示。希望能够帮助大家对consul相关的知识有所了解，并对于入门配置consul和实际应用有所知道。个人认为，consul原理还是简单易懂的，集群的配置也不复杂，安利大家使用。后面会再写一篇介绍Spring cloud中集成和使用consul组件作为注册与发现中心。</p>
-<hr>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://www.consul.io/docs/internals/" target="_blank" rel="external">consul文档</a><br><a href="http://blog.csdn.net/younger_china/article/details/52243700" target="_blank" rel="external">consul中文翻译</a></p>
 
       
     </div>
@@ -561,7 +536,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://blueskykong.com/2017/09/16/consul/" title="consul配置与实战">http://blueskykong.com/2017/09/16/consul/</a>
+      <a href="http://blueskykong.com/2017/05/20/callable-future/" title="Java异步编程接口：Callable和Future">http://blueskykong.com/2017/05/20/callable-future/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -577,9 +552,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/consul/" rel="tag"># consul</a>
-          
-            <a href="/tags/cluster/" rel="tag"># cluster</a>
+            <a href="/tags/java/" rel="tag"># java</a>
           
         </div>
       
@@ -592,8 +565,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/09/snowflake/" rel="next" title="snowflake升级版全局id生成">
-                <i class="fa fa-chevron-left"></i> snowflake升级版全局id生成
+              <a href="/2017/05/18/aqs/" rel="next" title="并发Lock之AQS（AbstractQueuedSynchronizer）详解">
+                <i class="fa fa-chevron-left"></i> 并发Lock之AQS（AbstractQueuedSynchronizer）详解
               </a>
             
           </div>
@@ -602,8 +575,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/09/25/raft/" rel="prev" title="由Consul谈到Raft">
-                由Consul谈到Raft <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/22/reenterlock/" rel="prev" title="并发Lock之ReentrantLock实现原理">
+                并发Lock之ReentrantLock实现原理 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -802,7 +775,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-consul介绍"><span class="nav-number">1.</span> <span class="nav-text">1. consul介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-服务注册与发现"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 服务注册与发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Consensus-Protocol-Raft"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 Consensus Protocol - Raft</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-Group-Membership-Protocol-Gossip"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 Group Membership Protocol - Gossip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Session会话"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 Session会话</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-consul架构"><span class="nav-number">2.</span> <span class="nav-text">2. consul架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-consul部署"><span class="nav-number">3.</span> <span class="nav-text">3. consul部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-docker安装"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 docker安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-软件安装"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 软件安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-启动"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-结果"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-总结"><span class="nav-number">4.</span> <span class="nav-text">4. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">4.1.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java异步编程接口：Callable和Future"><span class="nav-number">1.</span> <span class="nav-text">Java异步编程接口：Callable和Future</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Callable"><span class="nav-number">1.1.</span> <span class="nav-text">Callable</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vs-Runnable"><span class="nav-number">1.1.1.</span> <span class="nav-text">vs Runnable</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Future"><span class="nav-number">1.2.</span> <span class="nav-text">Future</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FutureTask"><span class="nav-number">1.2.1.</span> <span class="nav-text">FutureTask</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用示例"><span class="nav-number">1.3.</span> <span class="nav-text">使用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java8-CompletableFuture"><span class="nav-number">1.3.1.</span> <span class="nav-text">Java8 CompletableFuture</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.4.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
