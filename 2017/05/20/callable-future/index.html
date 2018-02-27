@@ -100,18 +100,18 @@
 
 
 
-<meta name="description" content="Java异步编程接口：Callable和Future本文主要讲解平时开发中常用的异步编程的接口：Callable和Future。 创建线程的2种方式，一种是直接继承Thread，另外一种就是实现Runnable接口。这2种方式都有一个缺陷就是：在执行完任务之后无法获取执行结果。如果需要获取执行结果，就必须通过共享变量或者使用线程通信的方式来达到效果，这样使用起来就比较麻烦。自从Java 1.5开始">
+<meta name="description" content="本文主要讲解平时开发中常用的异步编程的接口：Callable和Future。 创建线程的2种方式，一种是直接继承Thread，另外一种就是实现Runnable接口。这2种方式都有一个缺陷就是：在执行完任务之后无法获取执行结果。如果需要获取执行结果，就必须通过共享变量或者使用线程通信的方式来达到效果，这样使用起来就比较麻烦。自从Java 1.5开始，就提供了Callable和Future，通过它们可">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java异步编程接口：Callable和Future">
 <meta property="og:url" content="http://blueskykong.com/2017/05/20/callable-future/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="Java异步编程接口：Callable和Future本文主要讲解平时开发中常用的异步编程的接口：Callable和Future。 创建线程的2种方式，一种是直接继承Thread，另外一种就是实现Runnable接口。这2种方式都有一个缺陷就是：在执行完任务之后无法获取执行结果。如果需要获取执行结果，就必须通过共享变量或者使用线程通信的方式来达到效果，这样使用起来就比较麻烦。自从Java 1.5开始">
+<meta property="og:description" content="本文主要讲解平时开发中常用的异步编程的接口：Callable和Future。 创建线程的2种方式，一种是直接继承Thread，另外一种就是实现Runnable接口。这2种方式都有一个缺陷就是：在执行完任务之后无法获取执行结果。如果需要获取执行结果，就必须通过共享变量或者使用线程通信的方式来达到效果，这样使用起来就比较麻烦。自从Java 1.5开始，就提供了Callable和Future，通过它们可">
 <meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/callable.png">
-<meta property="og:updated_time" content="2018-02-26T08:57:41.000Z">
+<meta property="og:updated_time" content="2018-02-27T02:39:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java异步编程接口：Callable和Future">
-<meta name="twitter:description" content="Java异步编程接口：Callable和Future本文主要讲解平时开发中常用的异步编程的接口：Callable和Future。 创建线程的2种方式，一种是直接继承Thread，另外一种就是实现Runnable接口。这2种方式都有一个缺陷就是：在执行完任务之后无法获取执行结果。如果需要获取执行结果，就必须通过共享变量或者使用线程通信的方式来达到效果，这样使用起来就比较麻烦。自从Java 1.5开始">
+<meta name="twitter:description" content="本文主要讲解平时开发中常用的异步编程的接口：Callable和Future。 创建线程的2种方式，一种是直接继承Thread，另外一种就是实现Runnable接口。这2种方式都有一个缺陷就是：在执行完任务之后无法获取执行结果。如果需要获取执行结果，就必须通过共享变量或者使用线程通信的方式来达到效果，这样使用起来就比较麻烦。自从Java 1.5开始，就提供了Callable和Future，通过它们可">
 <meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/callable.png">
 
 
@@ -432,7 +432,7 @@
       
 
       
-        <h1 id="Java异步编程接口：Callable和Future"><a href="#Java异步编程接口：Callable和Future" class="headerlink" title="Java异步编程接口：Callable和Future"></a>Java异步编程接口：Callable和Future</h1><p>本文主要讲解平时开发中常用的异步编程的接口：Callable和Future。</p>
+        <p>本文主要讲解平时开发中常用的异步编程的接口：Callable和Future。</p>
 <p>创建线程的2种方式，一种是直接继承Thread，另外一种就是实现Runnable接口。这2种方式都有一个缺陷就是：在执行完任务之后无法获取执行结果。如果需要获取执行结果，就必须通过共享变量或者使用线程通信的方式来达到效果，这样使用起来就比较麻烦。<br>自从Java 1.5开始，就提供了<code>Callable</code>和<code>Future</code>，通过它们可以在任务执行完毕之后得到任务执行结果。</p>
 <h2 id="Callable"><a href="#Callable" class="headerlink" title="Callable"></a>Callable</h2><p><code>Callable</code>接口的定义如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Callable</span>&lt;<span class="title">V</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="function">V <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -775,7 +775,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java异步编程接口：Callable和Future"><span class="nav-number">1.</span> <span class="nav-text">Java异步编程接口：Callable和Future</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Callable"><span class="nav-number">1.1.</span> <span class="nav-text">Callable</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vs-Runnable"><span class="nav-number">1.1.1.</span> <span class="nav-text">vs Runnable</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Future"><span class="nav-number">1.2.</span> <span class="nav-text">Future</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FutureTask"><span class="nav-number">1.2.1.</span> <span class="nav-text">FutureTask</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用示例"><span class="nav-number">1.3.</span> <span class="nav-text">使用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java8-CompletableFuture"><span class="nav-number">1.3.1.</span> <span class="nav-text">Java8 CompletableFuture</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.4.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Callable"><span class="nav-number">1.</span> <span class="nav-text">Callable</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vs-Runnable"><span class="nav-number">1.1.</span> <span class="nav-text">vs Runnable</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Future"><span class="nav-number">2.</span> <span class="nav-text">Future</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FutureTask"><span class="nav-number">2.1.</span> <span class="nav-text">FutureTask</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用示例"><span class="nav-number">3.</span> <span class="nav-text">使用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java8-CompletableFuture"><span class="nav-number">3.1.</span> <span class="nav-text">Java8 CompletableFuture</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
             
 
           </div>
