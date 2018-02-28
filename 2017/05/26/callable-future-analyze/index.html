@@ -104,10 +104,10 @@
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java异步编程接口：Callable和Future源码解析">
-<meta property="og:url" content="http://blueskykong.com/2017/05/22/callable-future-analyze/index.html">
+<meta property="og:url" content="http://blueskykong.com/2017/05/26/callable-future-analyze/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
 <meta property="og:description" content="在上一篇Java异步编程接口：Callable和Future中介绍了异步编程经常使用的Callable、Future以及FutureTask，并给出了应用示例。本文主要在上一篇的基础应用基础上，深入源码分析实现原理。本文基于JDK8。 异步接口Callable接口许多任务实际上都是存在延迟的计算，对于这些任务，Callable是一种更好的抽象：它会返回一个值，并可能抛出一个异常。Callable接">
-<meta property="og:updated_time" content="2018-02-28T09:29:46.000Z">
+<meta property="og:updated_time" content="2018-02-28T09:31:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java异步编程接口：Callable和Future源码解析">
 <meta name="twitter:description" content="在上一篇Java异步编程接口：Callable和Future中介绍了异步编程经常使用的Callable、Future以及FutureTask，并给出了应用示例。本文主要在上一篇的基础应用基础上，深入源码分析实现原理。本文基于JDK8。 异步接口Callable接口许多任务实际上都是存在延迟的计算，对于这些任务，Callable是一种更好的抽象：它会返回一个值，并可能抛出一个异常。Callable接">
@@ -138,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="http://blueskykong.com/2017/05/22/callable-future-analyze/"/>
+  <link rel="canonical" href="http://blueskykong.com/2017/05/26/callable-future-analyze/"/>
 
 
 
@@ -328,7 +328,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2017/05/22/callable-future-analyze/">
+    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2017/05/26/callable-future-analyze/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="aoho">
@@ -357,8 +357,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-22T00:00:00+08:00">
-                2017-05-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-26T00:00:00+08:00">
+                2017-05-26
               </time>
             
 
@@ -399,8 +399,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2017/05/22/callable-future-analyze/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/05/22/callable-future-analyze/" itemprop="commentsCount"></span>
+                <a href="/2017/05/26/callable-future-analyze/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/05/26/callable-future-analyze/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -535,7 +535,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://blueskykong.com/2017/05/22/callable-future-analyze/" title="Java异步编程接口：Callable和Future源码解析">http://blueskykong.com/2017/05/22/callable-future-analyze/</a>
+      <a href="http://blueskykong.com/2017/05/26/callable-future-analyze/" title="Java异步编程接口：Callable和Future源码解析">http://blueskykong.com/2017/05/26/callable-future-analyze/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -710,7 +710,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
