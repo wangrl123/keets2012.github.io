@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[test]]></title>
+    <url>%2F2018%2F02%2F28%2Ftest%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
     <title><![CDATA[Spring中的事件驱动模型（一）]]></title>
     <url>%2F2018%2F02%2F22%2Fspring-event-sourcing%2F</url>
     <content type="text"><![CDATA[正月初七，新年第一篇。 事件驱动模型简介事件驱动模型通常也被理解成观察者或者发布/订阅模型。 是一种对象间的一对多的关系； 当目标发送改变（发布），观察者（订阅者）就可以接收到改变； 观察者如何处理，目标无需干涉，它们之间的关系是松耦合的。 事件驱动模型的例子很多，如生活中的红绿灯，以及我们在微服务中用到的配置中心，当有配置提交时出发具体的应用实例更新Spring上下文环境。 Spring的事件机制基本概念Spring的事件驱动模型由三部分组成： 事件：ApplicationEvent，继承自JDK的EventObject，所有事件将继承它，并通过source得到事件源。 事件发布者：ApplicationEventPublisher及ApplicationEventMulticaster接口，使用这个接口，我们的Service就拥有了发布事件的能力。 事件订阅者：ApplicationListener，继承自JDK的EventListener，所有监听器将继承它。 Spring事件驱动过程事件Spring 默认对 ApplicationEvent 事件提供了如下实现： ContextStoppedEvent：ApplicationContext停止后触发的事件； ContextRefreshedEvent：ApplicationContext初始化或刷新完成后触发的事件； ContextClosedEvent：ApplicationContext关闭后触发的事件。如web容器关闭时自动会触发Spring容器的关闭，如果是普通java应用，需要调用ctx.registerShutdownHook()注册虚拟机关闭时的钩子才行； ContextStartedEvent：ApplicationContext启动后触发的事件； 12345678910111213public abstract class ApplicationEvent extends EventObject &#123; private static final long serialVersionUID = 7099057708183571937L; //事件发生的时间 private final long timestamp = System.currentTimeMillis(); //创建一个新的ApplicationEvent事件 public ApplicationEvent(Object source) &#123; super(source); &#125; public final long getTimestamp() &#123; return this.timestamp; &#125;&#125; 事件基类ApplicationEvent，所有的具体事件都会继承该抽象事件类。 事件监听者ApplicationListener继承自JDK的EventListener，JDK要求所有监听器将继承它。 1234@FunctionalInterfacepublic interface ApplicationListener&lt;E extends ApplicationEvent&gt; extends EventListener &#123; void onApplicationEvent(E var1);&#125; 提供了onApplicationEvent方法，用以处理ApplicationEvent，不过对于具体事件的处理需要进行判断。而GenericApplicationListener和SmartApplicationListener提供了关于事件更多的元数据信息。 123456789101112131415161718192021222324252627public class SourceFilteringListener implements GenericApplicationListener, SmartApplicationListener &#123; private final Object source; @Nullable private GenericApplicationListener delegate; //为特定事件源创建SourceFilteringListener，并传入代理的监听器类 public SourceFilteringListener(Object source, ApplicationListener&lt;?&gt; delegate) &#123; this.source = source; this.delegate = (delegate instanceof GenericApplicationListener ? (GenericApplicationListener) delegate : new GenericApplicationListenerAdapter(delegate)); &#125; //....省略部分代码 @Override public int getOrder() &#123; return (this.delegate != null ? this.delegate.getOrder() : Ordered.LOWEST_PRECEDENCE); &#125; //过滤之后实际处理事件 protected void onApplicationEventInternal(ApplicationEvent event) &#123; //... this.delegate.onApplicationEvent(event); &#125;&#125; SourceFilteringListener是ApplicationListener的装饰器类，过滤特定的事件源。只会注入其事件对应的代理监听器，还提供了按照顺序触发监听器等功能。在启动的时候会加载一部分 ApplicationListener。Spring Context加载初始化完成（refresh）后会再次检测应用中的 ApplicationListener，并且注册，此时会将我们实现的 ApplicationListener 就会加入到 SimpleApplicationEventMulticaster 维护的 Listener 集合中。Spring也支持直接注解的形式进行事件监听@EventListener(Event.class)。 事件发布ApplicationContext接口继承了ApplicationEventPublisher，并在AbstractApplicationContext实现了具体代码，实际执行是委托给ApplicationEventMulticaster。 123456789@FunctionalInterfacepublic interface ApplicationEventPublisher &#123; //通知所有的注册该事件的应用，事件可以是框架事件如RequestHandledEvent或者特定的应用事件。 default void publishEvent(ApplicationEvent event) &#123; this.publishEvent((Object)event); &#125; void publishEvent(Object var1);&#125; 实际的执行是委托给，读者有兴趣可以看一下AbstractApplicationContext中这部分的逻辑。下面我们具体看一下ApplicationEventMulticaster接口中定义的方法。 1234567891011121314public interface ApplicationEventMulticaster &#123; //增加监听者 void addApplicationListener(ApplicationListener&lt;?&gt; listener); //... //移除监听者 void removeApplicationListener(ApplicationListener&lt;?&gt; listener); //... //广播特定事件给监听者 void multicastEvent(ApplicationEvent event, @Nullable ResolvableType eventType);&#125; AbstractApplicationContext中定义了对监听者的操作维护，如增加和删除，并提供了将特定事件进行广播的方法。下面看一下具体实现类SimpleApplicationEventMulticaster。ApplicationContext自动到本地容器里找一个ApplicationEventMulticaster实现，如果没有则会使用默认的SimpleApplicationEventMulticaster。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849public class SimpleApplicationEventMulticaster extends AbstractApplicationEventMulticaster &#123; @Nullable private Executor taskExecutor; //... //用给定的beanFactory创建SimpleApplicationEventMulticaster public SimpleApplicationEventMulticaster(BeanFactory beanFactory) &#123; setBeanFactory(beanFactory); &#125; @Override public void multicastEvent(final ApplicationEvent event, @Nullable ResolvableType eventType) &#123; ResolvableType type = (eventType != null ? eventType : resolveDefaultEventType(event)); for (final ApplicationListener&lt;?&gt; listener : getApplicationListeners(event, type)) &#123; Executor executor = getTaskExecutor(); if (executor != null) &#123; executor.execute(() -&gt; invokeListener(listener, event)); &#125; else &#123; invokeListener(listener, event); &#125; &#125; &#125; //注入给定事件的给定监听器 protected void invokeListener(ApplicationListener&lt;?&gt; listener, ApplicationEvent event) &#123; ErrorHandler errorHandler = getErrorHandler(); if (errorHandler != null) &#123; try &#123; doInvokeListener(listener, event); &#125; ... &#125; else &#123; doInvokeListener(listener, event); &#125; &#125; @SuppressWarnings(&#123;"unchecked", "rawtypes"&#125;) private void doInvokeListener(ApplicationListener listener, ApplicationEvent event) &#123; try &#123; listener.onApplicationEvent(event); &#125; //... &#125;&#125; 在multicastEvent方法中，executor不为空的情况下，可以看到是支持异步发布事件。发布事件时只需要调用ApplicationContext中的publishEvent方法即可进行事件的发布。 总结本文主要介绍了Spring中的事件驱动模型相关概念。首先介绍事件驱动模型，也可以说是观察者模式，在我们的日常生活中和应用开发中有很多应用。随后重点篇幅介绍了Spring的事件机制，Spring的事件驱动模型由事件、发布者和订阅者三部分组成，结合Spring的源码分析了这三部分的定义与实现。笔者将会在下一篇文章，结合具体例子以及Spring Cloud Config中的实现进行实战讲解。 参考 事件驱动模型简介 Spring事件驱动模型与观察者模式]]></content>
@@ -73,8 +78,8 @@
         <category>中间件</category>
       </categories>
       <tags>
-        <tag>redis</tag>
         <tag>mq</tag>
+        <tag>redis</tag>
       </tags>
   </entry>
   <entry>
@@ -121,9 +126,9 @@
       </categories>
       <tags>
         <tag>zuul</tag>
+        <tag>gateway</tag>
         <tag>OAuth2</tag>
         <tag>Spring Security</tag>
-        <tag>gateway</tag>
       </tags>
   </entry>
   <entry>
@@ -293,8 +298,8 @@
         <category>中间件</category>
       </categories>
       <tags>
-        <tag>redis</tag>
         <tag>mq</tag>
+        <tag>redis</tag>
       </tags>
   </entry>
   <entry>
