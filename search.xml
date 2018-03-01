@@ -8,8 +8,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Java</tag>
         <tag>Spring</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -50,8 +50,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Java</tag>
         <tag>Spring</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -108,8 +108,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Java</tag>
         <tag>Spring</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -121,9 +121,9 @@
       </categories>
       <tags>
         <tag>zuul</tag>
+        <tag>gateway</tag>
         <tag>OAuth2</tag>
         <tag>Spring Security</tag>
-        <tag>gateway</tag>
       </tags>
   </entry>
   <entry>
@@ -134,9 +134,9 @@
         <category>Ops</category>
       </categories>
       <tags>
-        <tag>micro-service</tag>
         <tag>APM</tag>
         <tag>zipkin</tag>
+        <tag>micro-service</tag>
       </tags>
   </entry>
   <entry>
@@ -196,9 +196,9 @@
         <category>Ops</category>
       </categories>
       <tags>
-        <tag>micro-service</tag>
         <tag>APM</tag>
         <tag>zipkin</tag>
+        <tag>micro-service</tag>
       </tags>
   </entry>
   <entry>
@@ -342,8 +342,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Thread</tag>
         <tag>Java</tag>
+        <tag>Thread</tag>
       </tags>
   </entry>
   <entry>
@@ -507,8 +507,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Java</tag>
         <tag>Spring</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
