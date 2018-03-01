@@ -107,7 +107,7 @@
 <meta property="og:url" content="http://blueskykong.com/2017/05/26/callable-future-analyze/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
 <meta property="og:description" content="在上一篇Java异步编程接口：Callable和Future中介绍了异步编程经常使用的Callable、Future以及FutureTask，并给出了应用示例。本文主要在上一篇的基础应用基础上，深入源码分析实现原理。本文基于JDK8。 异步接口Callable接口许多任务实际上都是存在延迟的计算，对于这些任务，Callable是一种更好的抽象：它会返回一个值，并可能抛出一个异常。Callable接">
-<meta property="og:updated_time" content="2018-02-28T12:07:08.000Z">
+<meta property="og:updated_time" content="2018-03-01T05:08:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java异步编程接口：Callable和Future源码解析">
 <meta name="twitter:description" content="在上一篇Java异步编程接口：Callable和Future中介绍了异步编程经常使用的Callable、Future以及FutureTask，并给出了应用示例。本文主要在上一篇的基础应用基础上，深入源码分析实现原理。本文基于JDK8。 异步接口Callable接口许多任务实际上都是存在延迟的计算，对于这些任务，Callable是一种更好的抽象：它会返回一个值，并可能抛出一个异常。Callable接">
@@ -476,7 +476,7 @@
 <li>如果FutureTask的状态为初始态NEW，则将当前线程加入到FutureTask的阻塞线程中去；</li>
 <li>如果get方法没有设置超时时间，则阻塞当前调用get线程；如果设置了超时时间，则判断是否达到超时时间，如果到达，则移除FutureTask的所有阻塞列队中的线程，并返回此时FutureTask的状态，如果未到达时间，则在剩下的时间内继续阻塞当前线程。</li>
 </ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文主要讲了Java异步接口的实现原理。从我们的猜想开始，在不阻塞当前线程的情况下计算，那么必然需要另外的线程去执行具体的业务逻辑，从具体应用时可以看到，是把Callable放入了线程池中，等待执行，并且立刻返回futrue。现在需要从Future中得到Callable的结果，那么Future的引用必然会被两个线程共享，一个线程执行完成后改变Future的状态位并唤醒挂起在get上的线程。由<code>ExecutorService</code>的提交任务，逐步分析到<code>FutureTask</code>中状态位的设置以及状态的变化，最后分析了<br><code>get()</code>方法获取计算结果时，在<code>FutureTask</code>中如何挂起并最终返回计算结果。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文主要讲了Java异步接口的实现原理。从我们的猜想开始，在不阻塞当前线程的情况下计算，那么必然需要另外的线程去执行具体的业务逻辑，从具体应用时可以看到，是把Callable放入了线程池中，等待执行，并且立刻返回futrue。现在需要从Future中得到Callable的结果，那么Future的引用必然会被两个线程共享，一个线程执行完成后改变Future的状态位并唤醒挂起在get上的线程。由<code>ExecutorService</code>的提交任务，逐步分析到<code>FutureTask</code>中状态位的设置以及状态的变化，最后分析了<code>get()</code>方法获取计算结果时，在<code>FutureTask</code>中如何挂起并最终返回计算结果。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
 <li><a href="http://blog.csdn.net/u012664375/article/details/66967687" target="_blank" rel="external">Callable异步原理简析</a></li>
 <li><a href="http://blog.csdn.net/codershamo/article/details/51901057" target="_blank" rel="external">Callable、Future和FutureTask原理解析</a></li>
