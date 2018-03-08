@@ -1,0 +1,1308 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring Cloud," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="在之前的文章Spring Cloud Bus中的事件的订阅与发布（一）介绍了消息总线的相关事件。本文主要介绍消息总线的事件监听器以及消息的订阅与发布。 事件监听器Spring Cloud Bus中，事件监听器的定义可以是实现ApplicationListener接口，或者是使用@EventListener注解的形式。我们看一下事件监听器的类图。 ApplicationListener接口实现有两个">
+<meta name="keywords" content="Spring Cloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Cloud Bus中的事件的订阅与发布（二）">
+<meta property="og:url" content="http://blueskykong.com/2018/03/08/spring-cloud-bus-event-2/index.html">
+<meta property="og:site_name" content="Aoho&#39;s Blog">
+<meta property="og:description" content="在之前的文章Spring Cloud Bus中的事件的订阅与发布（一）介绍了消息总线的相关事件。本文主要介绍消息总线的事件监听器以及消息的订阅与发布。 事件监听器Spring Cloud Bus中，事件监听器的定义可以是实现ApplicationListener接口，或者是使用@EventListener注解的形式。我们看一下事件监听器的类图。 ApplicationListener接口实现有两个">
+<meta property="og:image" content="http://ovcjgn2x0.bkt.clouddn.com/bus-listener.png">
+<meta property="og:updated_time" content="2018-03-08T04:05:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Cloud Bus中的事件的订阅与发布（二）">
+<meta name="twitter:description" content="在之前的文章Spring Cloud Bus中的事件的订阅与发布（一）介绍了消息总线的相关事件。本文主要介绍消息总线的事件监听器以及消息的订阅与发布。 事件监听器Spring Cloud Bus中，事件监听器的定义可以是实现ApplicationListener接口，或者是使用@EventListener注解的形式。我们看一下事件监听器的类图。 ApplicationListener接口实现有两个">
+<meta name="twitter:image" content="http://ovcjgn2x0.bkt.clouddn.com/bus-listener.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blueskykong.com/2018/03/08/spring-cloud-bus-event-2/"/>
+
+
+
+
+
+  <title>Spring Cloud Bus中的事件的订阅与发布（二） | Aoho's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Aoho's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Grasp All, Lose All.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2018/03/08/spring-cloud-bus-event-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aoho">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aoho's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Cloud Bus中的事件的订阅与发布（二）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-08T00:00:00+08:00">
+                2018-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/微服务/" itemprop="url" rel="index">
+                    <span itemprop="name">微服务</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/03/08/spring-cloud-bus-event-2/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/03/08/spring-cloud-bus-event-2/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">Views
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在之前的文章<a href="http://blueskykong.com/2018/02/13/spring-cloud-bus-event/">Spring Cloud Bus中的事件的订阅与发布（一）</a>介绍了消息总线的相关事件。<br>本文主要介绍消息总线的事件监听器以及消息的订阅与发布。</p>
+<h2 id="事件监听器"><a href="#事件监听器" class="headerlink" title="事件监听器"></a>事件监听器</h2><p><code>Spring Cloud Bus</code>中，事件监听器的定义可以是实现<code>ApplicationListener</code>接口，或者是使用<code>@EventListener</code>注解的形式。我们看一下事件监听器的类图。</p>
+<p><img src="http://ovcjgn2x0.bkt.clouddn.com/bus-listener.png" alt="listener" title="监听器"><br><code>ApplicationListener</code>接口实现有两个：刷新监听器<code>RefreshListener</code>和环境变更监听器<code>EnvironmentChangeListener</code>。</p>
+<h3 id="RefreshListener"><a href="#RefreshListener" class="headerlink" title="RefreshListener"></a>RefreshListener</h3><p><code>RefreshListener</code>对应的事件是<code>RefreshRemoteApplicationEvent</code>，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RefreshListener</span></span></div><div class="line">		<span class="keyword">implements</span> <span class="title">ApplicationListener</span>&lt;<span class="title">RefreshRemoteApplicationEvent</span>&gt; &#123;</div><div class="line">	<span class="keyword">private</span> ContextRefresher contextRefresher;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">RefreshListener</span><span class="params">(ContextRefresher contextRefresher)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.contextRefresher = contextRefresher;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(RefreshRemoteApplicationEvent event)</span> </span>&#123;</div><div class="line">		Set&lt;String&gt; keys = contextRefresher.refresh();</div><div class="line">		log.info(<span class="string">"Received remote refresh request. Keys refreshed "</span> + keys);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对于刷新时间的处理，调用<code>ContextRefresher</code>的<code>refresh()</code>方法，而定义在Spring Cloud Context中的<code>ContextRefresher</code>用于提供上下文刷新的功能。我们具体看一下<code>refresh()</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> Set&lt;String&gt; <span class="title">refresh</span><span class="params">()</span> </span>&#123;</div><div class="line">	Map&lt;String, Object&gt; before = extract(</div><div class="line">			<span class="keyword">this</span>.context.getEnvironment().getPropertySources());</div><div class="line">	addConfigFilesToEnvironment();</div><div class="line">	Set&lt;String&gt; keys = changes(before,</div><div class="line">			extract(<span class="keyword">this</span>.context.getEnvironment().getPropertySources())).keySet();</div><div class="line">	<span class="keyword">this</span>.context.publishEvent(<span class="keyword">new</span> EnvironmentChangeEvent(keys));</div><div class="line">	<span class="keyword">this</span>.scope.refreshAll();</div><div class="line">	<span class="keyword">return</span> keys;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>实现很简单，先获取之前环境变量的key-value，然后重新加载新的配置环境文件，通过比对新旧环境变量的map集合，然后发布新的环境变更<code>EnvironmentChangeEvent</code>的事件。<code>this.scope.refreshAll()</code>销毁了在这个范围内，当前实例的所有bean并在下次方法的执行时强制刷新。</p>
+<h3 id="EnvironmentChangeListener"><a href="#EnvironmentChangeListener" class="headerlink" title="EnvironmentChangeListener"></a>EnvironmentChangeListener</h3><p><code>EnvironmentChangeListener</code>对应的事件类是<code>EnvironmentChangeRemoteApplicationEvent</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EnvironmentChangeListener</span></span></div><div class="line">		<span class="keyword">implements</span> <span class="title">ApplicationListener</span>&lt;<span class="title">EnvironmentChangeRemoteApplicationEvent</span>&gt; &#123;</div><div class="line">	<span class="meta">@Autowired</span></div><div class="line">	<span class="keyword">private</span> EnvironmentManager env;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(EnvironmentChangeRemoteApplicationEvent event)</span> </span>&#123;</div><div class="line">		Map&lt;String, String&gt; values = event.getValues();</div><div class="line">		<span class="keyword">for</span> (Map.Entry&lt;String, String&gt; entry : values.entrySet()) &#123;</div><div class="line">			env.setProperty(entry.getKey(), entry.getValue());</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在<code>RefreshListener</code>的实现中，可以知道该事件的实现最终又发布了一个新的事件<code>EnvironmentChangeListener</code>。在刷新监听器中，构造了变更了的环境变量的map，交给环境变更监听器。上面对环境变更事件的处理，遍历变更了的配置环境属性，并在本地应用程序的环境中将新的属性值设置到对应的键。</p>
+<h3 id="TraceListener"><a href="#TraceListener" class="headerlink" title="TraceListener"></a>TraceListener</h3><p><code>TraceListener</code>的实现是通过注解<code>@EventListener</code>的形式，监听的事件为：确认事件<code>AckRemoteApplicationEvent</code>和发送事件<code>SentApplicationEvent</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@EventListener</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAck</span><span class="params">(AckRemoteApplicationEvent event)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.repository.add(getReceivedTrace(event));</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@EventListener</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSend</span><span class="params">(SentApplicationEvent event)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.repository.add(getSentTrace(event));</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">protected</span> Map&lt;String, Object&gt; <span class="title">getSentTrace</span><span class="params">(SentApplicationEvent event)</span> </span>&#123;</div><div class="line">		Map&lt;String, Object&gt; map = <span class="keyword">new</span> LinkedHashMap&lt;String, Object&gt;();</div><div class="line">		map.put(<span class="string">"signal"</span>, <span class="string">"spring.cloud.bus.sent"</span>);</div><div class="line">		map.put(<span class="string">"type"</span>, event.getType().getSimpleName());</div><div class="line">		map.put(<span class="string">"id"</span>, event.getId());</div><div class="line">		map.put(<span class="string">"origin"</span>, event.getOriginService());</div><div class="line">		map.put(<span class="string">"destination"</span>, event.getDestinationService());</div><div class="line">		<span class="keyword">if</span> (log.isDebugEnabled()) &#123;</div><div class="line">			log.debug(map);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> map;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">protected</span> Map&lt;String, Object&gt; <span class="title">getReceivedTrace</span><span class="params">(AckRemoteApplicationEvent event)</span> </span>&#123;</div><div class="line">		Map&lt;String, Object&gt; map = <span class="keyword">new</span> LinkedHashMap&lt;String, Object&gt;();</div><div class="line">		map.put(<span class="string">"signal"</span>, <span class="string">"spring.cloud.bus.ack"</span>);</div><div class="line">		map.put(<span class="string">"event"</span>, event.getEvent().getSimpleName());</div><div class="line">		map.put(<span class="string">"id"</span>, event.getAckId());</div><div class="line">		map.put(<span class="string">"origin"</span>, event.getOriginService());</div><div class="line">		map.put(<span class="string">"destination"</span>, event.getAckDestinationService());</div><div class="line">		<span class="keyword">if</span> (log.isDebugEnabled()) &#123;</div><div class="line">			log.debug(map);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> map;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>在SentTrace中，主要记录了signal、事件类型type、id、源服务origin和目的服务destination的属性值。而在ReceivedTrace中，表示对事件的确认，主要记录了signal、事件类型event、id、源服务origin和目的服务destination的属性值。这些信息默认存储于内存中，可以通过<code>/trace</code>端点获取最近的事件信息，如下图所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;timestamp&quot;: 1517229555629,</div><div class="line">    &quot;info&quot;: &#123;</div><div class="line">        &quot;signal&quot;: &quot;spring.cloud.bus.sent&quot;,</div><div class="line">        &quot;type&quot;: &quot;RefreshRemoteApplicationEvent&quot;,</div><div class="line">        &quot;id&quot;: &quot;c73a9792-9409-47af-993c-65526edf0070&quot;,</div><div class="line">        &quot;origin&quot;: &quot;config-server:8888&quot;,</div><div class="line">        &quot;destination&quot;: &quot;config-client:8000:**&quot;</div><div class="line">    &#125;</div><div class="line">&#125;,</div><div class="line">&#123;</div><div class="line">	&quot;timestamp&quot;: 1517227659384,</div><div class="line">	&quot;info&quot;: &#123;</div><div class="line">	    &quot;signal&quot;: &quot;spring.cloud.bus.ack&quot;,</div><div class="line">	    &quot;event&quot;: &quot;RefreshRemoteApplicationEvent&quot;,</div><div class="line">	    &quot;id&quot;: &quot;846f3a17-c344-4d29-93f3-01b73c5bf58f&quot;,</div><div class="line">	    &quot;origin&quot;: &quot;config-client:8000&quot;,</div><div class="line">	    &quot;destination&quot;: &quot;config-client:8000:**&quot;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>至于事件的发起，我们将在下一节结合消息的订阅与发布一起讲解。</p>
+<h2 id="消息的订阅与发布"><a href="#消息的订阅与发布" class="headerlink" title="消息的订阅与发布"></a>消息的订阅与发布</h2><p><code>Spring Cloud Bus</code>基于<code>Spring Cloud Stream</code>，对特定主题的消息进行订阅与发布，事件以消息的形式传递到其他服务实例。</p>
+<h3 id="通道定义"><a href="#通道定义" class="headerlink" title="通道定义"></a>通道定义</h3><p>既然是基于stream，我们首先看一下input和output的通道定义。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SpringCloudBusClient</span> </span>&#123;</div><div class="line"></div><div class="line">String INPUT = <span class="string">"springCloudBusInput"</span>;</div><div class="line"></div><div class="line">String OUTPUT = <span class="string">"springCloudBusOutput"</span>;</div><div class="line"></div><div class="line"><span class="meta">@Output</span>(SpringCloudBusClient.OUTPUT)</div><div class="line"><span class="function">MessageChannel <span class="title">springCloudBusOutput</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line"><span class="meta">@Input</span>(SpringCloudBusClient.INPUT)</div><div class="line"><span class="function">SubscribableChannel <span class="title">springCloudBusInput</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到，bus中定义了<code>springCloudBusInput</code>和<code>springCloudBusOutput</code>两个通道，分别用于定于订阅与发布<code>springCloudBus</code>的消息。</p>
+<h3 id="bus属性定义"><a href="#bus属性定义" class="headerlink" title="bus属性定义"></a>bus属性定义</h3><p>其次，我们看一下bus中关于stream的属性定义。在基础应用中我们就知道bus订阅的话题是<code>springCloudBus</code>，下面看一下在bus中的其他属性的定义。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@ConfigurationProperties</span>(<span class="string">"spring.cloud.bus"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BusProperties</span> </span>&#123;</div><div class="line"></div><div class="line"><span class="comment">//环境变更相关的属性</span></div><div class="line"><span class="keyword">private</span> Env env = <span class="keyword">new</span> Env();</div><div class="line"><span class="comment">// 刷新事件相关的属性</span></div><div class="line"><span class="keyword">private</span> Refresh refresh = <span class="keyword">new</span> Refresh();</div><div class="line"><span class="comment">//与ack相关的属性</span></div><div class="line"><span class="keyword">private</span> Ack ack = <span class="keyword">new</span> Ack();</div><div class="line"><span class="comment">//与追踪ack相关的属性</span></div><div class="line"><span class="keyword">private</span> Trace trace = <span class="keyword">new</span> Trace();</div><div class="line"><span class="comment">//Spring Cloud Stream消息的话题</span></div><div class="line"><span class="keyword">private</span> String destination = <span class="string">"springCloudBus"</span>;</div><div class="line"></div><div class="line"><span class="comment">//标志位，bus是否可用</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">boolean</span> enabled = <span class="keyword">true</span>;</div><div class="line"></div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的bus属性，设置了一些默认值，正好与事实也是相符的，我们没有进行任何<code>spring.cloud.bus</code>配置也能够进行正常运行。通过在配置文件中修改相应的属性，实现bus的更多功能扩展。env、refresh、ack和trace分别对应不同的事件，在配置文件中有一个开关属性，默认都是开启的，我们可以根据需要进行关闭。</p>
+<h3 id="消息的监听与发送"><a href="#消息的监听与发送" class="headerlink" title="消息的监听与发送"></a>消息的监听与发送</h3><p>上面两部分讲了stream通道和基本属性的定义，最后我们看下bus中对指定主题的消息如何发送与监听处理。在META-INF/spring.factories配置了<code>EnableAutoConfiguration</code>配置项为<code>BusAutoConfiguration</code>，在服务启动时会自动加载到Spring容器中，其中对于指定主题的消息如何发送与监听处理如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@ConditionalOnBusEnabled</span> <span class="comment">//bus启用的开关</span></div><div class="line"><span class="meta">@EnableBinding</span>(SpringCloudBusClient.class) <span class="comment">//绑定通道</span></div><div class="line"><span class="meta">@EnableConfigurationProperties</span>(BusProperties.class)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BusAutoConfiguration</span> <span class="keyword">implements</span> <span class="title">ApplicationEventPublisherAware</span> </span>&#123;</div><div class="line"></div><div class="line"><span class="comment">//注入source接口，用于发送消息</span></div><div class="line"><span class="meta">@Autowired</span></div><div class="line"><span class="meta">@Output</span>(SpringCloudBusClient.OUTPUT)</div><div class="line"><span class="keyword">private</span> MessageChannel cloudBusOutboundChannel;</div><div class="line"></div><div class="line"><span class="comment">// 监听RemoteApplicationEvent事件</span></div><div class="line"><span class="meta">@EventListener</span>(classes = RemoteApplicationEvent.class)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">acceptLocal</span><span class="params">(RemoteApplicationEvent event)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.serviceMatcher.isFromSelf(event)</div><div class="line">            &amp;&amp; !(event <span class="keyword">instanceof</span> AckRemoteApplicationEvent)) &#123;</div><div class="line">        <span class="comment">//当事件是来自自己的并且不是ack事件，则发送消息</span></div><div class="line">    <span class="keyword">this</span>.cloudBusOutboundChannel.send(MessageBuilder.withPayload(event).build());</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//消息的消费，也是事件的发起</span></div><div class="line"><span class="meta">@StreamListener</span>(SpringCloudBusClient.INPUT)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">acceptRemote</span><span class="params">(RemoteApplicationEvent event)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (event <span class="keyword">instanceof</span> AckRemoteApplicationEvent) &#123;</div><div class="line">        <span class="comment">//ack事件</span></div><div class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.bus.getTrace().isEnabled() &amp;&amp; !<span class="keyword">this</span>.serviceMatcher.isFromSelf(event)</div><div class="line">                &amp;&amp; <span class="keyword">this</span>.applicationEventPublisher != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="comment">//当开启bus追踪且不是自己的ack事件，则通知所有的注册该事件的监听者，否则直接返回</span></div><div class="line">            <span class="keyword">this</span>.applicationEventPublisher.publishEvent(event);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//消费消息，该消息属于自己</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.serviceMatcher.isForSelf(event)</div><div class="line">            &amp;&amp; <span class="keyword">this</span>.applicationEventPublisher != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">//不是自己发布的事件，正常处理</span></div><div class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.serviceMatcher.isFromSelf(event)) &#123;</div><div class="line">            <span class="keyword">this</span>.applicationEventPublisher.publishEvent(event);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//消费之后，需要发送ack确认事件</span></div><div class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.bus.getAck().isEnabled()) &#123;</div><div class="line">            AckRemoteApplicationEvent ack = <span class="keyword">new</span> AckRemoteApplicationEvent(<span class="keyword">this</span>,</div><div class="line">                    <span class="keyword">this</span>.serviceMatcher.getServiceId(),</div><div class="line">                    <span class="keyword">this</span>.bus.getAck().getDestinationService(),</div><div class="line">                    event.getDestinationService(), event.getId(), event.getClass());</div><div class="line">            <span class="keyword">this</span>.cloudBusOutboundChannel</div><div class="line">                    .send(MessageBuilder.withPayload(ack).build());</div><div class="line">            <span class="keyword">this</span>.applicationEventPublisher.publishEvent(ack);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//事件追踪相关，若是开启追踪事件则执行</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.bus.getTrace().isEnabled() &amp;&amp; <span class="keyword">this</span>.applicationEventPublisher != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// 不论其来源，准备发送事件，发布了之后供本地消费</span></div><div class="line">        <span class="keyword">this</span>.applicationEventPublisher.publishEvent(<span class="keyword">new</span> SentApplicationEvent(<span class="keyword">this</span>,</div><div class="line">                event.getOriginService(), event.getDestinationService(),</div><div class="line">                event.getId(), event.getClass()));</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>@ConditionalOnBusEnabled</code>注解是bus的开关，默认开启。<code>@EnableBinding</code>绑定了<code>SpringCloudBusClient</code>中定义的通道。在应用服务启动时，自动化配置类加载了bus的API端点、刷新、ACK追踪以及bus环境变量的配置等beans。<br><code>@Output</code>表示输出output绑定目标将由框架创建，由该通道发送消息。<br>还涉及到上面列出来的两个主要方法：<code>acceptLocal</code>和<code>acceptRemote</code>。</p>
+<p><code>acceptLocal</code>是一个基于注解实现的事件监听器，监听的事件类型是<code>RemoteApplicationEvent</code>，对于该事件的处理方法是，当事件是来自自己的并且不是ack事件，则发送消息。</p>
+<p><code>@StreamListener</code>注解是<code>Spring Cloud Stream</code>中提供的，用来标识一个方法作为<code>@EnableBinding</code>绑定的input通道的监听器。<code>acceptRemote</code>方法，<br>传递的参数<code>RemoteApplicationEvent</code>就是stream中的消息。如果是确认类事件，当开启了事件追踪且事件不是来自于自身，则发布该事件，对于确认类事件，处理已经完成；<br>如果自身需要处理该事件且该事件不是来自自身，则发布该事件。需要注意的是，当开启事件追踪时，构造一个确认事件并将该事件发布；最后，当开启了事件追踪，这边的处理是注册已发送的事件，以便发布供本地消费，而不论其来源。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文在<a href="http://blueskykong.com/2018/02/13/spring-cloud-bus-event/">上一篇</a>介绍Spring Cloud Bus中的事件基础上，结合源码继续介绍事件的监听器以及事件的订阅与发布是如何在消息总线中实现的。<br>消息总线常用于传播状态的变更和管理指令的发布。而消息总线最常用的场景就是更新应用服务的配置信息，需要结合Config Server使用，当然消息总线的实现其实是基于Spring Cloud Stream，Stream封装了各种不同的MQ中间件，产生的消息实则是推送配置信息的变更。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://cloud.spring.io/spring-cloud-static/spring-cloud-bus/1.3.3.RELEASE/single/spring-cloud-bus.html" target="_blank" rel="external">Spring Cloud Bus-v1.3.3</a></p>
+
+      
+    </div>
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/qrcode.jpg" alt="aoho wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎您扫一扫上面的微信公众号，aoho求索，订阅我的博客!</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechat.jpg" alt="aoho WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/ali.jpg" alt="aoho Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      aoho
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://blueskykong.com/2018/03/08/spring-cloud-bus-event-2/" title="Spring Cloud Bus中的事件的订阅与发布（二）">http://blueskykong.com/2018/03/08/spring-cloud-bus-event-2/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring-Cloud/" rel="tag"># Spring Cloud</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/22/spring-event-sourcing/" rel="next" title="Spring中的事件驱动模型（一）">
+                <i class="fa fa-chevron-left"></i> Spring中的事件驱动模型（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="aoho" />
+          <p class="site-author-name" itemprop="name">aoho</p>
+           
+              <p class="site-description motion-element" itemprop="description">聚沙成塔！</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">57</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/keets2012" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.tianshouzhi.com/" title="田守枝|博客" target="_blank">田守枝|博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://remcarpediem.com/" title="remcarpediem|博客" target="_blank">remcarpediem|博客</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#事件监听器"><span class="nav-number">1.</span> <span class="nav-text">事件监听器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RefreshListener"><span class="nav-number">1.1.</span> <span class="nav-text">RefreshListener</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EnvironmentChangeListener"><span class="nav-number">1.2.</span> <span class="nav-text">EnvironmentChangeListener</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TraceListener"><span class="nav-number">1.3.</span> <span class="nav-text">TraceListener</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息的订阅与发布"><span class="nav-number">2.</span> <span class="nav-text">消息的订阅与发布</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通道定义"><span class="nav-number">2.1.</span> <span class="nav-text">通道定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bus属性定义"><span class="nav-number">2.2.</span> <span class="nav-text">bus属性定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息的监听与发送"><span class="nav-number">2.3.</span> <span class="nav-text">消息的监听与发送</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aoho</span>
+</div>
+
+
+<div class="powered-by">
+  Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a> 
+</div>
+
+<div class="theme-info">
+  主题 - Next
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cytgwPxMy';
+      var conf = 'c4bd093f0f2e95659d2adf52c85aa195';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
