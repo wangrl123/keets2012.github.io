@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Spring Cloud Gateway入门]]></title>
+    <url>%2F2018%2F03%2F10%2Fcloud-Gateway-1%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
     <title><![CDATA[Spring Cloud Bus中的事件的订阅与发布（二）]]></title>
     <url>%2F2018%2F03%2F08%2Fspring-cloud-bus-event-2%2F</url>
     <content type="text"><![CDATA[在之前的文章Spring Cloud Bus中的事件的订阅与发布（一）介绍了消息总线的相关事件。本文主要介绍消息总线的事件监听器以及消息的订阅与发布。 事件监听器Spring Cloud Bus中，事件监听器的定义可以是实现ApplicationListener接口，或者是使用@EventListener注解的形式。我们看一下事件监听器的类图。 ApplicationListener接口实现有两个：刷新监听器RefreshListener和环境变更监听器EnvironmentChangeListener。 RefreshListenerRefreshListener对应的事件是RefreshRemoteApplicationEvent， 1234567891011121314public class RefreshListener implements ApplicationListener&lt;RefreshRemoteApplicationEvent&gt; &#123; private ContextRefresher contextRefresher; public RefreshListener(ContextRefresher contextRefresher) &#123; this.contextRefresher = contextRefresher; &#125; @Override public void onApplicationEvent(RefreshRemoteApplicationEvent event) &#123; Set&lt;String&gt; keys = contextRefresher.refresh(); log.info("Received remote refresh request. Keys refreshed " + keys); &#125;&#125; 对于刷新时间的处理，调用ContextRefresher的refresh()方法，而定义在Spring Cloud Context中的ContextRefresher用于提供上下文刷新的功能。我们具体看一下refresh()方法。 12345678910public synchronized Set&lt;String&gt; refresh() &#123; Map&lt;String, Object&gt; before = extract( this.context.getEnvironment().getPropertySources()); addConfigFilesToEnvironment(); Set&lt;String&gt; keys = changes(before, extract(this.context.getEnvironment().getPropertySources())).keySet(); this.context.publishEvent(new EnvironmentChangeEvent(keys)); this.scope.refreshAll(); return keys;&#125; 实现很简单，先获取之前环境变量的key-value，然后重新加载新的配置环境文件，通过比对新旧环境变量的map集合，然后发布新的环境变更EnvironmentChangeEvent的事件。this.scope.refreshAll()销毁了在这个范围内，当前实例的所有bean并在下次方法的执行时强制刷新。 EnvironmentChangeListenerEnvironmentChangeListener对应的事件类是EnvironmentChangeRemoteApplicationEvent。 12345678910111213public class EnvironmentChangeListener implements ApplicationListener&lt;EnvironmentChangeRemoteApplicationEvent&gt; &#123; @Autowired private EnvironmentManager env; @Override public void onApplicationEvent(EnvironmentChangeRemoteApplicationEvent event) &#123; Map&lt;String, String&gt; values = event.getValues(); for (Map.Entry&lt;String, String&gt; entry : values.entrySet()) &#123; env.setProperty(entry.getKey(), entry.getValue()); &#125; &#125;&#125; 在RefreshListener的实现中，可以知道该事件的实现最终又发布了一个新的事件EnvironmentChangeListener。在刷新监听器中，构造了变更了的环境变量的map，交给环境变更监听器。上面对环境变更事件的处理，遍历变更了的配置环境属性，并在本地应用程序的环境中将新的属性值设置到对应的键。 TraceListenerTraceListener的实现是通过注解@EventListener的形式，监听的事件为：确认事件AckRemoteApplicationEvent和发送事件SentApplicationEvent。 1234567891011121314151617181920212223242526272829303132333435@EventListener public void onAck(AckRemoteApplicationEvent event) &#123; this.repository.add(getReceivedTrace(event)); &#125; @EventListener public void onSend(SentApplicationEvent event) &#123; this.repository.add(getSentTrace(event)); &#125; protected Map&lt;String, Object&gt; getSentTrace(SentApplicationEvent event) &#123; Map&lt;String, Object&gt; map = new LinkedHashMap&lt;String, Object&gt;(); map.put("signal", "spring.cloud.bus.sent"); map.put("type", event.getType().getSimpleName()); map.put("id", event.getId()); map.put("origin", event.getOriginService()); map.put("destination", event.getDestinationService()); if (log.isDebugEnabled()) &#123; log.debug(map); &#125; return map; &#125; protected Map&lt;String, Object&gt; getReceivedTrace(AckRemoteApplicationEvent event) &#123; Map&lt;String, Object&gt; map = new LinkedHashMap&lt;String, Object&gt;(); map.put("signal", "spring.cloud.bus.ack"); map.put("event", event.getEvent().getSimpleName()); map.put("id", event.getAckId()); map.put("origin", event.getOriginService()); map.put("destination", event.getAckDestinationService()); if (log.isDebugEnabled()) &#123; log.debug(map); &#125; return map; &#125; 在SentTrace中，主要记录了signal、事件类型type、id、源服务origin和目的服务destination的属性值。而在ReceivedTrace中，表示对事件的确认，主要记录了signal、事件类型event、id、源服务origin和目的服务destination的属性值。这些信息默认存储于内存中，可以通过/trace端点获取最近的事件信息，如下图所示： 1234567891011121314151617181920&#123; &quot;timestamp&quot;: 1517229555629, &quot;info&quot;: &#123; &quot;signal&quot;: &quot;spring.cloud.bus.sent&quot;, &quot;type&quot;: &quot;RefreshRemoteApplicationEvent&quot;, &quot;id&quot;: &quot;c73a9792-9409-47af-993c-65526edf0070&quot;, &quot;origin&quot;: &quot;config-server:8888&quot;, &quot;destination&quot;: &quot;config-client:8000:**&quot; &#125;&#125;,&#123; &quot;timestamp&quot;: 1517227659384, &quot;info&quot;: &#123; &quot;signal&quot;: &quot;spring.cloud.bus.ack&quot;, &quot;event&quot;: &quot;RefreshRemoteApplicationEvent&quot;, &quot;id&quot;: &quot;846f3a17-c344-4d29-93f3-01b73c5bf58f&quot;, &quot;origin&quot;: &quot;config-client:8000&quot;, &quot;destination&quot;: &quot;config-client:8000:**&quot; &#125;&#125; 至于事件的发起，我们将在下一节结合消息的订阅与发布一起讲解。 消息的订阅与发布Spring Cloud Bus基于Spring Cloud Stream，对特定主题的消息进行订阅与发布，事件以消息的形式传递到其他服务实例。 通道定义既然是基于stream，我们首先看一下input和output的通道定义。 123456789101112public interface SpringCloudBusClient &#123;String INPUT = "springCloudBusInput";String OUTPUT = "springCloudBusOutput";@Output(SpringCloudBusClient.OUTPUT)MessageChannel springCloudBusOutput();@Input(SpringCloudBusClient.INPUT)SubscribableChannel springCloudBusInput();&#125; 可以看到，bus中定义了springCloudBusInput和springCloudBusOutput两个通道，分别用于定于订阅与发布springCloudBus的消息。 bus属性定义其次，我们看一下bus中关于stream的属性定义。在基础应用中我们就知道bus订阅的话题是springCloudBus，下面看一下在bus中的其他属性的定义。 12345678910111213141516171819@ConfigurationProperties("spring.cloud.bus")public class BusProperties &#123;//环境变更相关的属性private Env env = new Env();// 刷新事件相关的属性private Refresh refresh = new Refresh();//与ack相关的属性private Ack ack = new Ack();//与追踪ack相关的属性private Trace trace = new Trace();//Spring Cloud Stream消息的话题private String destination = "springCloudBus";//标志位，bus是否可用private boolean enabled = true;...&#125; 上面的bus属性，设置了一些默认值，正好与事实也是相符的，我们没有进行任何spring.cloud.bus配置也能够进行正常运行。通过在配置文件中修改相应的属性，实现bus的更多功能扩展。env、refresh、ack和trace分别对应不同的事件，在配置文件中有一个开关属性，默认都是开启的，我们可以根据需要进行关闭。 消息的监听与发送上面两部分讲了stream通道和基本属性的定义，最后我们看下bus中对指定主题的消息如何发送与监听处理。在META-INF/spring.factories配置了EnableAutoConfiguration配置项为BusAutoConfiguration，在服务启动时会自动加载到Spring容器中，其中对于指定主题的消息如何发送与监听处理如下： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061@Configuration@ConditionalOnBusEnabled //bus启用的开关@EnableBinding(SpringCloudBusClient.class) //绑定通道@EnableConfigurationProperties(BusProperties.class)public class BusAutoConfiguration implements ApplicationEventPublisherAware &#123;//注入source接口，用于发送消息@Autowired@Output(SpringCloudBusClient.OUTPUT)private MessageChannel cloudBusOutboundChannel;// 监听RemoteApplicationEvent事件@EventListener(classes = RemoteApplicationEvent.class)public void acceptLocal(RemoteApplicationEvent event) &#123; if (this.serviceMatcher.isFromSelf(event) &amp;&amp; !(event instanceof AckRemoteApplicationEvent)) &#123; //当事件是来自自己的并且不是ack事件，则发送消息 this.cloudBusOutboundChannel.send(MessageBuilder.withPayload(event).build()); &#125;&#125;//消息的消费，也是事件的发起@StreamListener(SpringCloudBusClient.INPUT)public void acceptRemote(RemoteApplicationEvent event) &#123; if (event instanceof AckRemoteApplicationEvent) &#123; //ack事件 if (this.bus.getTrace().isEnabled() &amp;&amp; !this.serviceMatcher.isFromSelf(event) &amp;&amp; this.applicationEventPublisher != null) &#123; //当开启bus追踪且不是自己的ack事件，则通知所有的注册该事件的监听者，否则直接返回 this.applicationEventPublisher.publishEvent(event); &#125; return; &#125; //消费消息，该消息属于自己 if (this.serviceMatcher.isForSelf(event) &amp;&amp; this.applicationEventPublisher != null) &#123; //不是自己发布的事件，正常处理 if (!this.serviceMatcher.isFromSelf(event)) &#123; this.applicationEventPublisher.publishEvent(event); &#125; //消费之后，需要发送ack确认事件 if (this.bus.getAck().isEnabled()) &#123; AckRemoteApplicationEvent ack = new AckRemoteApplicationEvent(this, this.serviceMatcher.getServiceId(), this.bus.getAck().getDestinationService(), event.getDestinationService(), event.getId(), event.getClass()); this.cloudBusOutboundChannel .send(MessageBuilder.withPayload(ack).build()); this.applicationEventPublisher.publishEvent(ack); &#125; &#125; //事件追踪相关，若是开启追踪事件则执行 if (this.bus.getTrace().isEnabled() &amp;&amp; this.applicationEventPublisher != null) &#123; // 不论其来源，准备发送事件，发布了之后供本地消费 this.applicationEventPublisher.publishEvent(new SentApplicationEvent(this, event.getOriginService(), event.getDestinationService(), event.getId(), event.getClass())); &#125;&#125;//...&#125; @ConditionalOnBusEnabled注解是bus的开关，默认开启。@EnableBinding绑定了SpringCloudBusClient中定义的通道。在应用服务启动时，自动化配置类加载了bus的API端点、刷新、ACK追踪以及bus环境变量的配置等beans。@Output表示输出output绑定目标将由框架创建，由该通道发送消息。还涉及到上面列出来的两个主要方法：acceptLocal和acceptRemote。 acceptLocal是一个基于注解实现的事件监听器，监听的事件类型是RemoteApplicationEvent，对于该事件的处理方法是，当事件是来自自己的并且不是ack事件，则发送消息。 @StreamListener注解是Spring Cloud Stream中提供的，用来标识一个方法作为@EnableBinding绑定的input通道的监听器。acceptRemote方法，传递的参数RemoteApplicationEvent就是stream中的消息。如果是确认类事件，当开启了事件追踪且事件不是来自于自身，则发布该事件，对于确认类事件，处理已经完成；如果自身需要处理该事件且该事件不是来自自身，则发布该事件。需要注意的是，当开启事件追踪时，构造一个确认事件并将该事件发布；最后，当开启了事件追踪，这边的处理是注册已发送的事件，以便发布供本地消费，而不论其来源。 总结本文在上一篇介绍Spring Cloud Bus中的事件基础上，结合源码继续介绍事件的监听器以及事件的订阅与发布是如何在消息总线中实现的。消息总线常用于传播状态的变更和管理指令的发布。而消息总线最常用的场景就是更新应用服务的配置信息，需要结合Config Server使用，当然消息总线的实现其实是基于Spring Cloud Stream，Stream封装了各种不同的MQ中间件，产生的消息实则是推送配置信息的变更。 参考Spring Cloud Bus-v1.3.3]]></content>
@@ -19,8 +24,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Spring</tag>
         <tag>Java</tag>
+        <tag>Spring</tag>
       </tags>
   </entry>
   <entry>
@@ -61,8 +66,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Spring</tag>
         <tag>Java</tag>
+        <tag>Spring</tag>
       </tags>
   </entry>
   <entry>
@@ -84,8 +89,8 @@
         <category>中间件</category>
       </categories>
       <tags>
-        <tag>mq</tag>
         <tag>redis</tag>
+        <tag>mq</tag>
       </tags>
   </entry>
   <entry>
@@ -119,8 +124,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Spring</tag>
         <tag>Java</tag>
+        <tag>Spring</tag>
       </tags>
   </entry>
   <entry>
@@ -304,8 +309,8 @@
         <category>中间件</category>
       </categories>
       <tags>
-        <tag>mq</tag>
         <tag>redis</tag>
+        <tag>mq</tag>
       </tags>
   </entry>
   <entry>
@@ -353,8 +358,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Java</tag>
         <tag>Thread</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -529,8 +534,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>Spring</tag>
         <tag>Java</tag>
+        <tag>Spring</tag>
       </tags>
   </entry>
   <entry>
