@@ -5,14 +5,19 @@
     
   <url>
     <loc>http://blueskykong.com/2018/03/10/cloud-Gateway-1/</loc>
-    <lastmod>2018-03-10T13:57:20.000Z</lastmod>
+    <lastmod>2018-03-11T08:40:40.000Z</lastmod>
     <data>
         <display>
         <title>Spring Cloud Gateway入门</title>
         <pubTime>2018-03-10T13:56:32.000Z</pubTime>
         
+        <tag>gateway</tag>
+         
          
            
+             
+              <breadCrumb title="微服务" url="http://blueskykong.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+          
         </display>
     </data>
     </url>
