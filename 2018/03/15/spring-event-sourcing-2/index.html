@@ -100,17 +100,17 @@
 
 
 
-<meta name="description" content="聚沙成塔！">
+<meta name="description" content="前文回顾前一篇文章讲了Spring中的事件驱动模型相关概念。重点篇幅介绍了Spring的事件机制，Spring的事件驱动模型由事件、发布者和订阅者三部分组成，结合Spring的源码分析了这三部分的定义与实现。本文主要结合具体例子讲解Spring中的事件驱动。笔者在写Spring Cloud Bus中的事件的订阅与发布两篇文章的时候，想到要把Spring中的事件驱动模型的讲解给补充一下，这块也是属于">
 <meta name="keywords" content="Java,Spring">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring中的事件驱动模型（二）">
 <meta property="og:url" content="http://blueskykong.com/2018/03/15/spring-event-sourcing-2/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="聚沙成塔！">
-<meta property="og:updated_time" content="2018-03-15T14:22:12.000Z">
+<meta property="og:description" content="前文回顾前一篇文章讲了Spring中的事件驱动模型相关概念。重点篇幅介绍了Spring的事件机制，Spring的事件驱动模型由事件、发布者和订阅者三部分组成，结合Spring的源码分析了这三部分的定义与实现。本文主要结合具体例子讲解Spring中的事件驱动。笔者在写Spring Cloud Bus中的事件的订阅与发布两篇文章的时候，想到要把Spring中的事件驱动模型的讲解给补充一下，这块也是属于">
+<meta property="og:updated_time" content="2018-03-16T13:30:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring中的事件驱动模型（二）">
-<meta name="twitter:description" content="聚沙成塔！">
+<meta name="twitter:description" content="前文回顾前一篇文章讲了Spring中的事件驱动模型相关概念。重点篇幅介绍了Spring的事件机制，Spring的事件驱动模型由事件、发布者和订阅者三部分组成，结合Spring的源码分析了这三部分的定义与实现。本文主要结合具体例子讲解Spring中的事件驱动。笔者在写Spring Cloud Bus中的事件的订阅与发布两篇文章的时候，想到要把Spring中的事件驱动模型的讲解给补充一下，这块也是属于">
 
 
 
@@ -430,7 +430,21 @@
       
 
       
-        
+        <h2 id="前文回顾"><a href="#前文回顾" class="headerlink" title="前文回顾"></a>前文回顾</h2><p><a href="http://blueskykong.com/2018/02/22/spring-event-sourcing/">前一篇文章</a>讲了Spring中的事件驱动模型相关概念。重点篇幅介绍了Spring的事件机制，Spring的事件驱动模型由事件、发布者和订阅者三部分组成，结合Spring的源码分析了这三部分的定义与实现。本文主要结合具体例子讲解Spring中的事件驱动。笔者在写<a href="http://blueskykong.com/2018/02/13/spring-cloud-bus-event/">Spring Cloud Bus中的事件的订阅与发布</a>两篇文章的时候，想到要把Spring中的事件驱动模型的讲解给补充一下，这块也是属于更加基础的知识点。</p>
+<h2 id="应用Spring中的事件驱动模式"><a href="#应用Spring中的事件驱动模式" class="headerlink" title="应用Spring中的事件驱动模式"></a>应用Spring中的事件驱动模式</h2><p>我们示例配置信息的刷新，当配置服务器收到提交的配置事件之后，将会触发各个服务响应的更新自己的配置。具体代码如下：</p>
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigRefreshEvent</span> <span class="keyword">extends</span> <span class="title">ApplicationEvent</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConfigRefreshEvent</span><span class="params">(<span class="keyword">final</span> String content)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(content);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>定义一个配置刷新的事件。继承<code>ApplicationEvent</code>即可，content即为需要传递的object。</p>
+<h3 id="定义监听器"><a href="#定义监听器" class="headerlink" title="定义监听器"></a>定义监听器</h3><p>定义两个服务，都实现了<code>SmartApplicationListener</code>，该接口继承自<code>ApplicationListener</code>和<code>Ordered</code>接口，属于标准监听器的扩展接口，公开更多的元数据，例如支持的事件类型和可排序的监听器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SmartApplicationListener</span> <span class="keyword">extends</span> <span class="title">ApplicationListener</span>&lt;<span class="title">ApplicationEvent</span>&gt;, <span class="title">Ordered</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 决定该监听器是否支持给定的事件</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">supportsEventType</span><span class="params">(Class&lt;? extends ApplicationEvent&gt; eventType)</span></span>;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 决定该监听器是否支持给定的目标类型，支持才会调用</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">supportsSourceType</span><span class="params">(Class&lt;?&gt; sourceType)</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下面贴出两个Service的代码。</p>
+<h4 id="ServiceAListener"><a href="#ServiceAListener" class="headerlink" title="ServiceAListener"></a>ServiceAListener</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceAListener</span> <span class="keyword">implements</span> <span class="title">SmartApplicationListener</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supportsEventType</span><span class="params">(<span class="keyword">final</span> Class&lt;? extends ApplicationEvent&gt; eventType)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> eventType == ConfigRefreshEvent.class;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supportsSourceType</span><span class="params">(<span class="keyword">final</span> Class&lt;?&gt; sourceType)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> sourceType == String.class;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(<span class="keyword">final</span> ApplicationEvent event)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"ServiceA收到新的配置："</span> + event.getSource());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getOrder</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> Ordered.HIGHEST_PRECEDENCE;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="ServiceBListener"><a href="#ServiceBListener" class="headerlink" title="ServiceBListener"></a>ServiceBListener</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceBListener</span> <span class="keyword">implements</span> <span class="title">SmartApplicationListener</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supportsEventType</span><span class="params">(<span class="keyword">final</span> Class&lt;? extends ApplicationEvent&gt; eventType)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> eventType == ConfigRefreshEvent.class;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supportsSourceType</span><span class="params">(<span class="keyword">final</span> Class&lt;?&gt; sourceType)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> sourceType == String.class;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(<span class="keyword">final</span> ApplicationEvent event)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"ServiceB收到新的配置："</span> + event.getSource());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getOrder</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> Ordered.LOWEST_PRECEDENCE;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</div><div class="line"><span class="meta">@SpringBootTest</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationTest</span> </span>&#123;</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ApplicationContext applicationContext;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testPublishEvent</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"发布配置更新："</span>);</div><div class="line">        ConfigRefreshEvent event = <span class="keyword">new</span> ConfigRefreshEvent(<span class="string">"配置信息更新了"</span>)</div><div class="line">        applicationContext.publishEvent(event);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面是我们的测试类，相当于事件的发布者，首先定义一个配置刷新的事件，然后通过注入的<code>ApplicationContext</code>发布该事件。</p>
+<p>由于ServiceA的优先级高于ServiceB，所以我们看到如下的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">发布配置更新：</div><div class="line">ServiceA收到新的配置：配置信息更新了</div><div class="line">ServiceB收到新的配置：配置信息更新了</div></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文比较简单，在上一篇介绍Spring中的事件驱动模型基础上，具体应用到配置刷新的场景中。Spring的事件驱动模型使用的是观察者模式。通过<code>ApplicationEvent</code>抽象类和<code>ApplicationListener</code>接口，可以实现事件的定义与监听，<code>ApplicationContext</code>则实现了事件的发布。例子中使用的<code>SmartApplicationListener</code>扩展了标准的事件监听接口，监听器在处理Event时，可以对传入的Event进行判断，并且可以设定监听器的优先级。后面抽时间会写一下 Spring Cloud 的热更新机制，也是基于Spring中的事件驱动模型。</p>
+
       
     </div>
     <div>
@@ -609,8 +623,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.jpg"
@@ -701,6 +724,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前文回顾"><span class="nav-number">1.</span> <span class="nav-text">前文回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用Spring中的事件驱动模式"><span class="nav-number">2.</span> <span class="nav-text">应用Spring中的事件驱动模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#事件"><span class="nav-number">2.1.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义监听器"><span class="nav-number">2.2.</span> <span class="nav-text">定义监听器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ServiceAListener"><span class="nav-number">2.2.1.</span> <span class="nav-text">ServiceAListener</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ServiceBListener"><span class="nav-number">2.2.2.</span> <span class="nav-text">ServiceBListener</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试类"><span class="nav-number">2.3.</span> <span class="nav-text">测试类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
