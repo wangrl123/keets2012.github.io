@@ -84,7 +84,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java,Spring," />
+  <meta name="keywords" content="Spring Cloud," />
 
 
 
@@ -100,17 +100,21 @@
 
 
 
-<meta name="description" content="前文回顾前一篇文章讲了Spring中的事件驱动模型相关概念。重点篇幅介绍了Spring的事件机制，Spring的事件驱动模型由事件、发布者和订阅者三部分组成，结合Spring的源码分析了这三部分的定义与实现。本文主要结合具体例子讲解Spring中的事件驱动。笔者在写Spring Cloud Bus中的事件的订阅与发布两篇文章的时候，想到要把Spring中的事件驱动模型的讲解给补充一下，这块也是属于">
-<meta name="keywords" content="Java,Spring">
+<meta name="description" content="本文作者cangwu，文章节选自其即将出版的《Spring Cloud组件源码解析与高级应用》 一书。  在货船中，为了防止漏水和火灾的扩散，一般会将货仓进行分割，避免了一个货仓出事导致整艘船沉没的悲剧。同样的，在Hystrix中，也采用了这样的舱壁模式，将系统中的服务提供者隔离起来，一个服务提供者延迟升高或者失败，并不会导致整个系统的失败，同时也能够控制调用这些服务的并发度。 线程与线程池 H">
+<meta name="keywords" content="Spring Cloud">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring中的事件驱动模型（二）">
-<meta property="og:url" content="http://blueskykong.com/2018/03/15/spring-event-sourcing-2/index.html">
+<meta property="og:title" content="详解Hystrix资源隔离">
+<meta property="og:url" content="http://blueskykong.com/2018/03/19/hystrix-isolation/index.html">
 <meta property="og:site_name" content="Aoho&#39;s Blog">
-<meta property="og:description" content="前文回顾前一篇文章讲了Spring中的事件驱动模型相关概念。重点篇幅介绍了Spring的事件机制，Spring的事件驱动模型由事件、发布者和订阅者三部分组成，结合Spring的源码分析了这三部分的定义与实现。本文主要结合具体例子讲解Spring中的事件驱动。笔者在写Spring Cloud Bus中的事件的订阅与发布两篇文章的时候，想到要把Spring中的事件驱动模型的讲解给补充一下，这块也是属于">
-<meta property="og:updated_time" content="2018-03-16T13:30:14.000Z">
+<meta property="og:description" content="本文作者cangwu，文章节选自其即将出版的《Spring Cloud组件源码解析与高级应用》 一书。  在货船中，为了防止漏水和火灾的扩散，一般会将货仓进行分割，避免了一个货仓出事导致整艘船沉没的悲剧。同样的，在Hystrix中，也采用了这样的舱壁模式，将系统中的服务提供者隔离起来，一个服务提供者延迟升高或者失败，并不会导致整个系统的失败，同时也能够控制调用这些服务的并发度。 线程与线程池 H">
+<meta property="og:image" content="https://cl.ly/431c1Z2a3m2c/soa-5-isolation-focused-640.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png">
+<meta property="og:image" content="https://cl.ly/0L2I3O2p2F0c/Scheduler.png">
+<meta property="og:updated_time" content="2018-03-18T12:19:10.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring中的事件驱动模型（二）">
-<meta name="twitter:description" content="前文回顾前一篇文章讲了Spring中的事件驱动模型相关概念。重点篇幅介绍了Spring的事件机制，Spring的事件驱动模型由事件、发布者和订阅者三部分组成，结合Spring的源码分析了这三部分的定义与实现。本文主要结合具体例子讲解Spring中的事件驱动。笔者在写Spring Cloud Bus中的事件的订阅与发布两篇文章的时候，想到要把Spring中的事件驱动模型的讲解给补充一下，这块也是属于">
+<meta name="twitter:title" content="详解Hystrix资源隔离">
+<meta name="twitter:description" content="本文作者cangwu，文章节选自其即将出版的《Spring Cloud组件源码解析与高级应用》 一书。  在货船中，为了防止漏水和火灾的扩散，一般会将货仓进行分割，避免了一个货仓出事导致整艘船沉没的悲剧。同样的，在Hystrix中，也采用了这样的舱壁模式，将系统中的服务提供者隔离起来，一个服务提供者延迟升高或者失败，并不会导致整个系统的失败，同时也能够控制调用这些服务的并发度。 线程与线程池 H">
+<meta name="twitter:image" content="https://cl.ly/431c1Z2a3m2c/soa-5-isolation-focused-640.png">
 
 
 
@@ -138,13 +142,13 @@
 
 
 
-  <link rel="canonical" href="http://blueskykong.com/2018/03/15/spring-event-sourcing-2/"/>
+  <link rel="canonical" href="http://blueskykong.com/2018/03/19/hystrix-isolation/"/>
 
 
 
 
 
-  <title>Spring中的事件驱动模型（二） | Aoho's Blog</title>
+  <title>详解Hystrix资源隔离 | Aoho's Blog</title>
   
 
 
@@ -328,7 +332,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2018/03/15/spring-event-sourcing-2/">
+    <link itemprop="mainEntityOfPage" href="http://blueskykong.com/2018/03/19/hystrix-isolation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="aoho">
@@ -345,7 +349,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spring中的事件驱动模型（二）</h1>
+          <h1 class="post-title" itemprop="name headline">详解Hystrix资源隔离</h1>
         
 
         <div class="post-meta">
@@ -357,8 +361,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T00:00:00+08:00">
-                2018-03-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T00:00:00+08:00">
+                2018-03-19
               </time>
             
 
@@ -380,8 +384,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/categories/微服务/" itemprop="url" rel="index">
+                    <span itemprop="name">微服务</span>
                   </a>
                 </span>
 
@@ -399,8 +403,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2018/03/15/spring-event-sourcing-2/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/03/15/spring-event-sourcing-2/" itemprop="commentsCount"></span>
+                <a href="/2018/03/19/hystrix-isolation/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/03/19/hystrix-isolation/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -430,20 +434,59 @@
       
 
       
-        <h2 id="前文回顾"><a href="#前文回顾" class="headerlink" title="前文回顾"></a>前文回顾</h2><p><a href="http://blueskykong.com/2018/02/22/spring-event-sourcing/">前一篇文章</a>讲了Spring中的事件驱动模型相关概念。重点篇幅介绍了Spring的事件机制，Spring的事件驱动模型由事件、发布者和订阅者三部分组成，结合Spring的源码分析了这三部分的定义与实现。本文主要结合具体例子讲解Spring中的事件驱动。笔者在写<a href="http://blueskykong.com/2018/02/13/spring-cloud-bus-event/">Spring Cloud Bus中的事件的订阅与发布</a>两篇文章的时候，想到要把Spring中的事件驱动模型的讲解给补充一下，这块也是属于更加基础的知识点。</p>
-<h2 id="应用Spring中的事件驱动模式"><a href="#应用Spring中的事件驱动模式" class="headerlink" title="应用Spring中的事件驱动模式"></a>应用Spring中的事件驱动模式</h2><p>我们示例配置信息的刷新，当配置服务器收到提交的配置事件之后，将会触发各个服务响应的更新自己的配置。具体代码如下：</p>
-<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigRefreshEvent</span> <span class="keyword">extends</span> <span class="title">ApplicationEvent</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConfigRefreshEvent</span><span class="params">(<span class="keyword">final</span> String content)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(content);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>定义一个配置刷新的事件。继承<code>ApplicationEvent</code>即可，content即为需要传递的object。</p>
-<h3 id="定义监听器"><a href="#定义监听器" class="headerlink" title="定义监听器"></a>定义监听器</h3><p>定义两个服务，都实现了<code>SmartApplicationListener</code>，该接口继承自<code>ApplicationListener</code>和<code>Ordered</code>接口，属于标准监听器的扩展接口，公开更多的元数据，例如支持的事件类型和可排序的监听器。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SmartApplicationListener</span> <span class="keyword">extends</span> <span class="title">ApplicationListener</span>&lt;<span class="title">ApplicationEvent</span>&gt;, <span class="title">Ordered</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 决定该监听器是否支持给定的事件</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">supportsEventType</span><span class="params">(Class&lt;? extends ApplicationEvent&gt; eventType)</span></span>;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 决定该监听器是否支持给定的目标类型，支持才会调用</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">supportsSourceType</span><span class="params">(Class&lt;?&gt; sourceType)</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>下面贴出两个Service的代码。</p>
-<h4 id="ServiceAListener"><a href="#ServiceAListener" class="headerlink" title="ServiceAListener"></a>ServiceAListener</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceAListener</span> <span class="keyword">implements</span> <span class="title">SmartApplicationListener</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supportsEventType</span><span class="params">(<span class="keyword">final</span> Class&lt;? extends ApplicationEvent&gt; eventType)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> eventType == ConfigRefreshEvent.class;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supportsSourceType</span><span class="params">(<span class="keyword">final</span> Class&lt;?&gt; sourceType)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> sourceType == String.class;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(<span class="keyword">final</span> ApplicationEvent event)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"ServiceA收到新的配置："</span> + event.getSource());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getOrder</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> Ordered.HIGHEST_PRECEDENCE;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="ServiceBListener"><a href="#ServiceBListener" class="headerlink" title="ServiceBListener"></a>ServiceBListener</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceBListener</span> <span class="keyword">implements</span> <span class="title">SmartApplicationListener</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supportsEventType</span><span class="params">(<span class="keyword">final</span> Class&lt;? extends ApplicationEvent&gt; eventType)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> eventType == ConfigRefreshEvent.class;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supportsSourceType</span><span class="params">(<span class="keyword">final</span> Class&lt;?&gt; sourceType)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> sourceType == String.class;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(<span class="keyword">final</span> ApplicationEvent event)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"ServiceB收到新的配置："</span> + event.getSource());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getOrder</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> Ordered.LOWEST_PRECEDENCE;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</div><div class="line"><span class="meta">@SpringBootTest</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationTest</span> </span>&#123;</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ApplicationContext applicationContext;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testPublishEvent</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"发布配置更新："</span>);</div><div class="line">        ConfigRefreshEvent event = <span class="keyword">new</span> ConfigRefreshEvent(<span class="string">"配置信息更新了"</span>)</div><div class="line">        applicationContext.publishEvent(event);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面是我们的测试类，相当于事件的发布者，首先定义一个配置刷新的事件，然后通过注入的<code>ApplicationContext</code>发布该事件。</p>
-<p>由于ServiceA的优先级高于ServiceB，所以我们看到如下的结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">发布配置更新：</div><div class="line">ServiceA收到新的配置：配置信息更新了</div><div class="line">ServiceB收到新的配置：配置信息更新了</div></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文比较简单，在上一篇介绍Spring中的事件驱动模型基础上，具体应用到配置刷新的场景中。Spring的事件驱动模型使用的是观察者模式。通过<code>ApplicationEvent</code>抽象类和<code>ApplicationListener</code>接口，可以实现事件的定义与监听，<code>ApplicationContext</code>则实现了事件的发布。例子中使用的<code>SmartApplicationListener</code>扩展了标准的事件监听接口，监听器在处理Event时，可以对传入的Event进行判断，并且可以设定监听器的优先级。后面抽时间会写一下 Spring Cloud 的热更新机制，也是基于Spring中的事件驱动模型。</p>
+        <blockquote>
+<p>本文作者cangwu，文章节选自其即将出版的《Spring Cloud组件源码解析与高级应用》 一书。</p>
+</blockquote>
+<p>在货船中，为了防止漏水和火灾的扩散，一般会将货仓进行分割，避免了一个货仓出事导致整艘船沉没的悲剧。同样的，在Hystrix中，也采用了这样的舱壁模式，将系统中的服务提供者隔离起来，一个服务提供者延迟升高或者失败，并不会导致整个系统的失败，同时也能够控制调用这些服务的并发度。</p>
+<p><strong>线程与线程池</strong></p>
+<p>Hystrix中通过将调用服务线程与服务访问的执行线程分隔开来，调用线程能够空出来去做其他的工作而不至于被服务调用的执行的阻塞过长的时间。</p>
+<p><img src="https://cl.ly/431c1Z2a3m2c/soa-5-isolation-focused-640.png" alt=""></p>
+<p>在Hystrix中使用独立的线程池对应每一个服务提供者，来隔离和限制这些服务，于是，某个服务提供者的高延迟或者饱和资源受限只会发生在该服务提供者对用的线程池中。</p>
+<p>如上图中，<code>Dependency I</code>的调用失败或者高延迟仅会影响自身对应的线程池中的5个线程的阻塞并不会影响其他服务提供者的线程池状况。系统完全与服务提供者请求隔离开来，即使服务提供者对应的线程完全耗尽，并不会影响系统中的其他请求。</p>
+<p>注意在对应服务提供者的线程池被占满时，Hystrix会进入了<code>fallback</code>逻辑，快速失败，保护服务调用者的资源稳定。</p>
+<p><strong>信号量</strong></p>
+<p>除了线程池外，Hystrix还可以通过信号量(计数器)来限制单个服务提供者的并发量。如果通过信号量来控制系统负载，将不再允许设置超时和异步化，这就表示在服务提供者出现高延迟，其调用线程将会被阻塞，直至服务提供者的网络请求超时，如果对服务提供者有足够的信息，可以通过信号量来控制系统的负载。</p>
+<h4 id="Hystrix执行流程"><a href="#Hystrix执行流程" class="headerlink" title="Hystrix执行流程"></a>Hystrix执行流程</h4><p><img src="https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/hystrix-command-flow-chart.png" alt=""></p>
+<p>简单的流程的序号介绍如下</p>
+<ol>
+<li>构建<code>HystrixCommand</code>或者<code>HystrixObservableCommand</code>对象</li>
+<li>执行命令</li>
+<li>是否有Response缓存</li>
+<li>是否断路器打开</li>
+<li>是否线程池或者队列或者信号量被消耗完</li>
+<li><code>HystrixObservableCommand.construct()</code> or <code>HystrixCommand.run()</code></li>
+<li>计算链路的健康情况</li>
+<li>获取fallback逻辑</li>
+<li>返回成功的Response</li>
+</ol>
+<h3 id="资源隔离实现"><a href="#资源隔离实现" class="headerlink" title="资源隔离实现"></a>资源隔离实现</h3><p>Hystrix在判断完断路器关行后(执行流程的第4步)，将会尝试获取信号量(<code>AbstractCommand#applyHystrixSemantics()</code>)中，在Hystrix中，主要有两种方式进行资源隔离操作，一种是通过信号量的隔离策略(<code>ExecutionIsolationStrategy.SEMAPHORE</code>)，另一种是线程隔离的策略(<code>ExecutionIsolationStrategy.THREAD</code>)，我们下面来关注一下相关的实现。</p>
+<p><strong>信号量隔离策略</strong></p>
+<p>信号量隔离主要通过<code>TryableSemaphore</code>接口实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">TryableSemaphore</span> </span>&#123;</div><div class="line"></div><div class="line"> 	<span class="comment">// 尝试获取信号量</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">tryAcquire</span><span class="params">()</span></span>;</div><div class="line">	<span class="comment">// 释放信号量	</span></div><div class="line">  	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">release</span><span class="params">()</span></span>;</div><div class="line">	<span class="comment">// </span></div><div class="line">  	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">getNumberOfPermitsUsed</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>它的主要实现类主要有<code>TryableSemaphoreNoOp</code>，顾名思义即不进行信号量隔离，当采取线程隔离策略的时候将会注入该实现到<code>HystrixCommand</code>中，如果采用信号量的隔离策略时，将会注入<code>TryableSemaphoreActual</code>，但此时当无法超时和异步化，因为信号量隔离资源的策略无法指定命令的在特定的线程执行，从而控制线程的执行结果。</p>
+<p><code>TryableSemaphoreActual</code>实现相当简单，通过<code>AtomicInteger</code>记录当前请求的信号量的线程数(原子操作保证数据的一致性)，与初始化设置的允许最大信号量数进行比较<code>numberOfPermits</code>(可以动态调整)，从而判断是否允许获取信号量，轻量级的实现，保证<code>TryableSemaphoreActual</code>无阻塞的操作方式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">TryableSemaphoreActual</span> <span class="keyword">implements</span> <span class="title">TryableSemaphore</span> </span>&#123;</div><div class="line">	<span class="keyword">protected</span> <span class="keyword">final</span> HystrixProperty&lt;Integer&gt; numberOfPermits;</div><div class="line">   	<span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger count = <span class="keyword">new</span> AtomicInteger(<span class="number">0</span>);</div><div class="line"></div><div class="line">   	<span class="function"><span class="keyword">public</span> <span class="title">TryableSemaphoreActual</span><span class="params">(HystrixProperty&lt;Integer&gt; numberOfPermits)</span> </span>&#123;</div><div class="line">   		<span class="keyword">this</span>.numberOfPermits = numberOfPermits;</div><div class="line">  	&#125;</div><div class="line"></div><div class="line">  	<span class="meta">@Override</span></div><div class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">tryAcquire</span><span class="params">()</span> </span>&#123;</div><div class="line">  		<span class="keyword">int</span> currentCount = count.incrementAndGet();</div><div class="line">      	<span class="keyword">if</span> (currentCount &gt; numberOfPermits.get()) &#123;</div><div class="line">  			count.decrementAndGet();</div><div class="line">         	<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">      	&#125; <span class="keyword">else</span> &#123;</div><div class="line">        	<span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">      	&#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">   	<span class="meta">@Override</span></div><div class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">release</span><span class="params">()</span> </span>&#123;</div><div class="line">      	count.decrementAndGet();</div><div class="line">   	&#125;</div><div class="line"></div><div class="line">   	<span class="meta">@Override</span></div><div class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNumberOfPermitsUsed</span><span class="params">()</span> </span>&#123;</div><div class="line">   		<span class="keyword">return</span> count.get();</div><div class="line">  	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>需要注意的是每一个<code>TryableSemaphore</code>通过<code>CommandKey</code>与<code>HystrixCommand</code>一一绑定，在<code>AbstractCommand#getExecutionSemaphore()</code>有体现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> TryableSemaphore <span class="title">getExecutionSemaphore</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="keyword">if</span> (properties.executionIsolationStrategy().get() == ExecutionIsolationStrategy.SEMAPHORE) &#123;</div><div class="line">   		<span class="keyword">if</span> (executionSemaphoreOverride == <span class="keyword">null</span>) &#123;</div><div class="line">       	TryableSemaphore _s = executionSemaphorePerCircuit.get(commandKey.name());</div><div class="line">          <span class="keyword">if</span> (_s == <span class="keyword">null</span>) &#123;</div><div class="line">          	executionSemaphorePerCircuit.putIfAbsent(commandKey.name(), <span class="keyword">new</span> TryableSemaphoreActual(properties.executionIsolationSemaphoreMaxConcurrentRequests()));</div><div class="line">         		<span class="keyword">return</span> executionSemaphorePerCircuit.get(commandKey.name());</div><div class="line">        	&#125; <span class="keyword">else</span> &#123;</div><div class="line">              <span class="keyword">return</span> _s;</div><div class="line">         	&#125;</div><div class="line">      	&#125; <span class="keyword">else</span> &#123;</div><div class="line">   			<span class="keyword">return</span> executionSemaphoreOverride;</div><div class="line">     	&#125;</div><div class="line">   	&#125; <span class="keyword">else</span> &#123;</div><div class="line"> 		<span class="keyword">return</span> TryableSemaphoreNoOp.DEFAULT;</div><div class="line">   	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果是采用信号量隔离的策略，将尝试从缓存中获取该<code>CommandKey</code>对应的<code>TryableSemaphoreActual</code>(缓存中不存在创建一个新的，并与<code>CommandKey</code>绑定放置到缓存中)，否则返回<code>TryableSemaphoreNoOp</code>不进行信号量隔离。</p>
+<p><strong>线程隔离策略</strong></p>
+<p>在<code>AbstractCommand#executeCommandWithSpecifiedIsolation()</code>的方法中，线程隔离策略与信号隔离策略的操作主要区别是将<code>Observable</code>的执行线程通过<code>threadPool.getScheduler()</code>进行了指定，我们先查看一下<code>HystrixThreadPool</code>的相关接口：</p>
+<p><code>HystrixThreadPool</code>是用来将<code>HystrixCommand#run()</code>(被HystrixCommand包装的代码)指定到隔离的线程中执行的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">HystrixThreadPool</span> </span>&#123;</div><div class="line"></div><div class="line">   	<span class="comment">// 获取线程池</span></div><div class="line">	<span class="function"><span class="keyword">public</span> ExecutorService <span class="title">getExecutor</span><span class="params">()</span></span>;</div><div class="line">	<span class="comment">// 获取线程调度器</span></div><div class="line">   	<span class="function"><span class="keyword">public</span> Scheduler <span class="title">getScheduler</span><span class="params">()</span></span>;</div><div class="line">	<span class="comment">//</span></div><div class="line">   <span class="function"><span class="keyword">public</span> Scheduler <span class="title">getScheduler</span><span class="params">(Func0&lt;Boolean&gt; shouldInterruptThread)</span></span>;</div><div class="line"></div><div class="line">   <span class="comment">// 标记一个命令已经开始执行 </span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">markThreadExecution</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">   <span class="comment">// 标记一个命令已经结束执行 </span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">markThreadCompletion</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">   <span class="comment">// 标记一个命令无法从线程池获取到线程</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">markThreadRejection</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">   <span class="comment">// 线程池队列是否有空闲 </span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isQueueSpaceAvailable</span><span class="params">()</span></span>;</div><div class="line">    </div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p><code>HystrixThreadPool</code>是由<code>HystrixThreadPool.Factory</code>生成和管理的，是通过<code>ThreadPoolKey</code>(<code>@HystrixCommand</code>中<code>threadPoolKey</code>指定)与<code>HystrixCommand</code>进行绑定，它的默认实现为<code>HystrixThreadPoolDefault</code>，其内的线程池<code>ThreadPoolExecutor</code>是通过<code>HystrixConcurrencyStrategy</code>策略生成，生成方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// HystrixConcurrencyStrategy</span></div><div class="line"><span class="function"><span class="keyword">public</span> ThreadPoolExecutor <span class="title">getThreadPool</span><span class="params">(<span class="keyword">final</span> HystrixThreadPoolKey threadPoolKey, HystrixThreadPoolProperties threadPoolProperties)</span> </span>&#123;</div><div class="line">	<span class="keyword">final</span> ThreadFactory threadFactory = getThreadFactory(threadPoolKey);</div><div class="line">   	<span class="keyword">final</span> <span class="keyword">boolean</span> allowMaximumSizeToDivergeFromCoreSize = threadPoolProperties.getAllowMaximumSizeToDivergeFromCoreSize().get();</div><div class="line">   	<span class="keyword">final</span> <span class="keyword">int</span> dynamicCoreSize = threadPoolProperties.coreSize().get();</div><div class="line">   	<span class="keyword">final</span> <span class="keyword">int</span> keepAliveTime = threadPoolProperties.keepAliveTimeMinutes().get();</div><div class="line">  	<span class="keyword">final</span> <span class="keyword">int</span> maxQueueSize = threadPoolProperties.maxQueueSize().get();</div><div class="line">   	<span class="keyword">final</span> BlockingQueue&lt;Runnable&gt; workQueue = getBlockingQueue(maxQueueSize);</div><div class="line"></div><div class="line">   	<span class="keyword">if</span> (allowMaximumSizeToDivergeFromCoreSize) &#123;</div><div class="line">   		<span class="keyword">final</span> <span class="keyword">int</span> dynamicMaximumSize = threadPoolProperties.maximumSize().get();</div><div class="line">     	<span class="keyword">if</span> (dynamicCoreSize &gt; dynamicMaximumSize) &#123;</div><div class="line">      		<span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(dynamicCoreSize, dynamicCoreSize, keepAliveTime, TimeUnit.MINUTES, workQueue, threadFactory);</div><div class="line">      	&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(dynamicCoreSize, dynamicMaximumSize, keepAliveTime, TimeUnit.MINUTES, workQueue, threadFactory);</div><div class="line">      	&#125;</div><div class="line">   	&#125; <span class="keyword">else</span> &#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(dynamicCoreSize, dynamicCoreSize, keepAliveTime, TimeUnit.MINUTES, workQueue, threadFactory);</div><div class="line">   	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里主要比较<code>dynamicCoreSize</code>与<code>dynamicMaximumSize</code>的大小，从而设定线程池的最大线程数，保证最大线程数大于核心线程数，创建出合理线程池。</p>
+<p>接着我们重点关注<code>HystrixThreadPoolDefault#getScheduler()</code>方法，这是给rx的<code>Observable</code>进行线程绑定的提供调度器的核心方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> Scheduler <span class="title">getScheduler</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="comment">//默认在超时可中断线程</span></div><div class="line">   	<span class="keyword">return</span> getScheduler(<span class="keyword">new</span> Func0&lt;Boolean&gt;() &#123;</div><div class="line">   		<span class="meta">@Override</span></div><div class="line">      	<span class="function"><span class="keyword">public</span> Boolean <span class="title">call</span><span class="params">()</span> </span>&#123;</div><div class="line">       	<span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">      	&#125;</div><div class="line">  	&#125;);</div><div class="line">&#125;</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> Scheduler <span class="title">getScheduler</span><span class="params">(Func0&lt;Boolean&gt; shouldInterruptThread)</span> </span>&#123;</div><div class="line">	touchConfig();</div><div class="line">  	<span class="keyword">return</span> <span class="keyword">new</span> HystrixContextScheduler(HystrixPlugins.getInstance().getConcurrencyStrategy(), <span class="keyword">this</span>, shouldInterruptThread);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>touchConfig()</code>的方法中可以动态调整线程池线程大小、线程存活时间等线程池的关键配置，在配置中心存在的情况下可以动态设置。</p>
+<p><code>HystrixContextScheduler</code>是Hystrix对rx中<code>Scheduler</code>调度器的重写，主要为了实现在<code>Observable</code>未被订阅时，不获取线程执行命令，以及支持在命令执行过程中能够打断运行。</p>
+<p> 首先关注一下<code>Scheduler</code>中的相关类图：<br> <img src="https://cl.ly/0L2I3O2p2F0c/Scheduler.png" alt=""></p>
+<p> 在rx中，<code>Scheduler</code>将生成对应的<code>Worker</code>给<code>Observable</code>用于执行命令，由<code>Worker</code>具体负责相关执行线程的调度，<code>ThreadPoolWorker</code>是Hystrix自行实现的<code>Worker</code>，持有调度的核心方法：</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> Subscription <span class="title">schedule</span><span class="params">(<span class="keyword">final</span> Action0 action)</span> </span>&#123;</div><div class="line">	<span class="keyword">if</span> (subscription.isUnsubscribed()) &#123;</div><div class="line">     	<span class="keyword">return</span> Subscriptions.unsubscribed();</div><div class="line">   	&#125;</div><div class="line">  	ScheduledAction sa = <span class="keyword">new</span> ScheduledAction(action);</div><div class="line">   	subscription.add(sa);</div><div class="line">  	sa.addParent(subscription);</div><div class="line">  	ThreadPoolExecutor executor = (ThreadPoolExecutor) threadPool.getExecutor();</div><div class="line">   	FutureTask&lt;?&gt; f = (FutureTask&lt;?&gt;) executor.submit(sa);</div><div class="line">  	sa.add(<span class="keyword">new</span> FutureCompleterWithConfigurableInterrupt(f, shouldInterruptThread, executor));</div><div class="line">  	<span class="keyword">return</span> sa;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在上述代码中，如果<code>Observable</code>没有订阅，那么将取消执行，此时还没有分配线程；如果已经被订阅，将会分配线程提交任务，此时如果线程池中的线程已被占满，就可能抛出<code>RejectedExecutionException</code>的异常，拒绝任务，引发失败回滚逻辑。同时添加一个<code>FutureCompleterWithConfigurableInterrupt</code>用于在任务已经提交的情况下取消任务时释放线程：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// FutureCompleterWithConfigurableInterrupt</span></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unsubscribe</span><span class="params">()</span> </span>&#123;</div><div class="line">	executor.remove(f);</div><div class="line">  	<span class="keyword">if</span> (shouldInterruptThread.call()) &#123;</div><div class="line">   		f.cancel(<span class="keyword">true</span>);</div><div class="line">  	&#125; <span class="keyword">else</span> &#123;</div><div class="line">     	f.cancel(<span class="keyword">false</span>);</div><div class="line">  	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>取消任务的时候将从线程池中移除任务，释放线程，同时根据配置是否强制中断任务的执行。</p>
+<p>通过线程隔离的方式，可以将调用线程与执行命令的线程分隔开来，避免了调用线程被阻塞，同时通过线程池的方式对每种Command并发线程数量的控制也避免了一种Command的阻塞影响到了系统的其他请求的情况，很好的保护了调用方的线程资源。</p>
 
       
     </div>
@@ -497,7 +540,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://blueskykong.com/2018/03/15/spring-event-sourcing-2/" title="Spring中的事件驱动模型（二）">http://blueskykong.com/2018/03/15/spring-event-sourcing-2/</a>
+      <a href="http://blueskykong.com/2018/03/19/hystrix-isolation/" title="详解Hystrix资源隔离">http://blueskykong.com/2018/03/19/hystrix-isolation/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -513,9 +556,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag"># Java</a>
-          
-            <a href="/tags/Spring/" rel="tag"># Spring</a>
+            <a href="/tags/Spring-Cloud/" rel="tag"># Spring Cloud</a>
           
         </div>
       
@@ -528,8 +569,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/10/cloud-Gateway-1/" rel="next" title="Spring Cloud Gateway入门">
-                <i class="fa fa-chevron-left"></i> Spring Cloud Gateway入门
+              <a href="/2018/03/15/spring-event-sourcing-2/" rel="next" title="Spring中的事件驱动模型（二）">
+                <i class="fa fa-chevron-left"></i> Spring中的事件驱动模型（二）
               </a>
             
           </div>
@@ -537,10 +578,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/19/hystrix-isolation/" rel="prev" title="详解Hystrix资源隔离">
-                详解Hystrix资源隔离 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -738,7 +775,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前文回顾"><span class="nav-number">1.</span> <span class="nav-text">前文回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用Spring中的事件驱动模式"><span class="nav-number">2.</span> <span class="nav-text">应用Spring中的事件驱动模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#事件"><span class="nav-number">2.1.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义监听器"><span class="nav-number">2.2.</span> <span class="nav-text">定义监听器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ServiceAListener"><span class="nav-number">2.2.1.</span> <span class="nav-text">ServiceAListener</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ServiceBListener"><span class="nav-number">2.2.2.</span> <span class="nav-text">ServiceBListener</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试类"><span class="nav-number">2.3.</span> <span class="nav-text">测试类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Hystrix执行流程"><span class="nav-number">1.</span> <span class="nav-text">Hystrix执行流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源隔离实现"><span class="nav-number"></span> <span class="nav-text">资源隔离实现</span></a></div>
             
 
           </div>
